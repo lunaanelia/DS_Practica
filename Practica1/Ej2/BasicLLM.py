@@ -1,5 +1,6 @@
 from LLM import *
 
+
 class BasicLLM (LLM):
     def __init__(self, model):
         super(self, model)
