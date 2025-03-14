@@ -1,4 +1,5 @@
 from LLM import *
+from transformers import pipeline
 
 
 class BasicLLM (LLM):
@@ -7,9 +8,12 @@ class BasicLLM (LLM):
     
     def generate_summary (text, intup_lang, output_lang, model):    
         #llamar al modelo
-        summary =text #!!
+        summarizer = pipeline("summarization", model=model)
 
-        return summary
+
+        print(summarizer(text, max_length=130, min_length=30, do_sample=False))
+
+        # return summary
 
 
     
