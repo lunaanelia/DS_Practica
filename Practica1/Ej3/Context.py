@@ -1,10 +1,13 @@
-def saludar():
-    print("¡Hola desde la función saludar!")
+import Strategy
 
-def main():
-    print("Este es el bloque principal.")
-    saludar()
+class context:
+    def __init__(self, estrategia:Strategy):
+        self.estrategia = estrategia
 
-# Este bloque solo se ejecutará si el script es ejecutado directamente.
+    def ejecutar(self, nombre, num):
+        return self.estrategia.extraerInformacio(nombre, num)
+    
+
+
 if __name__ == "__main__":
     main()

@@ -18,53 +18,74 @@ import Strategy
 import requests
 from bs4 import BeautifulSoup
 
-class BeaSoup(Strategy):
-    def __init__(self, url, contenedores, nombres):
-        self.url  = url
-        self.conteneroderes = contenedores
-        self.nombres = nombres
-    
-    def solicitudYCreacion(self):
-        self.response = requests.get(self.url)
-        
-        # Para esto hay un try y excepetion
-        if self.response.status_code == 200:
-            self.soup = BeautifulSoup(self.response.text, 'html.parse')
-            print(self.soup.prettify())
+class BeaSoup():
+    def __init__(self, nombre, num):
+        self.nombre = nombre
+        self.num = num
+        self.c_datos = []
+        self.a_datos = []
+        self.e_datos = []
 
+    def poner(self):
+        # odenar primero por autor, luego poner etiqutas y luega tags
+        # como ordenar --> por autor, por cita, por etiquesas, separados,...
+        self.a_datos.sort()
+        self.c_datos.sort()
+        self.e_datos.sort()
 
-    def buscar (self):
-       # titulo = self.soup.title # titulo de la pagina
-       # h1 = self.soup.find('h1') # busca el primer h1 de la pagina
-       # enlaces = self.soup.find_all('a') # Encuetra todos los enlaces
-       # enlaces.get('href') # Obtiene el valor del atributo href 
-       # elemetoClase = self.soup.find(class_ = 'miclase') # busca le primer elemeto de la clase epecifica
-       # dievespe = self.soup.find('div', class_ = 'miclase') # busca le primer elemeto del contenedor div de la clase epecifica
-       # enlacesdiv = self.soup.find_all('a') # busca los enlaces dentro del div especifico
+        with open(self.nombre, 'w') as archivo:
+            archivo.write("Autores:\n")
+            for autor in self.a_datos:
+                archivo.write(f"\t - {autor}\n")
+                
+            
+            archivo.write("Citas:\n")
+            for cita in self.c_datos:
+                archivo.write(f"\t - {cita}\n")
+            
+            archivo.write("Error:\n")
+            for error in self.e_datos:
+                archivo.write(f"\t - {error}\n")
+                    
+    def extraer_datos(self):
+        #Realizar la peticion HTTP
+        #Realizar extraccion
+        url = 'https://quotes.toscrape.com/'
+        inicial ='https://quotes.toscrape.com/'
+        # archivo = open(self.nombre, 'w')
 
-        cita = self.soup.find_all(class_='text')    # busca el texto que contiene
-        print(cita.text)
+        for pag in range(self.num):
+            response = requests.get(url)
 
-        autor = self.soup.find_all(class_ = 'author')
-        print(autor.text)
+            if response.status_code == 200:
+                soup = BeautifulSoup(response.text,  'html.parser')
+            
+            citas = soup.find_all(class_='text')     #busca el texto que contiene
+            autores = soup.find_all(class_='author')
+            
+            divstags = soup.find_all('div', class_='tags')
+            for divtag in divstags:
+                enlaces = divtag.find_all('a', class_ = 'tag')
+                for enlace in enlaces:
+                    self.e_datos.append(enlace.text)
 
-        divtags = self.soup.find_all('div', class_='tags')
-        etiqu = divtags.find_all('a', class_ = 'tag')       # esto no esto segura de si es asi
-        print(etiqu.text)
-    
-    def extraerInformacion(self):
-      pass
+            for cita in citas:
+                self.c_datos.append(cita.text)
+            
 
-# requests.get(url) Obtiene el contenido de la url especificada --> response
-# BeautifulSoup(response.text, 'html.parse') --> Analiza el contenido html con el analizador 
-# soup.prettify() --> Muestra HTML de forma ordenad y legible
+            for autor in autores:
+                self.a_datos.append(autor.text)
+            
+            boton = soup.find('li', class_='next')
+            urlboton = boton.find('a')
+            url = inicial + urlboton.get('href')
 
-# fiechero yalm debe ser :
-#  Autor:
-#   nombre del autor
-# Cita:
-#   cita de texto:
-# Tags:
-#   - etiqueta1
-#   - etiqueta2
-#   - ...                       Se pone conguiones para indicar lista
+        self.poner()
+
+def main():
+    tre = BeaSoup("archivo.yaml", 5)
+    tre.extraer_datos()
+
+if __name__ == "__main__":
+    main()        
+
