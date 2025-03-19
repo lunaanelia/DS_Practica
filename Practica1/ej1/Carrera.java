@@ -7,6 +7,11 @@ public abstract class Carrera{
 
     protected ArrayList<Bicicleta> bicicletas;
 
-    public abstract ArrayList<Bicicleta> getBicicletas();
+    public Carrera(){
+        bicicletas = new ArrayList<>();
+    }
 
+    public ArrayList<Bicicleta> getBicicletas(){
+        return bicicletas;
+    };
 }

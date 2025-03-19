@@ -2,5 +2,13 @@ package ej1;
 
 public abstract class Bicicleta{
 
-    int id;
+    protected int id;
+
+    public Bicicleta(int id){
+        this.id = id;
+    }
+
+    public int getId(){
+        return id;
+    }
 }
