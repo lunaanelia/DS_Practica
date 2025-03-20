@@ -1,3 +1,15 @@
+
+IMPIORTANTE: hace falta tener un token, lo podéis introducir como queráis (por terminal o creando un archivo .txt y subiéndolo allí)
+
+Intentad ejecutar el programa sin instalar nada, a ver qué os pide (no creo que haga falta nada la verdad)
+
+Pd: los modelos están un poco tontuelos pero responden
+
+
+
+
+PASAR DE TODO ESTO QUE ESTÁ ABAJO
+-------------------------------------------------------------------------------------------------------
 PARA CONECTARME (PROFE):
 https://huggingface.co/docs/api-inference/getting-started
 
@@ -31,7 +43,7 @@ https://medium.com/@sharathhebbar24/text-generation-v-s-text2text-generation-3a2
 
 
 
-El token se lee de un archivo de texto (llamado "mi_token.txt")
+El token se lee de un archivo de texto (llamado "token.txt")
 
 La configuración se lee de "config.json"
 
@@ -47,12 +59,4 @@ pip install transformers
 // 
 
 pip install torch torchvision torchaudio
-
-
-
-ImportError: 
-MarianTokenizer requires the SentencePiece library but it was not found in your environment. Checkout the instructions on the
-installation page of its repo: https://github.com/google/sentencepiece#installation and follow the ones
-that match your environment. Please note that you may need to restart your runtime after installation.
-pip install sentencepiece
 
