@@ -12,16 +12,16 @@ public class CarreraCarretera extends Carrera{
 
     public void run() {
  
-        long duracion = 60000;
+        // long duracion = 60000;
 
-        System.out.println("Iniciando Carrera de Carretera con " + bicicletas.size() + " bicicletas.");
+        // System.out.println("Iniciando Carrera de Carretera con " + bicicletas.size() + " bicicletas.");
 
-        try {
-            Thread.sleep(duracion); 
-        } catch (InterruptedException e) {
-            System.err.println("Carrera interrumpida.");
-            Thread.currentThread().interrupt(); // Restablece el estado de interrupción del hilo
-        }
+        // try {
+        //     Thread.sleep(duracion); 
+        // } catch (InterruptedException e) {
+        //     System.err.println("Carrera interrumpida.");
+        //     Thread.currentThread().interrupt(); // Restablece el estado de interrupción del hilo
+        // }
 
         retirarBicicletas();
 
