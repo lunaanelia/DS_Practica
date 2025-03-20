@@ -1,12 +1,11 @@
 import json
 import requests
 import time
-# import cv2
-# from google.colab.patches import cv2_imshow
 
-import BasicLLM
-import TranslationDecorator
-import ExpansionDecorator
+from BasicLLM import BasicLLM  # Importar la clase en lugar del módulo
+
+from TranslationDecorator import TranslationDecorator
+from ExpansionDecorator import ExpansionDecorator
 
 class Cliente:
     def __init__(self, token, config_file):
@@ -26,6 +25,7 @@ class Cliente:
         self.model_translation = self.config.get("model_translation")
         self.model_expansion = self.config.get("model_expansion")
 
+        #-> hacer esto en el main mejor para pa poder pasarle los argumentos al modelo de traducción
         self.model_translation=self.model_translation.replace ("input", self.input_lang)
         self.model_translation=self.model_translation.replace ("output", self.output_lang)
 
@@ -62,13 +62,24 @@ if __name__ == "__main__":
 
 
 
-    texto_basico = BasicLLM(c.model_llm)
-    texto_basico.generate_summary (c.text, c.input_lang, c.output_lang, c.model_llm)
+    print("Aquí va el texto original")
+    print(c.text)
+    print("--------------------------------------------------------")
 
-    # texto_traducido = TranslationDecorator (c.model_translation)
+    #Funciona
+    # print("Aquí va el texto resumido")
+    # texto_basico = BasicLLM()
+    # texto_basico.generate_summary (c.text, c.input_lang, c.output_lang, c.model_llm)
+
+    print("--------------------------------------------------------")
+    # print("Aquí va el texto traducdido")
+    # texto_traducido = TranslationDecorator ()
     # texto_traducido.generate_summary (c.text, c.input_lang, c.output_lang, c.model_translation)
 
-    # texto_extendido = ExpansionDecorator (c.model_expansion)
-    # texto_extendido.generate_summary (c.text, c.input_lang, c.output_lang, c.model_expansion)
+    print("--------------------------------------------------------")
+    print("Aquí va el texto EXTENDIDO")
+    # Esto está rarete
+    texto_extendido = ExpansionDecorator ()
+    texto_extendido.generate_summary ("tengo un portatil", c.input_lang, c.output_lang, c.model_expansion)
 
 
