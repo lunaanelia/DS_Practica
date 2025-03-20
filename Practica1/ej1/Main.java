@@ -2,33 +2,33 @@
 package ej1;
 
 public class Main {
+
     public static void main(String[] args) {
 
-    // public static void main(String[] args){
-
-    //     FactoriaCarreraYBicicleta factoriaC = new FactoriaCarretera();
-    //     FactoriaCarreraYBicicleta factoriaM = new FactoriaMontana();
-
-    //     Carrera carreraC = factoriaC.crearCarrera(5);
-    //     Carrera carreraM = factoriaM.crearCarrera(5);
-      
-    //     // Cliente cliente = new Cliente("Juan", 1);
-    //     // carrera.addBicicleta(bicicleta);
-    //     // carrera.addCliente(cliente);
-    // }
-
-
-        int N = 100;  // Número de bicicletas
+        int N = (int) (Math.random() * 100) + 1;  // Número de bicicletas aleatorio [0, 100]
 
         FactoriaCarreraYBicicleta factoriaMontana = new FactoriaMontana();
         FactoriaCarreraYBicicleta factoriaCarretera = new FactoriaCarretera();
 
-        Carrera carreraMontana = factoriaMontana.crearCarrera(N);
-        Carrera carreraCarretera = factoriaCarretera.crearCarrera(N);
+        // Carrera carreraMontana = factoriaMontana.crearCarrera(N);
+        // Carrera carreraCarretera = factoriaCarretera.crearCarrera(N);
                 
 
-        System.out.println("Carrera de Montaña con " + carreraMontana.getBicicletas().size() + " bicicletas.");
-        System.out.println("Carrera de Carretera con " + carreraCarretera.getBicicletas().size() + " bicicletas.");
+        Thread carreraMontana   = new Thread (factoriaMontana.crearCarrera(N));
+        Thread carreraCarretera = new Thread (factoriaCarretera.crearCarrera(N));
 
+        // Timer timer = new Timer();
+        
+        // timer.schedule(carreraMontana.start(), 5000);
+
+        carreraMontana.start();
+        carreraCarretera.start();
+
+
+        // System.out.println("Carrera de Montaña con " + carreraMontana.getBicicletas().size() + " bicicletas.");
+        // System.out.println("Carrera de Carretera con " + carreraCarretera.getBicicletas().size() + " bicicletas.");
+
+        // System.out.println("Carrera Montaña bicis retiradas " + carreraMontana.getBicicletas().size());
+        // System.out.println("Carrera Carretera bicis retiradas " + carreraCarretera.getBicicletas().size());
     }
 }
