@@ -28,19 +28,30 @@ if __name__ == "__main__":
 
     url = "https://api-inference.huggingface.co/models/"
 
+    print("Para introducir manualmente el token presione [m]")
+    opcion=input("Para leer el token de un fichero txt presione cualquier otra tecla\n")
+    if opcion=='m' or opcion=='M':
+        token=input()
+    else: 
+        print("Se va a leer el token del archivo 'token.txt'")
+        print("Para leer un archivo distinto a este, presione [a]")
+        opcion = input()
 
-    # opcion=input("Desea introducir el token manualmente o leer un archivo txt que lo contenga?")
-    # if opcion=='m':
-    #     token=input()
-    # elif opcion == 'a':
-    #     el 
+        if opcion == 'a' or opcion == 'A':
+            print("Introduzca el nombre del fichero donde se encuentra el token")
+            token_file=input()
+        else: 
+            token_file="token.txt"
+        token=read_token(token_file)
 
-    token_file = "mi_token.txt" 
-    token_file = "./Practica1/Ej2/mi_token.txt" 
+    # token_file = "token.txt" 
+    # token_file = "./Practica1/Ej2/token.txt" 
+
+    print("Se va a leer 'config.json' como archivo de configuración." )
     config_file = "config.json"
-    config_file = "./Practica1/Ej2/config.json"
+    # config_file = "./Practica1/Ej2/config.json"
 
-    token = read_token(token_file)
+    # token = read_token(token_file)
     config = read_configuration_file(config_file)
 
     
