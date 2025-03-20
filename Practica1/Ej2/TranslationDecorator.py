@@ -1,28 +1,23 @@
 from DecoratorLLM import *
-from transformers import MarianMTModel, MarianTokenizer
+from LLM import *
+import json
 
-from transformers import pipeline
-
+import requests
 class TranslationDecorator (DecoratorLLM):
 
-    def __init__(self):
+    def __init__(self, llm):
         super().__init__()
+        self.llm = llm
 
     def generate_summary (self, text, intup_lang, output_lang, model):
+        salida = llm.generate_summary (text, intup_lang, output_lang, model)
 
-        # tokenizer = MarianTokenizer.from_pretrained(model)
+        response = requests.post(model, headers=headers, json=payload)
+        response.json()
 
-        # modelTranslation = MarianMTModel.from_pretrained(model)
+        # salida =  request.post(..., salida).load() #profe
 
-        # translated = modelTranslation.generate(**tokenizer(text, return_tensors="pt", padding=True))
-
-        # for t in translated:
-        #     print( tokenizer.decode(t, skip_special_tokens=True) )
-        
-
-
-        pipe = pipeline("translation", model=model)
-        print(pipe(text))
+        salida = response
 
 
         # return translated
