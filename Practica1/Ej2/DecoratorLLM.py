@@ -1,5 +1,4 @@
 from LLM import *
-from transformers import MarianMTModel, MarianTokenizer, pipeline
 
 import json
 import requests
@@ -9,11 +8,12 @@ import time
 
 class DecoratorLLM (LLM):
 
-    def __init__ (self, llm, headers):
+    def __init__ (self, llm, token, model):
         self.llm = llm
-        self.headers = headers
+        self.headers = {"Authorization": f"Bearer {token}"}
+        self.model=model
 
 
-    def generate_summary (self, text, intup_lang, output_lang, model):
-        return self.llm.generate_summary (text, intup_lang, output_lang, model)
+    def generate_summary (self, text):
+        return self.llm.generate_summary (text)
         
