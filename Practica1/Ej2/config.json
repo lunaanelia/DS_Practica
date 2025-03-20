@@ -1,5 +1,5 @@
 {
-    "texto": "texto a introducir",
+    "texto": "texto a introducir. Aquí hay demasiado texto y necesito resumirlo, ¿cómo podré hacer eso? Me conectare a huggingface a ver qué consigo, espero que vaya todo bien y consiga aprobar la práctica ",
     "input_lang" : "es",
     "output_lang" : "en",
     "model_llm": "facebook/bart-large-cnn",
