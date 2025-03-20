@@ -1,3 +1,17 @@
+PARA CONECTARME (PROFE):
+https://huggingface.co/docs/api-inference/getting-started
+
+# salida =  request.post(..., salida).load() #profe
+
+
+
+
+
+
+
+
+creo q no hay q instalar casi nada (comprobar)
+-----------------------------------------------------------------------------------------------------------------------------
 Para conectarme con Hugging Face
 https://medium.com/@aroman11/how-to-use-hugging-face-api-token-in-python-for-ai-application-step-by-step-be0ed00d315c
 
