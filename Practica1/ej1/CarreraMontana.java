@@ -18,18 +18,18 @@ public class CarreraMontana extends Carrera{
     // }
 
     public void run() {
-
-        long duracion = 60000;
         
-        System.out.println("Iniciando Carrera de Montaña con " + bicicletas.size() + " bicicletas.");
+        // long duracion = 60000;
+        
+        // System.out.println("Iniciando Carrera de Montaña con " + bicicletas.size() + " bicicletas.");
         
 
-        try {
-            Thread.sleep(duracion); // Corrección: Thread.sleep() en lugar de this.sleep()
-        } catch (InterruptedException e) {
-            System.err.println("Carrera interrumpida.");
-            Thread.currentThread().interrupt(); // Restablece el estado de interrupción del hilo
-        }
+        // try {
+        //     Thread.sleep(duracion); // Corrección: Thread.sleep() en lugar de this.sleep()
+        // } catch (InterruptedException e) {
+        //     System.err.println("Carrera interrumpida.");
+        //     Thread.currentThread().interrupt(); // Restablece el estado de interrupción del hilo
+        // }
 
         retirarBicicletas();
 
