@@ -10,8 +10,8 @@ import time
 
 
 class BasicLLM (LLM):
-    def __init__(self,  headers):
-        # self.llm = llm
+    def __init__(self,  headers, ):
+        super.__init__()
         self.headers=headers
 
     
