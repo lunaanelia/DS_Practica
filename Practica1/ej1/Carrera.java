@@ -15,7 +15,7 @@ public abstract class Carrera implements Runnable{
         this.tipo_carrera = tipo;
     }
 
-    // método que retira del array bicicletas las bicicletas correspondientes
+    // Método que retira del array bicicletas las bicicletas correspondientes
     public void retirarBicicletas(){
 
         int a_retirar = (int) (bicis_retirar * bicicletas.size());
@@ -25,6 +25,7 @@ public abstract class Carrera implements Runnable{
         }
     }
 
+    // Método abstracto heredado ( Runnable.run ) 
     public void run(){
 
         final int TIEMPO_MAX = 60000;
@@ -36,13 +37,12 @@ public abstract class Carrera implements Runnable{
           
             //Las bicicletas están corriendo
             System.out.println("Carrera de " + tipo_carrera + " corriendo. " + bicicletas.size());
-            // System.out.println("Carrera de Montaña corriendo. " + bicicletas.size());
 
-            try {
+            try {   // Pausa de 10 segundos
 
-                Thread.sleep(10000); // Pausa de 10 segundos
+                Thread.sleep(10000); 
 
-            } catch (InterruptedException e) {  // Sale del bucle si la hebra es interrumpida
+            } catch (InterruptedException e) {  // Manejar la excepción: sale del bucle si la hebra es interrumpida
 
                 System.out.println("Carrera interrumpida.");
                 break; 
