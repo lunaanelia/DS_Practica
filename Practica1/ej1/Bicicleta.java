@@ -1,5 +1,4 @@
-package ej1;
-
+ 
 public abstract class Bicicleta{
 
     protected int id;

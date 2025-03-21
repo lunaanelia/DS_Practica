@@ -1,7 +1,6 @@
 //Ej 1
 
-package ej1;
-
+ 
 
 public interface FactoriaCarreraYBicicleta{
 
