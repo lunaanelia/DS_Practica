@@ -8,54 +8,55 @@ import requests
 from bs4 import BeautifulSoup
 import yaml             # para escribir en formato yaml
 
+from collections import defaultdict
+
 class BeaSoup(Strategy):
                    
-    def extraer_datos(self, nombre, num):
+    def extraer_datos(self, url, num):
         
         datos = []
-        #Realizar la peticion HTTP
-        #Realizar extraccion
-        url = 'https://quotes.toscrape.com/'
-        inicial ='https://quotes.toscrape.com/'
+        url_m = url
 
         for pag in range(num):
-            response = requests.get(url)
+            response = requests.get(url_m)
 
             if response.status_code == 200:
                 soup = BeautifulSoup(response.text,  'html.parser')
-            
-            citas = soup.find_all(class_='text')     #busca el texto que contiene
-            autores = soup.find_all(class_='author')
-            
-            divstags = soup.find_all('div', class_='tags')
-           
-            for divtag, cita, autor in zip(divstags, citas, autores) :
-                enlaces = divtag.find_all('a', class_ = 'tag')            
+                
+                # Buscamos todas las citas
+                citas = soup.find_all('div', class_='quote')
+                
+                # Iteramos sobre cada cita para obtener el autor, la cita y las etiquetas
+                for cita in citas:
+                    autor = cita.find('small', class_='author').text
+                    texto_cita = cita.find('span', class_='text').text
+                    etiquetas = cita.find_all('a', class_='tag')
 
-                enlacesTexto = []
-                for enlace in enlaces:
-                    enlacesTexto.append(enlace.text)
+                    # Extraemos las etiquetas
+                    etiquetas_texto = [etiqueta.text for etiqueta in etiquetas]
 
-                datos.append({
-                    'autor': autor.text,
-                    'cita' : cita.text,
-                    'etiquetas': enlacesTexto
-                })
-            
-            boton = soup.find('li', class_='next')
-            urlboton = boton.find('a')
-            url = inicial + urlboton.get('href')
+                    # Buscamos si ya tenemos el autor en nuestra lista
+                    autor_existente = next((a for a in datos if a['autor'] == autor), None)
+                    
+                    # Si el autor ya existe, agregamos la cita
+                    if autor_existente:
+                        autor_existente['citas'].append({
+                            'cita': texto_cita,
+                            'etiquetas': etiquetas_texto
+                        })
+                    else:
+                        # Si el autor no existe, lo agregamos a la lista
+                        datos.append({
+                            'autor': autor,
+                            'citas': [{
+                                'cita': texto_cita,
+                                'etiquetas': etiquetas_texto
+                            }]
+                        })
+                    
+                # Buscamos el siguiente enlace 
+                boton = soup.find('li', class_='next')
+                urlboton = boton.find('a')
+                url_m = url + urlboton.get('href')
 
-        citasTexto = {
-            'Citas': datos
-        }
-       
-        with open(nombre, 'w') as archivo:
-            yaml.dump(citasTexto, archivo, default_flow_style=False,  allow_unicode=True)
-
-# def main():
-#     BeaSoup().extraer_datos("archivo.yaml", 5)
-
-# if __name__ == "__main__":
-#     main()        
-
+        return datos
