@@ -1,17 +1,11 @@
-#include <iostream>
-#include "Filter.h"
-#include <string>
-using namespace std;
-
 //Tendra que tener texto antes del @ y continuar con gmail.com o hotmail.com para que lo interprete como correcto
-class FiltroCorreo : public Filter{
+class FiltroCorreo implements Filter{
 
-    private:
 
-    bool Dominio(string cad, string dominio){
+    private boolean dominio(String cad, String dominio){
 
         for(int i=0; i<cad.length(); i++){
-            if(cad[i]!=dominio[i])
+            if(cad.charAt(i)!=dominio.charAt(i))
                 return false;
         }
 
@@ -19,37 +13,38 @@ class FiltroCorreo : public Filter{
 
     }
 
-    public:
+    @Override
+    public boolean comprueba(Cuenta cuenta){
 
-    bool comprueba(string texto){
+        boolean enc=false; //true cuando encuentra el @
 
-        bool enc=false; //true cuando encuentra el @
+        String texto=cuenta.getCorreo();
 
         for(int i=0; i<texto.length() && !enc; i++){
-            if(texto[i]=='@'){
+            if(texto.charAt(i)=='@'){
                 enc=true;
                 if(i==0){
-                    cout << "Debes incluir texto antes del @" << endl; //Informa del error
+                    System.out.printf("\033[0;31m \u0058 Error:\033[0m Debes incluir texto antes del @\n\n");  //Informa del error
                     return false;
                 }
                 else{   //Comprueba el numero de caracteres que le quedan y dependiendo de eso ve si el dominio es gmail, hotmail o esta mal
 
                     int num_car= texto.length() - i - 1;
-                    string dominio= texto.substr(i);
-                    const string gmail="gmail.com";
-                    const string hotmail="hotmail.com";
+                    String dominio= texto.substring(i+1);
+                    final String gmail="gmail.com";
+                    final String hotmail="hotmail.com";
 
                     if( num_car==9 ){
-                       if ( Dominio(dominio,gmail) )
+                       if ( dominio(dominio,gmail) )
                             return true;
                     }
                     else if( num_car==11 ){    
-                        if ( Dominio(dominio,hotmail) )  
+                        if ( dominio(dominio,hotmail) )  
                         return true;
                     }
         
                     //Si ha llegado hasta aqui el dominio está mal
-                    cout << "No es un dominio válido" << endl;
+                    System.out.printf("\033[0;31m \u0058 Error:\033[0m No es un dominio de correo válido\n\n");
                     return false;
                 }
                 
@@ -57,10 +52,8 @@ class FiltroCorreo : public Filter{
         }
         
         //Si ha llegado hasta aqui es que no contiene un @
-        cout << "No es un formato válido de texto" << endl;
-        cout << "Debe ser: <nombre>@<dominio> " << endl;
-        cout << "Siendo el dominio: gmail.com o hotmail.com" << endl;
+        System.out.printf("\033[0;31m \u0058 Error:\033[0mNo es un formato válido de correo\n");
         return false;
     }
 
-};
+}
