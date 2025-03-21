@@ -5,7 +5,7 @@ package ej1;
 
 public interface FactoriaCarreraYBicicleta{
 
-    Carrera crearCarrera(int n_bicis);
+    Carrera crearCarrera();
     Bicicleta crearBicicleta(int id);
 }
 

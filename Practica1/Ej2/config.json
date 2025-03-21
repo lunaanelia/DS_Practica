@@ -1,7 +1,7 @@
 {
-    "texto": "texto a introducir. Aquí hay demasiado texto y necesito resumirlo, ¿cómo podré hacer eso? Me conectare a huggingface a ver qué consigo, espero que vaya todo bien y consiga aprobar la práctica ",
-    "input_lang" : "es",
-    "output_lang" : "en",
+    "texto": "J'e ne sais pas comment esq çe que je vais jouer au foot demain",
+    "input_lang" : "fr",
+    "output_lang" : "es",
     "model_llm": "facebook/bart-large-cnn",
     "model_translation" : "Helsinki-NLP/opus-mt-input-output",
     "model_expansion" :  "facebook/blenderbot-400M-distill"

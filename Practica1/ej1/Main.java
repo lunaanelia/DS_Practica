@@ -5,30 +5,30 @@ public class Main {
 
     public static void main(String[] args) {
 
+        // Timer timer = new Timer();
+
         int N = (int) (Math.random() * 100) + 1;  // Número de bicicletas aleatorio [0, 100]
 
         FactoriaCarreraYBicicleta factoriaMontana = new FactoriaMontana();
         FactoriaCarreraYBicicleta factoriaCarretera = new FactoriaCarretera();
 
-        // Carrera carreraMontana = factoriaMontana.crearCarrera(N);
-        // Carrera carreraCarretera = factoriaCarretera.crearCarrera(N);
-                
+        Carrera carreraMontana = factoriaMontana.crearCarrera();
+        Carrera carreraCarretera = factoriaCarretera.crearCarrera();
 
-        Thread carreraMontana   = new Thread (factoriaMontana.crearCarrera(N));
-        Thread carreraCarretera = new Thread (factoriaCarretera.crearCarrera(N));
+        // creo las bicicletas y las añado
+        for(int i = 0; i < N; i++){
+            // Bicicleta bici = new BicicletaMontana(i);
+            carreraMontana.bicicletas.add(new BicicletaMontana(i));
+            carreraCarretera.bicicletas.add(new BicicletaCarretera(i));
+        }
 
-        // Timer timer = new Timer();
-        
-        // timer.schedule(carreraMontana.start(), 5000);
+        System.out.println("Iniciando Carrera de Montaña con " + N + " bicicletas.");
+        System.out.println("Iniciando Carrera de Carretera con " + N + " bicicletas.");
 
-        carreraMontana.start();
-        carreraCarretera.start();
+        carreraMontana.run();
+        carreraCarretera.run();
 
-
-        // System.out.println("Carrera de Montaña con " + carreraMontana.getBicicletas().size() + " bicicletas.");
-        // System.out.println("Carrera de Carretera con " + carreraCarretera.getBicicletas().size() + " bicicletas.");
-
-        // System.out.println("Carrera Montaña bicis retiradas " + carreraMontana.getBicicletas().size());
-        // System.out.println("Carrera Carretera bicis retiradas " + carreraCarretera.getBicicletas().size());
+        System.out.println("Carrera de Carretera finalizada. Bicicletas restantes: " + carreraCarretera.bicicletas.size());
+        System.out.println("Carrera de Montaña finalizada. Bicicletas restantes: " + carreraMontana.bicicletas.size());
     }
 }

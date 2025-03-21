@@ -13,9 +13,9 @@ public abstract class Carrera implements Runnable{
         this.bicis_retirar = bicis_retirar;
     }
 
-    // public ArrayList<Bicicleta> getBicicletas(){
-    //     return bicicletas;
-    // };
+    public ArrayList<Bicicleta> getBicicletas(){
+        return bicicletas;
+    }
 
     // método que retira del array bicicletas las bicicletas correspondientes
     public void retirarBicicletas(){
@@ -23,26 +23,38 @@ public abstract class Carrera implements Runnable{
         int a_retirar = (int) (bicis_retirar * bicicletas.size());
 
         for (int i = 0; i < a_retirar; i++) {
-            bicicletas.remove(bicicletas.size() - 1);
+            if(!bicicletas.isEmpty())   bicicletas.remove(bicicletas.size() - 1);
         }
     }
 
-    // método que especifica la tarea a realizar por las hebras
-    // public void run() {
+    public void run(){
+
+        final int TIEMPO_MAX = 60000;
+
+        // esto creo que va en carrera
+        // Thread hilo_carretera = new Thread ();
         
-    //     System.out.println("Iniciando carrera con " + bicicletas.size() + " bicicletas.");
+        long t_inicio = System.currentTimeMillis();
+        
+        //mientras que no se superen los 60 seg
+        while(System.currentTimeMillis() - t_inicio < TIEMPO_MAX){
+            //corre cada bicicleta y muestro esta corriendo estas bicis
+        
 
-    //     retirarBicicletas();
+            System.out.println("Carrera de Carretera corriendo. " + bicicletas.size());
+            System.out.println("Carrera de Montaña corriendo. " + bicicletas.size());
 
-    //     System.out.println("Carrera finalizada. Bicicletas restantes: " + bicicletas.size());
-    // }
+            //que duerma 1 seg
+            // hilo_carretera.sleep(1000);
+            // Thread.sleep(10);
 
-    public abstract void run();
-    
-    // TimerTask task1 = new TimerTask() {
-    //     public void run() {
-    //         System.out.println("Task 1 executed!");
-    //     }
-    // };
-    
+            try {
+                Thread.sleep(10000); // Pausa de 10 segundo
+            } catch (InterruptedException e) {
+                System.out.println("Carrera interrumpida.");
+                break; // Sale del bucle si la hebra es interrumpida
+            }
+        }
+        retirarBicicletas();
+    }
 }
