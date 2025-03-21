@@ -1,6 +1,5 @@
 
-package ej1;
-
+ 
 public class FactoriaMontana implements FactoriaCarreraYBicicleta{
 
     @Override
