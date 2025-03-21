@@ -1,48 +1,54 @@
 
-package ej1;
-
+ 
 import java.util.ArrayList;
 
 public abstract class Carrera implements Runnable{
 
     protected ArrayList<Bicicleta> bicicletas;
     protected double bicis_retirar;
+    protected String tipo_carrera;
 
-    public Carrera(double bicis_retirar){
+    public Carrera(double bicis_retirar, String tipo){
         bicicletas = new ArrayList<>();
         this.bicis_retirar = bicis_retirar;
+        this.tipo_carrera = tipo;
     }
 
-    // public ArrayList<Bicicleta> getBicicletas(){
-    //     return bicicletas;
-    // };
-
-    // método que retira del array bicicletas las bicicletas correspondientes
+    // Método que retira del array bicicletas las bicicletas correspondientes
     public void retirarBicicletas(){
 
         int a_retirar = (int) (bicis_retirar * bicicletas.size());
 
         for (int i = 0; i < a_retirar; i++) {
-            bicicletas.remove(bicicletas.size() - 1);
+            if(!bicicletas.isEmpty())   bicicletas.remove(bicicletas.size() - 1);
         }
     }
 
-    // método que especifica la tarea a realizar por las hebras
-    // public void run() {
+    // Método abstracto heredado ( Runnable.run ) 
+    public void run(){
+
+        final int TIEMPO_MAX = 60000;
         
-    //     System.out.println("Iniciando carrera con " + bicicletas.size() + " bicicletas.");
+        long t_inicio = System.currentTimeMillis();
+        
+        //Mientras que no se superen los 60 seg
+        while(System.currentTimeMillis() - t_inicio < TIEMPO_MAX){
+          
+            //Las bicicletas están corriendo
+            System.out.println("Carrera de " + tipo_carrera + " corriendo. " + bicicletas.size());
 
-    //     retirarBicicletas();
+            try {   // Pausa de 10 segundos
 
-    //     System.out.println("Carrera finalizada. Bicicletas restantes: " + bicicletas.size());
-    // }
+                Thread.sleep(10000); 
 
-    public abstract void run();
-    
-    // TimerTask task1 = new TimerTask() {
-    //     public void run() {
-    //         System.out.println("Task 1 executed!");
-    //     }
-    // };
-    
+            } catch (InterruptedException e) {  // Manejar la excepción: sale del bucle si la hebra es interrumpida
+
+                System.out.println("Carrera interrumpida.");
+                break; 
+            }
+        }
+
+        retirarBicicletas();
+        System.out.println("Carrera de " + tipo_carrera +" finalizada. Bicicletas restantes: " + bicicletas.size());
+    }
 }

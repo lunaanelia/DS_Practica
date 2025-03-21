@@ -1,50 +1,44 @@
 
-package ej1;
-
-import java.util.Timer;
-import java.util.TimerTask;
-
-
+ 
 public class Main {
 
     public static void main(String[] args) {
 
-        Timer timer = new Timer();
-
         int N = (int) (Math.random() * 100) + 1;  // Número de bicicletas aleatorio [0, 100]
+
 
         FactoriaCarreraYBicicleta factoriaMontana = new FactoriaMontana();
         FactoriaCarreraYBicicleta factoriaCarretera = new FactoriaCarretera();
 
-        Thread carreraMontana   = new Thread (factoriaMontana.crearCarrera(N));
-        Thread carreraCarretera = new Thread (factoriaCarretera.crearCarrera(N));
+        Carrera carreraMontana = factoriaMontana.crearCarrera();
+        Carrera carreraCarretera = factoriaCarretera.crearCarrera();
 
 
-        TimerTask task1 = new TimerTask() {
-            public void run() {
-                carreraMontana.start();
-            }
-        };
-        TimerTask task2 = new TimerTask() {
-            public void run() {
-                carreraCarretera.start();
-            }
-        };
-  
+        // Añade las bicicletas a las carreras
+        for(int i = 0; i < N; i++){
+            carreraMontana.bicicletas.add(new BicicletaMontana(i));
+            carreraCarretera.bicicletas.add(new BicicletaCarretera(i));
+        }
+
+
         System.out.println("Iniciando Carrera de Montaña con " + N + " bicicletas.");
         System.out.println("Iniciando Carrera de Carretera con " + N + " bicicletas.");
 
 
-        timer.schedule(task1, 60000);
-        timer.schedule(task2, 60000);
+        //Cada carrera en un hilo distinto
+        Thread hiloMontana = new Thread(carreraMontana);
+        Thread hiloCarretera = new Thread(carreraCarretera);
+
+        hiloMontana.start();
+        hiloCarretera.start();
+
+        try {   //Espera a que terminen las 2 carreras
+            hiloMontana.join(); 
+            hiloCarretera.join(); 
+        } catch (InterruptedException e) {
+            System.out.println("Error: Hilos interrumpidos.");
+        }
+
+        System.out.println("Todas las carreras han finalizado.");
     }
 }
-
-        // carreraMontana.start();
-        // carreraCarretera.start();
-
-        // System.out.println("Carrera de Montaña con " + carreraMontana.getBicicletas().size() + " bicicletas.");
-        // System.out.println("Carrera de Carretera con " + carreraCarretera.getBicicletas().size() + " bicicletas.");
-
-        // System.out.println("Carrera Montaña bicis retiradas " + carreraMontana.getBicicletas().size());
-        // System.out.println("Carrera Carretera bicis retiradas " + carreraCarretera.getBicicletas().size());

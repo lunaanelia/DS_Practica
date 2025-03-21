@@ -1,11 +1,10 @@
 
-package ej1;
-
+ 
 public class FactoriaMontana implements FactoriaCarreraYBicicleta{
 
     @Override
-    public Carrera crearCarrera(int n_bicis){
-        return new CarreraMontana(n_bicis);
+    public Carrera crearCarrera(){
+        return new CarreraMontana();
     }
 
     @Override
