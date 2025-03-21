@@ -1,11 +1,5 @@
 from LLM import *
 
-import json
-import requests
-import time
-
-
-
 class DecoratorLLM (LLM):
 
     def __init__ (self, llm, token, model):
