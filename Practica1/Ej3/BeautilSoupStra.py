@@ -1,20 +1,9 @@
-# Hemos tenido que descargar
+# Hemos tenido que descargar:
 #       pip install beautifulsoup4
 #       pip instal requests
-
-# numero de paginas a leer 5.
-# lo ideal es paraslas con click no con 5 url diferentes
-# tenemos que obtener texto de la cita, autor, etiquetas asociadas
-# Primera vista:
-#   texto de la cita --> span class = "text"
-#   Autoe --> span   small class="author"
-#   etiquetas --> div class = tags
-#                       a class = tag
-# en eñl ultimo de etiquetas hay unas al lado que en el enlace tien ela msima clase
-# que son:          span clas tag_item
-#                       a class tag
-
-import Strategy
+#
+# No poner url dentro
+from Strategy import *
 import requests
 from bs4 import BeautifulSoup
 import yaml             # para escribir en formato yaml
@@ -64,9 +53,9 @@ class BeaSoup(Strategy):
         with open(nombre, 'w') as archivo:
             yaml.dump(citasTexto, archivo, default_flow_style=False,  allow_unicode=True)
 
-def main():
-    BeaSoup().extraer_datos("archivo.yaml", 5)
+# def main():
+#     BeaSoup().extraer_datos("archivo.yaml", 5)
 
-if __name__ == "__main__":
-    main()        
+# if __name__ == "__main__":
+#     main()        
 
