@@ -17,6 +17,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 
 import time
+
 # from selenium.webdriver.firefox.options import Options
 
 
@@ -31,10 +32,11 @@ class Selen(Strategy):
     def extraer_datos(self, url, num):
                
         datos = []
-        
+        options = Options()
+        options.headless = True
         # Esto es lo que no se puede hacer asi
         service = FirefoxService(executable_path = "/snap/bin/geckodriver")
-        driver = webdriver.Firefox(service=service)
+        driver = webdriver.Firefox(service=service, options=options)
         
         # driver.get("https://quotes.toscrape.com/")
         driver.get(url)

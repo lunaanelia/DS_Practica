@@ -1,6 +1,6 @@
 # Hemos tenido que descargar:
 #       pip install beautifulsoup4
-#       pip instal requests
+#       pip install requests
 #
 # No poner url dentro
 from Strategy import *
