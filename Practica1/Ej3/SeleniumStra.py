@@ -1,30 +1,24 @@
 # Hemos tenido que descargar: (probarlo creo qu eno es necesario)
 #       pip install selenium
+#       pip install webdriver-manager
+
 from Strategy import *
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-# from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
-from selenium.webdriver.firefox.options import Options as FirefoxOptions
 
-# from selenium.webdriver.chrome.service import Service
-# from selenium.webdriver.chrome.options import Options
-
+from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-from webdriver_manager.firefox import GeckoDriverManager
-import subprocess #soiaf
+
+import subprocess 
 import time
-
-# from selenium.webdriver.firefox.options import Options
-
-
-
 
 
 class Selen(Strategy):
+    
     def __init__(self, navegador):
         super().__init__()
         self.navegador = navegador
@@ -32,7 +26,6 @@ class Selen(Strategy):
     def extraer_datos(self, url, num):
                
         datos = []
-
 
         if(self.navegador=="firefox"):
         #Buscamos la ruta del geckodriver
@@ -43,6 +36,7 @@ class Selen(Strategy):
         
             service = FirefoxService(executable_path = ruta.stdout.strip())
             driver = webdriver.Firefox(service=service)
+        
         elif(self.navegador=="chrome"):
             driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
         
@@ -50,10 +44,6 @@ class Selen(Strategy):
             raise FileNotFoundError("Navegador no disponible")
             
 
-        service = FirefoxService(executable_path = ruta.stdout.strip())
-        driver = webdriver.Firefox(service=service)
-        
-        # driver.get("https://quotes.toscrape.com/")
         driver.get(url)
         # Aquí puedes hacer cualquier interacción con la página
 
