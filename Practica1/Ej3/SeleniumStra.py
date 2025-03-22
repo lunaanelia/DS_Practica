@@ -37,7 +37,7 @@ class Selen(Strategy):
         #sofia
         ruta= subprocess.run(["which", "geckodriver"], capture_output=True, text=True) # sofia
         # print(rresultado.stdout)
-        service = FirefoxService(executable_path = ruta.stdout)
+        service = FirefoxService(executable_path = ruta.stdout.strip())
         driver = webdriver.Firefox(service=service)
         
         # driver.get("https://quotes.toscrape.com/")
