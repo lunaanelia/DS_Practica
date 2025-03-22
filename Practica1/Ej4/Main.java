@@ -25,7 +25,7 @@ public class Main{
         // Crear un objeto Scanner para leer entrada desde la consola
         Scanner scanner = new Scanner(System.in);
 
-        Console console=System.console();
+        Console console=System.console();   //Para la contraseña
 
         BorrarPantalla();
 
