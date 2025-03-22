@@ -5,8 +5,13 @@ Intentad ejecutar el programa sin instalar nada, a ver qué os pide (no creo que
 
 Pd: los modelos están un poco tontuelos pero responden
 
+pip install requests
 
 Pregtuntar sobre las comprobaciones para la salida, constructores
+
+Cambair parámetros
+
+
 
 
 

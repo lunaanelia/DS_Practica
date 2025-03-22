@@ -15,7 +15,7 @@ from selenium.webdriver.firefox.options import Options as FirefoxOptions
 
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
-
+import subprocess #soiaf
 import time
 
 # from selenium.webdriver.firefox.options import Options
@@ -34,7 +34,10 @@ class Selen(Strategy):
         datos = []
 
         # Esto es lo que no se puede hacer asi
-        service = FirefoxService(executable_path = "/snap/bin/geckodriver")
+        #sofia
+        ruta= subprocess.run(["which", "geckodriver"], capture_output=True, text=True) # sofia
+        # print(rresultado.stdout)
+        service = FirefoxService(executable_path = ruta.stdout)
         driver = webdriver.Firefox(service=service)
         
         # driver.get("https://quotes.toscrape.com/")
