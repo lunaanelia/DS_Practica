@@ -1,11 +1,11 @@
 
- 
 public class Main {
 
     public static void main(String[] args) {
 
-        int N = (int) (Math.random() * 100) + 1;  // Número de bicicletas aleatorio [0, 100]
-
+        final int MAX = 300, MIN = 50;
+     	int N = (int) (( (MAX-MIN+1) * Math.random()) + MIN);
+        
 
         FactoriaCarreraYBicicleta factoriaMontana = new FactoriaMontana();
         FactoriaCarreraYBicicleta factoriaCarretera = new FactoriaCarretera();

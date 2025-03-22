@@ -9,7 +9,7 @@ public abstract class Carrera implements Runnable{
     protected String tipo_carrera;
 
     public Carrera(double bicis_retirar, String tipo){
-        bicicletas = new ArrayList<>();
+        this.bicicletas = new ArrayList<>();
         this.bicis_retirar = bicis_retirar;
         this.tipo_carrera = tipo;
     }
@@ -25,6 +25,7 @@ public abstract class Carrera implements Runnable{
     }
 
     // Método abstracto heredado ( Runnable.run ) 
+    @Override
     public void run(){
 
         final int TIEMPO_MAX = 60000;
@@ -35,7 +36,7 @@ public abstract class Carrera implements Runnable{
         while(System.currentTimeMillis() - t_inicio < TIEMPO_MAX){
           
             //Las bicicletas están corriendo
-            System.out.println("Carrera de " + tipo_carrera + " corriendo. " + bicicletas.size());
+            System.out.println("\tCarrera de " + tipo_carrera + " corriendo.\t" + bicicletas.size() + " bicicletas");
 
             try {   // Pausa de 10 segundos
 
