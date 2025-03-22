@@ -36,7 +36,6 @@ class Selen(Strategy):
         
             service = FirefoxService(executable_path = ruta.stdout.strip())
             driver = webdriver.Firefox(service=service)
-        
         elif(self.navegador=="chrome"):
             driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
         
