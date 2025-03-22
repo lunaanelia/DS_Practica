@@ -1,7 +1,4 @@
 import json
-import requests
-import time
-
 
 from LLM import *
 
@@ -89,7 +86,7 @@ if __name__ == "__main__":
     print("Aquí va el texto traducdido")
     #pasar todo esto al constructor en lugar de a generate summary
     texto_traducido = TranslationDecorator (texto_basico, token, url+model_translation, input_lang, output_lang)
-    print(texto_traducido.generate_summary (text))
+    print(texto_traducido.generate_summary (text)) 
 
     print("--------------------------------------------------------")
     print("Aquí va el texto EXTENDIDO")

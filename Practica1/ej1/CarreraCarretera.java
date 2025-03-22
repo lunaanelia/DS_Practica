@@ -1,6 +1,5 @@
 
-package ej1;
-
+ 
 public class CarreraCarretera extends Carrera{
     
     public CarreraCarretera(){

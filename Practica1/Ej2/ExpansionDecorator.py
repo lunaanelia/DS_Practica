@@ -1,5 +1,5 @@
 from DecoratorLLM import *
-import json
+import requests
 
 class ExpansionDecorator (DecoratorLLM):
 

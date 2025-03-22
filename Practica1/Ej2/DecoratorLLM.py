@@ -1,11 +1,5 @@
 from LLM import *
 
-import json
-import requests
-import time
-
-
-
 class DecoratorLLM (LLM):
 
     def __init__ (self, llm, token, model):
@@ -15,5 +9,5 @@ class DecoratorLLM (LLM):
 
 
     def generate_summary (self, text):
-        return self.llm.generate_summary (text)
+        pass
         

@@ -1,6 +1,5 @@
 from DecoratorLLM import *
 from LLM import *
-import json
 
 import requests
 class TranslationDecorator (DecoratorLLM):
