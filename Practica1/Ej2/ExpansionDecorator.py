@@ -1,4 +1,5 @@
 from DecoratorLLM import *
+import requests
 
 class ExpansionDecorator (DecoratorLLM):
 

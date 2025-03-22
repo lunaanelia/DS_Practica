@@ -9,5 +9,5 @@ class DecoratorLLM (LLM):
 
 
     def generate_summary (self, text):
-        return self.llm.generate_summary (text)
+        pass
         

@@ -1,7 +1,7 @@
 {
-    "texto": "J'e ne sais pas comment esq çe que je vais jouer au foot demain",
-    "input_lang" : "fr",
-    "output_lang" : "es",
+    "texto": "Hola esto es una prueba",
+    "input_lang" : "es",
+    "output_lang" : "en",
     "model_llm": "facebook/bart-large-cnn",
     "model_translation" : "Helsinki-NLP/opus-mt-input-output",
     "model_expansion" :  "facebook/blenderbot-400M-distill"
