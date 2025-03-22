@@ -6,6 +6,9 @@
 from Strategy import *
 import requests
 from bs4 import BeautifulSoup
+import yaml             # para escribir en formato yaml
+
+from collections import defaultdict
 
 class BeaSoup(Strategy):
                    
