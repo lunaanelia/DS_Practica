@@ -24,7 +24,7 @@ public abstract class Carrera implements Runnable{
         }
     }
 
-    // Método abstracto heredado ( Runnable.run ) 
+    // Método heredado ( Runnable.run ) 
     @Override
     public void run(){
 
