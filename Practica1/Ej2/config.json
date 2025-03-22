@@ -1,7 +1,7 @@
 {
-    "texto": "Hola esto es una prueba",
-    "input_lang" : "es",
-    "output_lang" : "en",
+    "texto": "Cats are fascinating animals, known for their independence and agility. Although they are often considered solitary, many cats form strong bonds with their owners, showing affection in their own way, such as rubbing against them or purring. Their curious nature leads them to explore their surroundings with great skill, using their exceptional senses, like night vision and keen hearing, to hunt or simply investigate. Additionally, their ability to jump and move with agility makes them surprising and graceful animals, ideal both for companionship and admiration.",
+    "input_lang" : "en",
+    "output_lang" : "es",
     "model_llm": "facebook/bart-large-cnn",
     "model_translation" : "Helsinki-NLP/opus-mt-input-output",
     "model_expansion" :  "facebook/blenderbot-400M-distill"
