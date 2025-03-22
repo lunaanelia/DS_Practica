@@ -1,10 +1,7 @@
-//Ej 1
-
- 
 
 public interface FactoriaCarreraYBicicleta{
 
-    Carrera crearCarrera();
-    Bicicleta crearBicicleta(int id);
+    public Carrera crearCarrera();
+    public Bicicleta crearBicicleta(int id);
 }
 
