@@ -36,6 +36,9 @@ class Selen(Strategy):
         # Esto es lo que no se puede hacer asi
         #sofia
         ruta= subprocess.run(["which", "geckodriver"], capture_output=True, text=True) # sofia
+        if not ruta:
+            raise FileNotFoundError("No se encontró 'geckodriver'. Asegúrate de que está instalado y en el PATH.")
+
         # print(rresultado.stdout)
         service = FirefoxService(executable_path = ruta.stdout.strip())
         driver = webdriver.Firefox(service=service)
