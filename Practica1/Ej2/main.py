@@ -1,51 +1,63 @@
 import json
 
-from LLM import *
-
 from BasicLLM import BasicLLM 
 from TranslationDecorator import TranslationDecorator
 from ExpansionDecorator import ExpansionDecorator
 
-   
+# Función que lee archivo json   
 def read_configuration_file(file):
     with open(file) as f:
-        d = json.load(f)
+        d = json.load(f) # Para cargar el archivo en un diccionario
 
-    return d
+    return d # Devuelve el diccionario para poder trabajar con él
 
 def read_token(file):    
-
     with open(file) as f:
-        d = f.read().strip() 
-    return d
+        d = f.read() # Lee el contenido del archivo
+    return d # devuelve el token
 
 
 
 if __name__ == "__main__":
 
-    url = "https://api-inference.huggingface.co/models/"
-
-    print("Para introducir manualmente el token presione [m]")
-    opcion=input("Para leer el token de un fichero txt presione cualquier otra tecla\n")
+    # Menú interactivo para pedir el token al usuario
+    print("Es necesario introducir un token para conectarse con Hugging Face")
+    print("\tPara introducir manualmente el token presione [m]")
+    opcion=input("\tPara leer el token de un fichero .txt presione cualquier otra tecla\n")
     if opcion=='m' or opcion=='M':
         token=input()
     else: 
-        print("Se va a leer el token del archivo 'token.txt'")
-        print("Para leer un archivo distinto a este, presione [a]")
+        print("\tPara introducir manualmente el nombre del archivo presione [a]")
+        print("\tPara leer el token del fichero 'token.txt' presione cualquier otra tecla")
         opcion = input()
 
+        encontrado = True
         if opcion == 'a' or opcion == 'A':
             print("Introduzca el nombre del fichero donde se encuentra el token")
             token_file=input()
-        else: 
+            try: 
+                token=read_token(token_file)
+            except FileNotFoundError:
+                print(f"No se encontró el archivo '{token_file}'")
+                print("Se leerá el archivo 'token.txt\n")
+                encontrado=False
+        
+        
+        if not (opcion == 'a' or opcion == 'A') or not encontrado:
             token_file="token.txt"
-        token=read_token(token_file)
 
-    # token_file = "token.txt" 
-    # token_file = "./Practica1/Ej2/token.txt" 
+            try: 
+                token=read_token(token_file)
+            except FileNotFoundError:
+                print(f"No se encontró el archivo {token_file}, asegúrese de tenerlo o de introducir manualmente el token")
+                exit(1)
 
-    print("Se va a leer 'config.json' como archivo de configuración." )
+        
+
+    print("\nSe va a leer 'config.json' como archivo de configuración." )
     config_file = "config.json"
+    # TODO leer archivo de configuración
+    
     # config_file = "./Practica1/Ej2/config.json"
 
     # token = read_token(token_file)
@@ -61,13 +73,6 @@ if __name__ == "__main__":
     model_expansion = config.get("model_expansion")
 
 
-    # print("Texto:", text)
-    # print("Input Lang:", input_lang)
-    # print("Output Lang:", output_lang)
-    # print("Model LLM:", model_llm)
-    # print("Model Translation:", model_translation)
-    # print("Model Expansion:", model_expansion)
-
     print(config)
 
 
@@ -79,20 +84,20 @@ if __name__ == "__main__":
     
 
     print("Aquí va el texto resumido")
-    texto_basico = BasicLLM(token, url+model_llm)
+    texto_basico = BasicLLM(token, model_llm)
     print(texto_basico.generate_summary (text))
 
     print("--------------------------------------------------------")
     print("Aquí va el texto traducdido")
     #pasar todo esto al constructor en lugar de a generate summary
-    texto_traducido = TranslationDecorator (texto_basico, token, url+model_translation, input_lang, output_lang)
+    texto_traducido = TranslationDecorator (texto_basico, token, model_translation, input_lang, output_lang)
     print(texto_traducido.generate_summary (text)) 
 
     print("--------------------------------------------------------")
     print("Aquí va el texto EXTENDIDO")
 
     
-    texto_extendido = ExpansionDecorator (texto_basico, token, url+model_expansion)
+    texto_extendido = ExpansionDecorator (texto_basico, token, model_expansion)
     print(texto_extendido.generate_summary (text))
 
 
