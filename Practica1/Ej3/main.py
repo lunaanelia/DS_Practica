@@ -5,7 +5,7 @@ from Context import *
 def menu():
     seguir = True
     while seguir:
-        print("Eligue un metodo:")
+        print("Elige un metodo:")
         print("\t1 --> Beautiful Soup")
         print("\t2 --> Selenium")
         try:
