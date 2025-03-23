@@ -2,6 +2,7 @@ from DecoratorLLM import *
 from LLM import *
 
 import requests
+
 class TranslationDecorator (DecoratorLLM):
 
     def __init__(self, llm, token, model, input_lang, output_lang):
