@@ -54,13 +54,10 @@ if __name__ == "__main__":
 
         
 
-    print("\nSe va a leer 'config.json' como archivo de configuración." )
+    print("\nSe va a leer 'config.json' como archivo de configuración.\n" )
     config_file = "config.json"
-    # TODO leer archivo de configuración
-    
-    # config_file = "./Practica1/Ej2/config.json"
 
-    # token = read_token(token_file)
+    # La información que se extrae del archivo de configuración se guarda en un diccionario
     config = read_configuration_file(config_file)
 
     
@@ -72,29 +69,28 @@ if __name__ == "__main__":
     model_translation = config.get("model_translation")
     model_expansion = config.get("model_expansion")
 
-
+    print("--------------------------------------------------------")
+    print("\nEl archivo de configuración es el siguiente:")
     print(config)
 
-
-
-    print("Aquí va el texto original")
-    print(text)
+    print("\nTexto original:")
+    print("'"+text+"'")
     print("--------------------------------------------------------")
 
     
 
-    print("Aquí va el texto resumido")
+    print("Texto resumido")
     texto_basico = BasicLLM(token, model_llm)
     print(texto_basico.generate_summary (text))
 
     print("--------------------------------------------------------")
-    print("Aquí va el texto traducdido")
-    #pasar todo esto al constructor en lugar de a generate summary
+    print("Texto traducido:")
+    # pasar todo esto al constructor en lugar de a generate summary
     texto_traducido = TranslationDecorator (texto_basico, token, model_translation, input_lang, output_lang)
     print(texto_traducido.generate_summary (text)) 
 
     print("--------------------------------------------------------")
-    print("Aquí va el texto EXTENDIDO")
+    print("Texto extendido:")
 
     
     texto_extendido = ExpansionDecorator (texto_basico, token, model_expansion)
