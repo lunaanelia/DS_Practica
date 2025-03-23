@@ -1,5 +1,0 @@
-.gitignore
-token.txt
-__pycache__/
-*.class
-*.pyc
