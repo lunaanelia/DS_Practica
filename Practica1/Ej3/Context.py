@@ -7,8 +7,8 @@ class context:
         self.datos = []
 
     # Ejecuta la extrategia
-    def ejecutar(self, nombre, num):
-        self.datos = self.estrategia.extraer_datos(nombre, num)
+    def ejecutar(self, url, num):
+        self.datos = self.estrategia.extraer_datos(url, num)
 
     # Guarda los datos en el archivo nombre
     def guardar(self, nombre):
