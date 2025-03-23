@@ -16,9 +16,6 @@ public class Main{
         filterManager.addFilter(new FiltroContraCarac());
         filterManager.addFilter(new FiltroContraMayus());
         filterManager.addFilter(new FiltroContraNum());
-        
-        Cliente client= new Cliente(filterManager);
-
 
         String correo, contrasena;
 
