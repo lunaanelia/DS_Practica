@@ -5,4 +5,4 @@
 - Sofía González Uceda
 - Natalia Serrano Cerceda
 ## Memorias de las prácticas
-- [Documentación de la Práctica 1](https://github.com/lunaanelia/DS_Practica/blob/main/Practica1/Pr%C3%A1ctica_1_DS.pdf)
+- [Documentación de la Práctica 1](Practica1/Práctica_1_DS.pdf)
