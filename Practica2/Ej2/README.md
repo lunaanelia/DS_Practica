@@ -1,4 +1,4 @@
-# p2_ej2
+# ej2
 
 A new Flutter project.
 
