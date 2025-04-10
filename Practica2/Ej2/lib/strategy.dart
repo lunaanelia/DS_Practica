@@ -34,7 +34,8 @@ abstract class Strategy{
     if (response.statusCode == 200) {   //Respuesta exitosa
       resultado = jsonDecode(response.body);  //Decodifica la respuesta (de json a String)
     } else {  //Error
-      resultado = "Error:  ${response.statusCode}\n${response.body}";
+      resultado = "Error:  ";
+          //"${response.statusCode}\n${response.body}";
     }
 
     return resultado;
