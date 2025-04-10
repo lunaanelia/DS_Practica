@@ -1,8 +1,10 @@
-import 'package:Eje1/Filters.dart';
-import 'package:Eje1/ChatTarget.dart';
+import 'Filter.dart';
+import 'ChatTarget.dart';
+import 'Cuenta.dart';
+
 class FilterChain{
-  List<Filter> _filters;
-  ChatTraget _target;
+  List<Filter> _filters = [];
+  ChatTarget? _target;
 
   void addFilter(Filter filter){
     _filters.add(filter);
@@ -14,7 +16,16 @@ class FilterChain{
 
   void comporbar (Cuenta cuenta){
     bool correcto = true;
-    for
-  }
 
+    for (var filter in _filters){
+      if(!filter.comprueba(cuenta)){
+        correcto = false;
+        return;     // Si no se cumple de los filtros se sale del bucle
+      }
+    }
+
+    if(correcto && _target==null){
+      _target!.informaCuenta();
+    }
+  }
 }
