@@ -7,7 +7,7 @@ class FiltroContraNum implements Filter{
   @override
   bool comprueba(Cuenta cuenta){
 
-    String texto=cuenta.getContrasena();
+    String texto=cuenta.getContrasenia();
 
     for(int i=0; i<texto.length; i++){
       if (RegExp(r'\d').hasMatch(texto[i]))   //El /d comprueba que es un digito
@@ -15,7 +15,7 @@ class FiltroContraNum implements Filter{
     }
 
     //Si ha llegado hasta aqui no contiene caracteres numéricos
-    print("Error: La contraseña debe contener al menos un caracter numérico");
+    return throw ArgumentError("Error: La contraseña debe contener al menos un caracter numérico");
   }
 
 }
