@@ -1,4 +1,5 @@
 import 'Filter.dart';
+import 'Cuenta.dart';
 
 //Tendra que tener al menos un caracter numérico para que de la contraseña como correcta
 class FiltroContraNum implements Filter{

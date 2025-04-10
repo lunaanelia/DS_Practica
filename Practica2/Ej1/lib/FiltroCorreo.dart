@@ -1,4 +1,5 @@
 import 'Filter.dart';
+import 'Cuenta.dart';
 
 //Tendra que tener texto antes del @ y continuar con gmail.com o hotmail.com para que lo interprete como correcto
 class FiltroCorreo implements Filter{
@@ -7,7 +8,7 @@ class FiltroCorreo implements Filter{
   bool dominio(String cad, String dominio){
 
     for(int i=0; i<cad.length; i++){
-      if(cad[i]!=dominio.charAt(i))
+      if(cad[i]!=dominio[i])
         return false;
     }
 

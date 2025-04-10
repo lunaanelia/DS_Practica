@@ -1,4 +1,5 @@
 import 'Filter.dart';
+import 'Cuenta.dart';
 
 //Tendra que tener un mínimo de 8 caracteres para que de la contraseña como correcta
 class FiltroContraCarac implements Filter{

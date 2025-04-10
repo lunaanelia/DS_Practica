@@ -1,4 +1,5 @@
 import 'Filter.dart';
+import 'Cuenta.dart';
 
 //Tendra que tener al menos una mayúscula para que de la contraseña como correcta
 class FiltroContraMayus implements Filter{
