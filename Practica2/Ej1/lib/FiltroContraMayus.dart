@@ -10,12 +10,14 @@ class FiltroContraMayus implements Filter{
     String texto=cuenta.getContrasena();
 
     for(int i=0; i<texto.length; i++){
-      if (texto[i].toUpperCase() == texto[i] && texto[i].toLowerCase() != texto[i]) {
-      return true;
+        if (texto[i].toUpperCase() == texto[i] && texto[i].toLowerCase() != texto[i]) {
+          return true;
+
+      }
     }
 
     //Si ha llegado hasta aqui no contiene mayúsculas
-    return print("Error: La contraseña debe contener al menos un caracter en mayúscula");
+    return throw ArgumentError("Error: La contraseña debe contener al menos un caracter en mayúscula");
 
   }
 
