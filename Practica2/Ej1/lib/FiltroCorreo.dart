@@ -3,7 +3,9 @@ import 'Cuenta.dart';
 
 //Tendra que tener texto antes del @ y continuar con gmail.com o hotmail.com para que lo interprete como correcto
 class FiltroCorreo implements Filter{
-
+  static String _arroba = "@";
+  static final String _gmail="gmail.com";
+  static final String _hotmail="hotmail.com";
 
   bool dominio_func(String cad, String dominio){
 
@@ -19,12 +21,12 @@ class FiltroCorreo implements Filter{
   @override
   bool comprueba(Cuenta cuenta){
 
-    bool enc=false; //true cuando encuentra el @
+    bool enc = false; //true cuando encuentra el @
 
     String texto=cuenta.getCorreo();
 
     for(int i=0; i<texto.length && !enc; i++){
-      if(texto[i]=='@'){
+      if(texto[i]==_arroba){
         enc=true;
         if(i==0){
           return throw ArgumentError("Error: Debes incluir texto antes del @");  //Informa del error
@@ -33,15 +35,14 @@ class FiltroCorreo implements Filter{
 
           int num_car= texto.length - i - 1;
           String dominio= texto.substring(i+1);
-          final String gmail="gmail.com";
-          final String hotmail="hotmail.com";
+
 
           if( num_car==9 ){
-            if ( dominio_func(dominio,gmail) )
+            if ( dominio_func(dominio, _gmail) )
               return true;
           }
           else if( num_car==11 ){
-            if ( dominio_func(dominio,hotmail) )
+            if ( dominio_func(dominio, _hotmail) )
               return true;
           }
 

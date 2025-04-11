@@ -10,6 +10,7 @@ class FiltroContraNum implements Filter{
     String texto=cuenta.getContrasenia();
 
     for(int i=0; i<texto.length; i++){
+      /*Perfection --> expresion regular simplica*/
       if (RegExp(r'\d').hasMatch(texto[i]))   //El /d comprueba que es un digito
         return true;
     }

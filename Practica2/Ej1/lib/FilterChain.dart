@@ -20,7 +20,7 @@ class FilterChain{
     for (var filter in _filters){
       if(!filter.comprueba(cuenta)){
         correcto = false;
-        return;     // Si no se cumple de los filtros se sale del bucle
+        return;           // Si no se cumple de los filtros se sale del bucle
       }
     }
 

@@ -18,5 +18,4 @@ class FilterManager{
     _filterChain.comporbar(cuenta);
   }
 
-
 }
