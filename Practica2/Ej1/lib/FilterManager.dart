@@ -15,7 +15,7 @@ class FilterManager{
   }
 
   void haceCuenta(Cuenta cuenta){
-    _filterChain.comporbar(cuenta);
+    _filterChain.comprobar(cuenta);
   }
 
 }

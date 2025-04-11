@@ -16,7 +16,7 @@ class FiltroContraNum implements Filter{
     }
 
     //Si ha llegado hasta aqui no contiene caracteres numéricos
-    return throw ArgumentError("Error: La contraseña debe contener al menos un caracter numérico");
+    return false;
   }
 
 }

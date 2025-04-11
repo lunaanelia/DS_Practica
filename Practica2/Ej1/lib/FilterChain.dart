@@ -14,18 +14,31 @@ class FilterChain{
     _target = t;
   }
 
-  void comporbar (Cuenta cuenta){
+  void comprobar (Cuenta cuenta){
     bool correcto = true;
 
-    for (var filter in _filters){
+    /*for (var filter in _filters){
       if(!filter.comprueba(cuenta)){
         correcto = false;
         return;           // Si no se cumple de los filtros se sale del bucle
       }
+    } */
+
+    List<String> errores=[];
+
+    for (var filter in _filters) {
+      try {
+        filter.comprueba(cuenta);
+      } catch (e) {
+        errores.add(e.toString());
+      }
     }
 
-    if(correcto && _target==null){
-      _target!.informaCuenta();
+    if(errores.isNotEmpty)
+        throw ArgumentError("Errores\n ${errores.join('\n')}"); //errores.join('\n') une los errores separándolos por saltos de línea
+
+    if(correcto){
+      _target!.informaCuenta(); //Comprueba que el target no sea nulo
     }
   }
 }
