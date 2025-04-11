@@ -1,8 +1,8 @@
 import 'package:ej2/basico.dart';
-import 'package:ej2/strategy.dart';
 import 'package:ej2/traduccion.dart';
 import 'package:ej2/expansion.dart';
 import 'package:flutter/material.dart';
+import 'package:ej2/context.dart';
 
 void main() {
   runApp(const MyApp());
@@ -42,16 +42,27 @@ class _MyHomePageState extends State<MyHomePage> {
   String _respuesta = '';
   bool _isLoading = false;
 
-  late Strategy estrategia;
+  late MyContext contexto;
+
+  @override
+  void initState() {
+    super.initState();
+    contexto = MyContext(Basico(archivoToken, "facebook/bart-large-cnn"));
+
+
+    final List<String> _modelos = [
+      "facebook/bart-large-cnn",
+      "Helsinki-NLP/opus-mt-en-es",
+      "facebook/blenderbot-400M-distill"
+    ];
+
+
+  }
 
   final String archivoToken = "huggingface.txt";
 
 
-  final List<String> _modelos = [
-    "facebook/bart-large-cnn",          //basico
-    "Helsinki-NLP/opus-mt-en-es",       //traductor
-    "facebook/blenderbot-400M-distill"  //expandir
-  ];
+
 
 
   void _enviar() async {
@@ -60,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _respuesta = '';
     });
 
-    final resultado = await estrategia.AlgorithmInterface(_controller.text);
+    final resultado = await contexto.ejecutar(_controller.text);
 
     setState(() {
       _respuesta = resultado;
@@ -89,14 +100,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 setState(() {
                   _modeloSeleccionado = value!;
                   if (_modeloSeleccionado == "facebook/bart-large-cnn") {
-                    estrategia = Basico(archivoToken, "facebook/bart-large-cnn");
+                    contexto.setStrategy(Basico(archivoToken, "facebook/bart-large-cnn"));
                   }
                   else if (_modeloSeleccionado == "Helsinki-NLP/opus-mt-en-es"){
-                    estrategia = Traduccion(archivoToken,"Helsinki-NLP/opus-mt-en-es");
+                    contexto.setStrategy(Traduccion(archivoToken,"Helsinki-NLP/opus-mt-en-es"));
                   }
 
                   else if (_modeloSeleccionado == "facebook/blenderbot-400M-distill")  {
-                    estrategia = Expansion(archivoToken, "facebook/blenderbot-400M-distill");
+                    contexto.setStrategy(Expansion(archivoToken, "facebook/blenderbot-400M-distill"));
                   }
                 });
               },

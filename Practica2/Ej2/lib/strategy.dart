@@ -14,30 +14,57 @@ abstract class Strategy{
       :token = tok,
       url = "https://api-inference.huggingface.co/models/$mod";
 
+  Future<String> AlgorithmInterface(String text) async {
+    try {
+      // Carga el token desde el archivo
+      token = await rootBundle.loadString('$token');
 
-  Future<String> AlgorithmInterface(String text ) async {
+      final url_json = Uri.parse(url);
+      final headers = {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      };
 
-  token = await rootBundle.loadString('assets/$token');
+      final body = jsonEncode({'inputs': text});
 
-    String resultado;
+      final response = await http.post(url_json, headers: headers, body: body);
 
-    final url_json = Uri.parse(url); //Convierte un string a Uri
-    final headers = {
-      'Authorization': 'Bearer $token',
-      'Content-Type': 'application/json', //indica que está en formato json
-    };
+      if (response.statusCode == 200) {
+        final decoded = jsonDecode(response.body);
 
-    final body = jsonEncode({'inputs': text});  //Argumentos que se le pasan al modelo
+        // En algunos modelos como traductores, se espera una lista
+        if (decoded is List && decoded.isNotEmpty && decoded[0]['translation_text'] != null) {
+          return decoded[0]['translation_text'];
+        }
 
-    final response = await http.post(url_json, headers: headers, body: body);
+        // Modelos como resumen o respuesta con 'generated_text'
+        if (decoded is List && decoded.isNotEmpty && decoded[0]['generated_text'] != null) {
+          return decoded[0]['generated_text'];
+        }
 
-    if (response.statusCode == 200) {   //Respuesta exitosa
-      resultado = jsonDecode(response.body);  //Decodifica la respuesta (de json a String)
-    } else {  //Error
-      resultado = "Error:  ${response.statusCode}\n${response.body}";
+        // Modelos como resumen o respuesta con 'summary_text'
+        if (decoded is List && decoded.isNotEmpty && decoded[0]['summary_text'] != null) {
+          return decoded[0]['summary_text'];
+        }
+
+        return "️ Formato de respuesta no reconocido:\n$decoded";
+      }
+
+      else if (response.statusCode == 503) {
+        return "El modelo está cargando o no disponible. Intenta de nuevo en unos segundos.";
+      }
+
+      else if (response.statusCode == 401) {
+        return " Token inválido o acceso no autorizado. Verifica tu archivo de token.";
+      }
+
+      else {
+        return " Error al contactar con Hugging Face:\nCódigo: ${response.statusCode}\nCuerpo: ${response.body}";
+      }
+
+    } catch (e) {
+      return " Error inesperado: $e";
     }
-
-    return resultado;
   }
 
 }
