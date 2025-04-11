@@ -5,8 +5,8 @@ import 'Cuenta.dart';
 //Tendra que tener texto antes del @ y continuar con gmail.com o hotmail.com para que lo interprete como correcto
 class FiltroCorreo implements Filter{
   static String _arroba = "@";
-  static final String _gmail="gmail.com";
-  static final String _hotmail="hotmail.com";
+  static final String _gmail="@gmail.com";
+  static final String _hotmail="@hotmail.com";
   final Correos _correos = Correos();
 
   bool dominio_func(String cad, String dominio){
@@ -20,14 +20,14 @@ class FiltroCorreo implements Filter{
   }
 
   bool _contieneArroba(String texto){
-    // Cmabiamos encotrado a valido para mayor lejibilidad
+    // Cambiamos encontrado a valido para mayor legibilidad
     bool valido = texto.contains(_arroba);
     String error = "";
 
     if(!valido){
       error = "Error: Debes incluir texto antes del @";
 
-    }else if(texto[0] == _arroba){  // en el caso de que si este contenido comporbamso que no este en la posicion 0
+    }else if(texto[0] == _arroba){  // en el caso de que si este contenido comprobamos que no este en la posicion 0
         error = "Error: La @ no puede estar al inicio";
         valido = false;  // no seria valido
     }
