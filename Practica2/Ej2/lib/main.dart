@@ -48,16 +48,21 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     contexto = MyContext(Basico(archivoToken, "facebook/bart-large-cnn"));
+
+
+    final List<String> _modelos = [
+      "facebook/bart-large-cnn",
+      "Helsinki-NLP/opus-mt-en-es",
+      "facebook/blenderbot-400M-distill"
+    ];
+
+
   }
 
   final String archivoToken = "huggingface.txt";
 
 
-  final List<String> _modelos = [
-    "facebook/bart-large-cnn",          //basico
-    "Helsinki-NLP/opus-mt-en-es",       //traductor
-    "facebook/blenderbot-400M-distill"  //expandir
-  ];
+
 
 
   void _enviar() async {
