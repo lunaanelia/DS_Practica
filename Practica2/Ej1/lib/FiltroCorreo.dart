@@ -1,3 +1,4 @@
+import 'Correos.dart';
 import 'Filter.dart';
 import 'Cuenta.dart';
 
@@ -6,6 +7,7 @@ class FiltroCorreo implements Filter{
   static String _arroba = "@";
   static final String _gmail="gmail.com";
   static final String _hotmail="hotmail.com";
+  final Correos _correos = Correos();
 
   bool dominio_func(String cad, String dominio){
 
@@ -15,13 +17,73 @@ class FiltroCorreo implements Filter{
     }
 
     return true;    //Si ha llegado hasta aqui el dominio es correcto
-
   }
 
-  @override
-  bool comprueba(Cuenta cuenta){
+  bool _contieneArroba(String texto){
+    // Cmabiamos encotrado a valido para mayor lejibilidad
+    bool valido = texto.contains(_arroba);
+    String error = "";
 
-    bool enc = false; //true cuando encuentra el @
+    if(!valido){
+      error = "Error: Debes incluir texto antes del @";
+
+    }else if(texto[0] == _arroba){  // en el caso de que si este contenido comporbamso que no este en la posicion 0
+        error = "Error: La @ no puede estar al inicio";
+        valido = false;  // no seria valido
+    }
+
+    // Si tenemos algun error lo mandamos
+    if(!valido){
+      throw ArgumentError(error);
+    }
+
+    return valido;
+  }
+
+  bool _contieneDominio(String texto){
+    // OJO no se si esto esta bien
+    // devuleve trues si texto termina en lo hotmail o gmail
+    return texto.endsWith(_hotmail) || texto.endsWith(_gmail);
+  }
+
+  // devuelve false si ya esta el correo
+  bool _correoNoAniadido (String correo){
+    return !(_correos.existeCorreo(correo));
+  }
+
+
+  @override
+  // Creo que esta mas comlicado de lo que era.
+  bool comprueba(Cuenta cuenta){
+    bool valido = true;
+    String error = "";
+    String texto = cuenta.getCorreo();
+
+    if (_correoNoAniadido(texto)){  // Si el correo no ha sido añadido comprobamos los sigientes errores
+      try{
+        valido = _contieneArroba(texto);
+      }catch(e){
+        error += e.toString();
+      }
+      try{
+        valido = _contieneDominio(texto);
+      }catch(e){
+        //valido = false;
+        error += e.toString();
+      }
+    }
+    else{
+      //valido = false;
+      error = "Error: Este correo ya existe";
+    }
+
+    if(!valido){
+      throw ArgumentError(error);
+    }
+
+    return valido;
+
+    /*bool enc = false; //true cuando encuentra el @
 
     String texto=cuenta.getCorreo();
 
@@ -55,6 +117,7 @@ class FiltroCorreo implements Filter{
 
     //Si ha llegado hasta aqui es que no contiene un @
     return throw ArgumentError("Error:No es un formato válido de correo");
-  }
+  }*/
 
+  }
 }
