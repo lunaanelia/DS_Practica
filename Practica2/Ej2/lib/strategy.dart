@@ -70,6 +70,11 @@ abstract class Strategy{
           return decoded[0]['generated_text'];
         }
 
+        // Modelos como resumen o respuesta con 'generated_text'
+        if (decoded is List && decoded.isNotEmpty && decoded[0]['summary_text'] != null) {
+          return decoded[0]['summary_text'];
+        }
+
         return "️ Formato de respuesta no reconocido:\n$decoded";
       }
 
