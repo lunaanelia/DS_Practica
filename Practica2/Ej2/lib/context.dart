@@ -1,13 +1,15 @@
-
 import 'package:ej2/strategy.dart';
 
-class Context{
-
+class MyContext {
   Strategy estrategia;
 
-  Context(this.estrategia);
+  MyContext(this.estrategia);
 
-  contextAlgorithm(){
-    this.estrategia.AlgorithmInterface(text);
+  Future<String> ejecutar(String input) async {
+    return await estrategia.AlgorithmInterface(input);
+  }
+
+  void setStrategy(Strategy nuevaEstrategia) {
+    estrategia = nuevaEstrategia;
   }
 }
