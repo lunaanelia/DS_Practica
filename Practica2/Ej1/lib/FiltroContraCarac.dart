@@ -9,10 +9,11 @@ class FiltroContraCarac implements Filter{
 
     const int TAM_MIN = 8;
 
-    if (cuenta.getContrasena.length < TAM_MIN) {  // No tiene el tamaño mínimo
-      return ("Error: La contraseña debe contener al menos 8 caracteres");
+    if (cuenta.getContrasenia().length < TAM_MIN) {  // No tiene el tamaño mínimo
+      return throw ArgumentError("Error: La contraseña debe contener al menos 8 caracteres");
     } else {
       return true;
     }
+
   }
 }

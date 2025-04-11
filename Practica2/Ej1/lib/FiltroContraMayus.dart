@@ -7,7 +7,7 @@ class FiltroContraMayus implements Filter{
   @override
   bool comprueba(Cuenta cuenta){
 
-    String texto=cuenta.getContrasena();
+    String texto=cuenta.getContrasenia();
 
     for(int i=0; i<texto.length; i++){
         if (texto[i].toUpperCase() == texto[i] && texto[i].toLowerCase() != texto[i]) {

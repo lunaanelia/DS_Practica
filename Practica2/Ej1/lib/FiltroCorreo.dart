@@ -5,7 +5,7 @@ import 'Cuenta.dart';
 class FiltroCorreo implements Filter{
 
 
-  bool dominio(String cad, String dominio){
+  bool dominio_func(String cad, String dominio){
 
     for(int i=0; i<cad.length; i++){
       if(cad[i]!=dominio[i])
@@ -24,39 +24,36 @@ class FiltroCorreo implements Filter{
     String texto=cuenta.getCorreo();
 
     for(int i=0; i<texto.length && !enc; i++){
-      if(texto.charAt(i)=='@'){
+      if(texto[i]=='@'){
         enc=true;
         if(i==0){
-          System.out.printf("\033[0;31m \u0058 Error:\033[0m Debes incluir texto antes del @\n\n");  //Informa del error
-          return false;
+          return throw ArgumentError("Error: Debes incluir texto antes del @");  //Informa del error
         }
         else{   //Comprueba el numero de caracteres que le quedan y dependiendo de eso ve si el dominio es gmail, hotmail o esta mal
 
-          int num_car= texto.length() - i - 1;
+          int num_car= texto.length - i - 1;
           String dominio= texto.substring(i+1);
           final String gmail="gmail.com";
           final String hotmail="hotmail.com";
 
           if( num_car==9 ){
-            if ( dominio(dominio,gmail) )
+            if ( dominio_func(dominio,gmail) )
               return true;
           }
           else if( num_car==11 ){
-            if ( dominio(dominio,hotmail) )
+            if ( dominio_func(dominio,hotmail) )
               return true;
           }
 
           //Si ha llegado hasta aqui el dominio está mal
-          System.out.printf("\033[0;31m \u0058 Error:\033[0m No es un dominio de correo válido\n\n");
-          return false;
+          return throw ArgumentError("Error:No es un dominio de correo válido");
         }
 
       }
     }
 
     //Si ha llegado hasta aqui es que no contiene un @
-    System.out.printf("\033[0;31m \u0058 Error:\033[0mNo es un formato válido de correo\n");
-    return false;
+    return throw ArgumentError("Error:No es un formato válido de correo");
   }
 
 }
