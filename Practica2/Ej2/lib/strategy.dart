@@ -70,7 +70,7 @@ abstract class Strategy{
           return decoded[0]['generated_text'];
         }
 
-        // Modelos como resumen o respuesta con 'generated_text'
+        // Modelos como resumen o respuesta con 'summary_text'
         if (decoded is List && decoded.isNotEmpty && decoded[0]['summary_text'] != null) {
           return decoded[0]['summary_text'];
         }
