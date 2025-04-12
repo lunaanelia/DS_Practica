@@ -5,18 +5,25 @@ import 'Cuenta.dart';
 class FiltroContraNum implements Filter{
 
   @override
-  bool comprueba(Cuenta cuenta){
+  MapEntry <String, bool> comprueba(Cuenta cuenta){
 
-    String texto=cuenta.getContrasenia();
+    String texto = cuenta.getContrasenia();
+    String result = "Al menos un número: ";
+    bool correcto = false;
 
     for(int i=0; i<texto.length; i++){
       /*Perfection --> expresion regular simplica*/
-      if (RegExp(r'\d').hasMatch(texto[i]))   //El /d comprueba que es un digito
-        return true;
+      if (RegExp(r'\d').hasMatch(texto[i])){   //El /d comprueba que es un digito
+        correcto = true;
+        result += "Correcto.";
+      }
     }
 
-    //Si ha llegado hasta aqui no contiene caracteres numéricos
-    return false;
+    if (!correcto){
+      result += "Incorrecto.";
+    }
+
+    return MapEntry(result, correcto);
   }
 
 }

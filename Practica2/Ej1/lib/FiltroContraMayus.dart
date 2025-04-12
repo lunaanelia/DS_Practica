@@ -5,30 +5,25 @@ import 'Cuenta.dart';
 class FiltroContraMayus implements Filter{
 
   @override
-  bool comprueba(Cuenta cuenta){
+  MapEntry <String, bool> comprueba(Cuenta cuenta){
 
     String texto = cuenta.getContrasenia();
+    String result = "Al menos una mayúscula: ";
+    bool correcto = false;
 
-    for(int i=0; i<texto.length; i++){
-
-      /* Segun nuestro amigo daria mayor legibilidad
-      final esMayuscula = texto[i].toUpperCase() == texto[i] &&
-                    texto[i].toLowerCase() != texto[i];
-
-      if (esMayuscula) return true;
-      */
-      /*
-      * Que este en una espresion regular, de 'A-Z'
-      * */
+    for(int i=0; i<texto.length && !correcto; i++){
         //if (texto[i].toUpperCase() == texto[i] && texto[i].toLowerCase() != texto[i]) {
         if(RegExp(r'[A-Z]').hasMatch(texto)){ //Comprueba que tenga un caracter entre A-Z
-          return true;
+          correcto = true;
+          result += "Correcto.";
       }
     }
 
-    //Si ha llegado hasta aqui no contiene mayúsculas
-    return false;
+    if (!correcto){
+      result += "Incorrecto.";
+    }
 
+    return MapEntry(result, correcto);
   }
 
 }

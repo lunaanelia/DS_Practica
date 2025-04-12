@@ -1,3 +1,10 @@
+import 'package:ejercicio1_mantenimiento/ChatTarget.dart';
+import 'package:ejercicio1_mantenimiento/Cliente.dart';
+import 'package:ejercicio1_mantenimiento/FilterManager.dart';
+import 'package:ejercicio1_mantenimiento/FiltroContraCarac.dart';
+import 'package:ejercicio1_mantenimiento/FiltroContraMayus.dart';
+import 'package:ejercicio1_mantenimiento/FiltroContraNum.dart';
+import 'package:ejercicio1_mantenimiento/FiltroCorreo.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -54,6 +61,36 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  // late para cuando sean inicializazados mas tarde
+  late ChatTarget chatTarget;// = ChatTarget();
+  late FilterManager filterManager;// = FilterManager(chatTarget);
+
+  String contrasenia = "";
+  String correo = "";
+
+  // NO se pueden crear directemnte en el _homeState, por lo
+  // tanto lo ponesmo para inicializarlos
+  // Solo se crea un vez
+  @override
+  void initState (){
+    super.initState();
+    chatTarget = ChatTarget();
+    filterManager = FilterManager(chatTarget);
+    filterManager.addFilter(FiltroCorreo());
+    filterManager.addFilter(FiltroContraCarac());
+    filterManager.addFilter(FiltroContraMayus());
+    filterManager.addFilter(FiltroContraNum());
+  }
+
+void _crearCuenta(){
+    try{
+      Cliente cliente = Cliente (filterManager);
+      cliente.crearCuenta (correo, contrasenia);
+    }catch (e){
+
+    }
+}
   int _counter = 0;
 
   void _incrementCounter() {

@@ -4,12 +4,12 @@ import 'Cuenta.dart';
 
 //Tendra que tener texto antes del @ y continuar con gmail.com o hotmail.com para que lo interprete como correcto
 class FiltroCorreo implements Filter{
-  static String _arroba = "@";
+  static final String _arroba = "@";
   static final String _gmail="@gmail.com";
   static final String _hotmail="@hotmail.com";
   final Correos _correos = Correos();
 
-  bool dominio_func(String cad, String dominio){
+  /*bool dominio_func(String cad, String dominio){
 
     for(int i=0; i<cad.length; i++){
       if(cad[i]!=dominio[i])
@@ -17,33 +17,44 @@ class FiltroCorreo implements Filter{
     }
 
     return true;    //Si ha llegado hasta aqui el dominio es correcto
-  }
+  }*/
 
-  bool _contieneArroba(String texto){
-    // Cmabiamos encotrado a valido para mayor lejibilidad
+  MapEntry <String, bool> _contieneArroba(String texto){
+    // Cambiamos encotrado a valido para mayor lejibilidad
     bool valido = texto.contains(_arroba);
-    String error = "";
+    String result = "Incluye la arroba: ";
 
     if(!valido){
-      error = "Error: Debes incluir texto antes del @";
+      result = "Incorrecto\n";
+    }else{
+      result += "Correcto.\n";
+    }
 
-    }else if(texto[0] == _arroba){  // en el caso de que si este contenido comporbamso que no este en la posicion 0
-        error = "Error: La @ no puede estar al inicio";
+    result += "Incluye texto antes de que aparezca la @: ";
+
+    if(texto[0] == _arroba && valido){  // en el caso de que si este contenido comporbamso que no este en la posicion 0
+        result = "Incorrecto.";
         valido = false;  // no seria valido
     }
-
-    // Si tenemos algun error lo mandamos
-    if(!valido){
-      throw ArgumentError(error);
+    else if (valido){
+      result = "Correcto.";
     }
 
-    return valido;
+    return MapEntry(result, valido);
   }
 
-  bool _contieneDominio(String texto){
+  MapEntry<String, bool> _contieneDominio(String texto){
+    bool correcto = texto.endsWith(_hotmail) || texto.endsWith(_gmail);
+    String result = "Dominio: ";
+
+    if(correcto){
+      result += "Correcto.";
+    }else {
+      result += "Incorrecto.";
+    }
     // OJO no se si esto esta bien
     // devuleve trues si texto termina en lo hotmail o gmail
-    return texto.endsWith(_hotmail) || texto.endsWith(_gmail);
+    return MapEntry(result, correcto);
   }
 
   // devuelve false si ya esta el correo
@@ -54,34 +65,26 @@ class FiltroCorreo implements Filter{
 
   @override
   // Creo que esta mas comlicado de lo que era.
-  bool comprueba(Cuenta cuenta){
-    bool valido = true;
-    String error = "";
-    String texto = cuenta.getCorreo();
+  MapEntry <String, bool> comprueba(Cuenta cuenta){
 
-    if (_correoNoAniadido(texto)){  // Si el correo no ha sido añadido comprobamos los sigientes errores
-      try{
-        valido = _contieneArroba(texto);
-      }catch(e){
-        error += e.toString();
-      }
-      try{
-        valido = _contieneDominio(texto);
-      }catch(e){
-        //valido = false;
-        error += e.toString();
-      }
+    bool valido = true;
+    String result = "";
+    String texto = cuenta.getCorreo();
+    MapEntry <String, bool> tmp, tmp1;
+    if (!_correoNoAniadido(texto)){  // Si el correo no ha sido añadido comprobamos los sigientes errores
+      result = "El correo ya existe.";
+      valido = false;
     }
     else{
-      //valido = false;
-      error = "Error: Este correo ya existe";
+      tmp = _contieneArroba(texto);
+      tmp1 = _contieneDominio(texto);
+
+     valido = !tmp.value || !tmp1.value;
+     result = tmp.key + "\n" + tmp1.key;
+
     }
 
-    if(!valido){
-      throw ArgumentError(error);
-    }
-
-    return valido;
+    return MapEntry(result, valido);
 
     /*bool enc = false; //true cuando encuentra el @
 

@@ -28,14 +28,17 @@ class FilterChain{
 
     for (var filter in _filters) {
       try {
-        filter.comprueba(cuenta);
+        correcto = filter.comprueba(cuenta);
       } catch (e) {
+        correcto = false;
         errores.add(e.toString());
       }
     }
 
-    if(errores.isNotEmpty)
-        throw ArgumentError("Errores\n ${errores.join('\n')}"); //errores.join('\n') une los errores separándolos por saltos de línea
+    if(errores.isNotEmpty) {
+      throw ArgumentError("Errores\n ${errores.join(
+          '\n')}"); //errores.join('\n') une los errores separándolos por saltos de línea
+    }
 
     if(correcto){
       _target!.informaCuenta(); //Comprueba que el target no sea nulo

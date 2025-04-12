@@ -3,19 +3,22 @@ import 'Cuenta.dart';
 
 //Tendra que tener un mínimo de 8 caracteres para que de la contraseña como correcta
 class FiltroContraCarac implements Filter{
+  static const int _tamMin = 8;
 
   @override
-  bool comprueba(Cuenta cuenta) {
+  MapEntry <String, bool> comprueba(Cuenta cuenta) {
+    String result = "Longitud mayor o igual a 8 :";
+    bool correcto = true;
 
-    const int TAM_MIN = 8;
-
-    // Perfectivo --> quitar la cadena de getC...le a una funcion directa
-    if (cuenta.LenContrasenia() < TAM_MIN) {  // No tiene el tamaño mínimo
-      return false;
+    if (cuenta.LenContrasenia() < _tamMin) {  // No tiene el tamaño mínimo
+      result += "Incorrecto.";
+      correcto = false;
     }
     else {
-      return true;
+      result += "Correcto.";
+      correcto = true;
     }
 
+    return MapEntry(result, correcto);
   }
 }
