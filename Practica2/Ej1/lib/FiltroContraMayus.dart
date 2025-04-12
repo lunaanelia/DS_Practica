@@ -20,13 +20,14 @@ class FiltroContraMayus implements Filter{
       /*
       * Que este en una espresion regular, de 'A-Z'
       * */
-        if (texto[i].toUpperCase() == texto[i] && texto[i].toLowerCase() != texto[i]) {
+        //if (texto[i].toUpperCase() == texto[i] && texto[i].toLowerCase() != texto[i]) {
+        if(RegExp(r'[A-Z]').hasMatch(texto)){ //Comprueba que tenga un caracter entre A-Z
           return true;
       }
     }
 
     //Si ha llegado hasta aqui no contiene mayúsculas
-    return throw ArgumentError("Error: La contraseña debe contener al menos un caracter en mayúscula");
+    return false;
 
   }
 
