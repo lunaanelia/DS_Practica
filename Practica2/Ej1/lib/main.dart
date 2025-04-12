@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Creados usuarios',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -35,9 +35,9 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigoAccent),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Programa creador de usuarios'),
     );
   }
 }
@@ -66,8 +66,9 @@ class _MyHomePageState extends State<MyHomePage> {
   late ChatTarget chatTarget;// = ChatTarget();
   late FilterManager filterManager;// = FilterManager(chatTarget);
 
-  String contrasenia = "";
-  String correo = "";
+  TextEditingController contrasenia = TextEditingController();
+  TextEditingController correo = TextEditingController();
+  String resultado = "";
 
   // NO se pueden crear directemnte en el _homeState, por lo
   // tanto lo ponesmo para inicializarlos
@@ -84,13 +85,25 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 void _crearCuenta(){
-    try{
-      Cliente cliente = Cliente (filterManager);
-      cliente.crearCuenta (correo, contrasenia);
-    }catch (e){
 
-    }
-}
+      Cliente cliente = Cliente (filterManager);
+
+      setState(() {
+        // mira que no esten vacios cooreos y contraseña antes
+        if (correo.text.isEmpty || contrasenia.text.isEmpty){
+          ScaffoldMessenger.of(context).showSnackBar(
+            // mensaje de alerta como en js
+            SnackBar(content: Text('Algun campo esta incompleto')),
+          );
+          resultado = "";
+        }else{
+          resultado = cliente.crearCuenta(correo.text, contrasenia.text);
+          correo.clear();
+          contrasenia.clear();
+        }
+      });
+
+  }
   int _counter = 0;
 
   void _incrementCounter() {
@@ -140,13 +153,30 @@ void _crearCuenta(){
           // action in the IDE, or press "p" in the console), to see the
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+
+         /* TextField(
+            /*controller: correo,
+            //keyboardType: TextInputType.emailAddress,
+            keyboardType:  TextInputType.text,
+            decoration: InputDecoration(
+              labelText: 'Correo electrónico',
+              border: OutlineInputBorder(),
+            ),*/
+          ),*/
+          SizedBox(height: 16),
+          TextField(
+            controller: contrasenia,
+            obscureText: true,
+            decoration: InputDecoration(
+              labelText: 'Contraseña',
+              border: OutlineInputBorder(),
             ),
-          ],
+          ),
+          SizedBox(height: 24),
+          ElevatedButton(
+            onPressed: _crearCuenta,
+            child: Text('Crear'),
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
