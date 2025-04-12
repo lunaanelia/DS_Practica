@@ -25,10 +25,10 @@ class FiltroCorreo implements Filter{
     String error = "";
 
     if(!valido){
-      error = "Error: Debes incluir texto antes del @";
+      error = "Error: Debes incluir texto antes del @\n";
 
     }else if(texto[0] == _arroba){  // en el caso de que si este contenido comporbamso que no este en la posicion 0
-        error = "Error: La @ no puede estar al inicio";
+        error = "Error: La @ no puede estar al inicio\n";
         valido = false;  // no seria valido
     }
 
@@ -74,7 +74,7 @@ class FiltroCorreo implements Filter{
     }
     else{
       //valido = false;
-      error = "Error: Este correo ya existe";
+      error = "Error: Este correo ya existe\n";
     }
 
     if(!valido){
