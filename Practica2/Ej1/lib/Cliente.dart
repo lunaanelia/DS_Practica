@@ -8,9 +8,9 @@ class Cliente {
     _filterManager = f;
   }
 
-  void crearCuenta(String correo, String contra){
-    Cuenta cuenta = new Cuenta(correo, contra);
-    _filterManager!.haceCuenta(cuenta);
+  String crearCuenta(String correo, String contra){
+    Cuenta cuenta = Cuenta(correo, contra);
+    return _filterManager!.haceCuenta(cuenta);
   }
 
 

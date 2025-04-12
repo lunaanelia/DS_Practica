@@ -14,34 +14,26 @@ class FilterChain{
     _target = t;
   }
 
-  void comprobar (Cuenta cuenta){
+  String comprobar (Cuenta cuenta){
     bool correcto = true;
-
-    /*for (var filter in _filters){
-      if(!filter.comprueba(cuenta)){
-        correcto = false;
-        return;           // Si no se cumple de los filtros se sale del bucle
-      }
-    } */
-
-    List<String> errores=[];
+    String result = "";
+    MapEntry <String, bool> tmp;
 
     for (var filter in _filters) {
-      try {
-        correcto = filter.comprueba(cuenta);
-      } catch (e) {
-        correcto = false;
-        errores.add(e.toString());
-      }
-    }
+      tmp = filter.comprueba(cuenta);
 
-    if(errores.isNotEmpty) {
-      throw ArgumentError("Errores\n ${errores.join(
-          '\n')}"); //errores.join('\n') une los errores separándolos por saltos de línea
+      // SI tenemos un error, ya no es correcto
+      if (!tmp.value){
+        correcto = false;
+      }
+      result += tmp.key + "\n";
+
     }
 
     if(correcto){
-      _target!.informaCuenta(); //Comprueba que el target no sea nulo
+     result += "\n" + _target!.informaCuenta(cuenta.getCorreo()); //Comprueba que el target no sea nulo
     }
+
+    return result;
   }
 }

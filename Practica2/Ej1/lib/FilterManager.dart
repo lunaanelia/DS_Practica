@@ -14,8 +14,8 @@ class FilterManager{
     _filterChain.addFilter(filter);
   }
 
-  void haceCuenta(Cuenta cuenta){
-    _filterChain.comprobar(cuenta);
+  String haceCuenta(Cuenta cuenta){
+    return _filterChain.comprobar(cuenta);
   }
 
 }

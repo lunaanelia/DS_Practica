@@ -20,17 +20,17 @@ class Cuenta{
     _correo = c;
   }
 
-  void SetContrasenia (String c){
+  void setContrasenia (String c){
     _contrasenia = c;
   }
 
   //Devuelve la longitud del corre
-  int LenCorreo(){
+  int lenCorreo(){
     return _correo.length;
   }
 
   //Devuelve la longitud de la conraseña
-  int LenContrasenia(){
+  int lenContrasenia(){
     return _contrasenia.length;
   }
 

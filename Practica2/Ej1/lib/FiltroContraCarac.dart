@@ -10,7 +10,7 @@ class FiltroContraCarac implements Filter{
     String result = "Longitud mayor o igual a 8 :";
     bool correcto = true;
 
-    if (cuenta.LenContrasenia() < _tamMin) {  // No tiene el tamaño mínimo
+    if (cuenta.lenContrasenia() < _tamMin) {  // No tiene el tamaño mínimo
       result += "Incorrecto.";
       correcto = false;
     }
