@@ -14,13 +14,13 @@ class Correos {
   factory Correos() => _instancia;
 
   //metodos para añadir, ver si existe y quitar correos
-  void addCorreo(String c) {
-    _correos.add(c);
+  void addCorreo(String correo) {
+    _correos.add(correo);
   }
-  bool existeCorreo(String c) {
-    return _correos.contains(c);
+  bool existeCorreo(String correo) {
+    return _correos.contains(correo);
   }
-  void removeCorreo(String c) {
-    _correos.remove(c);
+  void removeCorreo(String correo) {
+    _correos.remove(correo);
   }
 }

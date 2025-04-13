@@ -3,9 +3,9 @@ class Cuenta{
   String _correo = "";
   String _contrasenia= "";
 
-  Cuenta (String cor, String con){
-    _contrasenia = con;
-    _correo = cor;
+  Cuenta (String correo, String contrasenia){
+    _contrasenia = contrasenia;
+    _correo = correo;
   }
 
   String getCorreo(){
