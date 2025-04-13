@@ -5,6 +5,6 @@ class ChatTarget{
   String informaCuenta(String correo){
     // SI se hay llamado es porque todo esta corecto
     _correos.addCorreo(correo);
-    return " La cuenta ha sido configurada con éxicto";
+    return " La cuenta ha sido configurada con exito";
   }
 }

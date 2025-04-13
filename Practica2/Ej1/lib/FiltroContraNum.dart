@@ -11,7 +11,7 @@ class FiltroContraNum implements Filter{
     String result = "Al menos un número: ";
     bool correcto = false;
 
-    for(int i=0; i<texto.length; i++){
+    for(int i=0; i<texto.length && !correcto; i++){
       /*Perfection --> expresion regular simplica*/
       if (RegExp(r'\d').hasMatch(texto[i])){   //El /d comprueba que es un digito
         correcto = true;

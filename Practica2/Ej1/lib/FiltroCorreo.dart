@@ -25,21 +25,19 @@ class FiltroCorreo implements Filter{
     String result = "Incluye la arroba: ";
 
     if(!valido){
-      result = "Incorrecto\n";
+      result += "Incorrecto";
     }else{
       result += "Correcto.\n";
-    }
-
-    result += "Incluye texto antes de que aparezca la @: ";
-
-    if(texto[0] == _arroba && valido){  // en el caso de que si este contenido comporbamso que no este en la posicion 0
-        result = "Incorrecto.";
+      result += "Incluye texto antes de que aparezca la @: ";
+      if(texto[0] == _arroba && valido){  // en el caso de que si este contenido comporbamso que no este en la posicion 0
+        result += "Incorrecto.";
         valido = false;  // no seria valido
+      }
+      else{
+        result += "Correcto.";
+      }
     }
-    else if (valido){
-      result = "Correcto.";
-    }
-
+    print(result + valido.toString());
     return MapEntry(result, valido);
   }
 
@@ -79,11 +77,11 @@ class FiltroCorreo implements Filter{
       tmp = _contieneArroba(texto);
       tmp1 = _contieneDominio(texto);
 
-     valido = !tmp.value || !tmp1.value;
+     valido = tmp.value && tmp1.value;
      result = tmp.key + "\n" + tmp1.key;
 
     }
-
+    //print(valido);
     return MapEntry(result, valido);
 
     /*bool enc = false; //true cuando encuentra el @
