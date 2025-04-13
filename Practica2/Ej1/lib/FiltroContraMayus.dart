@@ -12,7 +12,6 @@ class FiltroContraMayus implements Filter{
     bool correcto = false;
 
     for(int i=0; i<texto.length && !correcto; i++){
-        //if (texto[i].toUpperCase() == texto[i] && texto[i].toLowerCase() != texto[i]) {
         if(RegExp(r'[A-Z]').hasMatch(texto)){ //Comprueba que tenga un caracter entre A-Z
           correcto = true;
           result += "Correcto.";

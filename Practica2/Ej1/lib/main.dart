@@ -71,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String resultado = "";
 
   // NO se pueden crear directemnte en el _homeState, por lo
-  // tanto lo ponesmo para inicializarlos
+  // tanto lo ponemos para inicializarlos.
   // Solo se crea un vez
   @override
   void initState (){
@@ -127,27 +127,45 @@ void _crearCuenta(){
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(
-              controller: correo,
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                labelText: 'Correo electrónico',
-                border: OutlineInputBorder(),
+
+            SizedBox(
+              width: 450, // Ajustá este valor como prefieras
+              child: TextField(
+                controller: correo,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  labelText: 'Correo electrónico',
+                  border: OutlineInputBorder(),
+                ),
               ),
             ),
             SizedBox(height: 16),
-            TextField(
-              controller: contrasenia,
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Contraseña',
-                border: OutlineInputBorder(),
+            SizedBox(
+              width: 450, // Ajustá este valor como prefieras
+              child: TextField(
+                controller: contrasenia,
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Contraseña',
+                  border: OutlineInputBorder(),
+                ),
               ),
             ),
+
+
             SizedBox(height: 24),
             ElevatedButton(
               onPressed: _crearCuenta,
               child: Text('Crear'),
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 20),
+                textStyle: TextStyle(
+                  fontSize: 20, // Texto más grande
+                  //fontWeight: FontWeight.bold, // Opcional: negrita
+                ),
+                backgroundColor: Colors.indigoAccent, // Fondo del botón
+                foregroundColor: Colors.white, // Texto/ícono
+              ),
             ),
             SizedBox(height: 24),
             Text(resultado),

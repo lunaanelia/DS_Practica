@@ -12,7 +12,6 @@ class FiltroContraNum implements Filter{
     bool correcto = false;
 
     for(int i=0; i<texto.length && !correcto; i++){
-      /*Perfection --> expresion regular simplica*/
       if (RegExp(r'\d').hasMatch(texto[i])){   //El /d comprueba que es un digito
         correcto = true;
         result += "Correcto.";
