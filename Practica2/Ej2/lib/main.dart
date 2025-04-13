@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'package:ej2/basico.dart';
-import 'package:ej2/traduccion.dart';
 import 'package:ej2/expansion.dart';
+import 'package:ej2/traduccion.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:ej2/context.dart';
 
 void main() {
@@ -11,7 +13,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,52 +27,57 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
-
   final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-
 class _MyHomePageState extends State<MyHomePage> {
-  final TextEditingController _controller = TextEditingController();
+  final String _archivoToken = "huggingface.txt";  // archivo del que se obtiene el token
 
-  String _modeloSeleccionado = 'facebook/bart-large-cnn';
-  String _respuesta = '';
-  bool _isLoading = false;
+  final TextEditingController _controller = TextEditingController(); // controlador del input de texto
 
-  late MyContext contexto;
+  late MyContext _contexto;  // contexto del patrón Estrategia
+
+  Map<String, String> _modelos = {}; // Diccionario que almacena los modelos disponibles (tipo: URL)
+  String? _modeloSeleccionado; // Modelo seleccionado por el usuario
+
+  String _respuesta = ''; // Respuesta dada por el modelo
+  bool _isLoading = false; // Está a true mientras se espera la respuesta del modelo
 
   @override
   void initState() {
     super.initState();
-    contexto = MyContext(Basico(archivoToken, "facebook/bart-large-cnn"));
-
-
-    final List<String> _modelos = [
-      "facebook/bart-large-cnn",
-      "Helsinki-NLP/opus-mt-en-es",
-      "facebook/blenderbot-400M-distill"
-    ];
-
-
+    _cargarModelos();  // al inicio de la ejecución se leen los modelos
   }
 
-  final String archivoToken = "huggingface.txt";
+  // Para cargar el archivo de los modelos al inicio de la ejecución
+  Future<void> _cargarModelos() async {
+    final contenido = await rootBundle.loadString('modelos.json');
+    final jsonData = jsonDecode(contenido);
 
+    setState(() {
+      _modelos = {
+        'Básico': jsonData['Básico'],
+        'Traductor': jsonData['Traductor'],
+        'Expandir': jsonData['Expandir'],
+      };
 
+      // Al inicio, por defecto se elige el modelo básico
+      _modeloSeleccionado = 'Básico';
+      _contexto = MyContext(Basico(_archivoToken, _modelos['Básico']!));
+    });
+  }
 
-
-
+  // Enviar texto intropducido por el usuario al modelo
   void _enviar() async {
     setState(() {
       _isLoading = true;
       _respuesta = '';
     });
 
-    final resultado = await contexto.ejecutar(_controller.text);
+    final resultado = await _contexto.ejecutar(_controller.text);
 
     setState(() {
       _respuesta = resultado;
@@ -79,9 +85,35 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  // Para actualizar la estrategia (modelo) elegido por el usuario
+  void _cambiarEstrategia(String clave) {
+
+    setState(() {
+
+      _modeloSeleccionado = clave;
+      final modelo = _modelos[clave]!;
+
+      if (clave == 'Básico') {
+        _contexto.setStrategy(Basico(_archivoToken, modelo));
+      } else if (clave == 'Traductor') {
+        _contexto.setStrategy(Traduccion(_archivoToken, modelo));
+      } else if (clave == 'Expandir') {
+        _contexto.setStrategy(Expansion(_archivoToken, modelo));
+      }
+
+    });
+
+  }
 
   @override
   Widget build(BuildContext context) {
+    // Muestra una animación de carga mientras se lee el archivo de los modelos
+    if (_modeloSeleccionado == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(title: Text(widget.title)),
       body: Padding(
@@ -90,26 +122,14 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             DropdownButton<String>(
               value: _modeloSeleccionado,
-              items: _modelos.map((modelo) {
+              items: _modelos.keys.map((clave) {
                 return DropdownMenuItem<String>(
-                  value: modelo,
-                  child: Text(modelo),
+                  value: clave,
+                  child: Text(clave),
                 );
               }).toList(),
               onChanged: (value) {
-                setState(() {
-                  _modeloSeleccionado = value!;
-                  if (_modeloSeleccionado == "facebook/bart-large-cnn") {
-                    contexto.setStrategy(Basico(archivoToken, "facebook/bart-large-cnn"));
-                  }
-                  else if (_modeloSeleccionado == "Helsinki-NLP/opus-mt-en-es"){
-                    contexto.setStrategy(Traduccion(archivoToken,"Helsinki-NLP/opus-mt-en-es"));
-                  }
-
-                  else if (_modeloSeleccionado == "facebook/blenderbot-400M-distill")  {
-                    contexto.setStrategy(Expansion(archivoToken, "facebook/blenderbot-400M-distill"));
-                  }
-                });
+                  _cambiarEstrategia(value!);
               },
             ),
             const SizedBox(height: 20),
