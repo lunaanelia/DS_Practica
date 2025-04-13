@@ -7,21 +7,21 @@ import 'package:flutter/services.dart' show rootBundle;
 //Clase abstracta
 abstract class Strategy{
 
-  String token;
-  String url;
+  String _token;
+  String _url;
 
   Strategy(String tok, String mod)
-      :token = tok,
-      url = "https://api-inference.huggingface.co/models/$mod";
+      :_token = tok,
+      _url = "https://api-inference.huggingface.co/models/$mod";
 
   Future<String> AlgorithmInterface(String text) async {
     try {
       // Carga el token desde el archivo
-      token = await rootBundle.loadString('$token');
+      _token = await rootBundle.loadString('$_token');
 
-      final url_json = Uri.parse(url);
+      final url_json = Uri.parse(_url);
       final headers = {
-        'Authorization': 'Bearer $token',
+        'Authorization': 'Bearer $_token',
         'Content-Type': 'application/json',
       };
 
