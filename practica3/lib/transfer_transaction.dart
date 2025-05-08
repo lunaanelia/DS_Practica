@@ -15,8 +15,8 @@ class TransferTransaction extends Transaction{
       WithdrawalTransaction resta = WithdrawalTransaction(amount);
       DepositTransaction suma = DepositTransaction( amount);
 
-      resta.apply(_to);
-      suma.apply(account);
+      suma.apply(_to);
+      resta.apply(account);
 
     }catch(e){
       throw e;
