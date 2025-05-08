@@ -13,6 +13,10 @@ class BankService {
 
   BankService();
 
+  get users => this._users;
+
+  //Set<Acount>
+
   // Métod para crear una cuenta para un usuario
   void createAccount(String id, String name) {
     // Buscar el usuario por su ID
