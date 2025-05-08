@@ -56,7 +56,7 @@ void main () {
 
     test("Deposit aumenta el saldo de la cuenta", () {
       BankService b = BankService();
-      Account c = b.createAccount("id", "Sofia");
+      Account c = b.createAccount("Sofia");
 
       expect(c.amount, 0);
       b.deposit(c.id, 100);
@@ -65,7 +65,7 @@ void main () {
 
     test("Withdraw lanza StateError cuando el saldo insuficiente", () {
       BankService b = BankService();
-      Account c = b.createAccount("id", "Sofia");
+      Account c = b.createAccount("Sofia");
       expect(() => b.withdraw(c.id, 50), throwsA(isA<StateError>()));
     });
   });

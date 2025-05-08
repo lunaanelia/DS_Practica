@@ -29,13 +29,13 @@ class BankService {
   }
 
   // Métod para crear una cuenta para un usuario
-  Account createAccount(String id, String name) {
+  Account createAccount(String name) {
     // Buscar el usuario por su ID
     User? user = _users.firstWhere(
-          (u) => u.id == id,
+          (u) => u.name == name,
       orElse: () {
         // Si no existe, lo crea
-        User newUser = User(id, name);
+        User newUser = User(name);
         _users.add(newUser);
         return newUser;
       },
@@ -119,18 +119,17 @@ class BankService {
     List<String> list = [];
 
     for (var user in _users) {
-      list.add('${user.id} (${user.name})');
+      list.add(user.name);
     }
 
     return list;
   }
 
-  List<String> getUserAccounts(String idName) {
+  List<String> getUserAccounts(String name) {
     List<String> accountsList = [];
-    String id = idName.split('(')[0].trim();
 
     try {
-      var user = _users.firstWhere((u) => u.id == id);
+      var user = _users.firstWhere((u) => u.name == name);
       for (var account in user.accounts) {
         accountsList.add(account.id);
       }
