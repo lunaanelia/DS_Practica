@@ -4,7 +4,7 @@ class Account {
   String _id = '';
   double _amount = 0;
 
-  Account(this._amount) {
+  Account() {
     generateId();
   }
 

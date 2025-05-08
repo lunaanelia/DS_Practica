@@ -26,9 +26,17 @@ class User {
         print('Cuenta ID: ${acc.id}, Saldo: ${acc.amount.toStringAsFixed(2)}');
       }
     }
-
-
   }
+
+  // Para poder tener un set implementamos el operador ==
+  @override
+  bool operator ==(Object other) {
+    return other is User && this._id == other._id;
+  }
+
+  @override
+  int get hashCode => this._id.hashCode;
+
 }
 
 void main () {
