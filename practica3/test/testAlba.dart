@@ -33,9 +33,18 @@ void main () {
       Account a2 = b.createAccount("2", "a2");
 
       b.deposit(a1.id, 20);
+      b.transfer(a1.id, a2.id, 10);
+      b.deposit(a1.id, 10);
+      b.deposit(a1.id, 10);
+      b.deposit(a1.id, 10);
+      b.deposit(a1.id, 10);
 
-      expect(() => b.transfer(a1.id, a2.id, 30), throwsA(isA<StateError>()));
+      Tr
+
+      expect();
     });
+
+
 
   });
 }
