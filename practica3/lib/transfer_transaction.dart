@@ -10,16 +10,20 @@ class TransferTransaction extends Transaction{
 
   @override
   void apply(account) {
+    if (_to == account){
+      try{
+        WithdrawalTransaction resta = WithdrawalTransaction(amount);
+        DepositTransaction suma = DepositTransaction( amount);
 
-    try{
-      WithdrawalTransaction resta = WithdrawalTransaction(amount);
-      DepositTransaction suma = DepositTransaction( amount);
+        suma.apply(_to);
+        resta.apply(account);
 
-      suma.apply(_to);
-      resta.apply(account);
-
-    }catch(e){
-      throw e;
+      }catch(e){
+        throw e;
+      }
+    }else{
+      throw StateError('No se puede ralizar a la misma cuanta');
     }
+    
   }
 }
