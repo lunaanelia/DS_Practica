@@ -40,12 +40,12 @@ class User {
 }
 
 void main () {
-  Account ac = Account(0);
+  Account ac = Account();
 
   print ("El id de la cuenta es:");
   print(ac.id);
 
-  Account ac2 = Account(0);
+  Account ac2 = Account();
   print ("El id de la cuenta es:");
   print(ac2.id);
 
