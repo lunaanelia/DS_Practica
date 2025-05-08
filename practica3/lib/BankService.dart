@@ -65,12 +65,23 @@ class BankService {
   void withdraw(String account, double amount) {
     Account? acc = this._getAccount(account);
     if (acc != null) {
+<<<<<<< HEAD:practica3/lib/BanckService.dart
+        if(amount>acc.amount) {
+          throw StateError("Saldo insuficiente");
+        }
+        else {
+          Transaction withdraw = WithdrawalTransaction(amount);
+          withdraw.apply(acc);
+          print("Se han retirado $amount de la cuenta $account.");
+        }
+=======
       if(amount>acc.amount) throw StateError("Saldo insuficiente");
       Transaction withdraw = WithdrawalTransaction(amount);
       withdraw.apply(acc);
       //print("Se han retirado $amount de la cuenta $account.");
 
       this._transactions.add(withdraw);
+>>>>>>> refs/remotes/origin/main:practica3/lib/BankService.dart
     } else {
       print("La cuenta $account no existe.");
     }
