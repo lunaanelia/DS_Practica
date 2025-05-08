@@ -92,8 +92,8 @@ void main () {
 
     test("Comprobar que transfer mueva los fondos correctamente", () {
       BankService b = BankService();
-      Account a1 = b.createAccount("1", "a1");
-      Account a2 = b.createAccount("2", "a2");
+      Account a1 = b.createAccount("a1");
+      Account a2 = b.createAccount("a2");
 
       b.deposit(a1.id, 20);
       b.transfer(a1.id, a2.id, 10);
@@ -104,8 +104,8 @@ void main () {
 
     test("Comprobar que transfer lanza error cuando los fondos son insuficientes", () {
       BankService b = BankService();
-      Account a1 = b.createAccount("1", "a1");
-      Account a2 = b.createAccount("2", "a2");
+      Account a1 = b.createAccount( "a1");
+      Account a2 = b.createAccount("a2");
 
       b.deposit(a1.id, 20);
 
@@ -114,8 +114,8 @@ void main () {
 
     test("Comprobar que textId sea unico", () {
       BankService b = BankService();
-      Account a1 = b.createAccount("1", "a1");
-      Account a2 = b.createAccount("2", "a2");
+      Account a1 = b.createAccount( "a1");
+      Account a2 = b.createAccount( "a2");
 
       b.deposit(a1.id, 20);
       b.transfer(a1.id, a2.id, 10);
