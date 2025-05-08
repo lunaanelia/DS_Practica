@@ -6,7 +6,7 @@ class WithdrawalTransaction extends Transaction{
   @override
   void apply(account) {
 
-    if (account.amount < amount){ // no direno suficiente
+    if (account.amount < amount){ // no dinero suficiente
       throw StateError ('No hay dinero suficiente para realizar la transacción');
     }else{
       account.withdraw(amount);
