@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:practica3/BankService.dart';
 import 'package:practica3/Account.dart';
+import 'package:practica3/transaction.dart';
 
 
 void main () {
@@ -39,9 +40,13 @@ void main () {
       b.deposit(a1.id, 10);
       b.deposit(a1.id, 10);
 
-      Tr
+      List <Transaction> t = b.transactions;
+      Set <String> tmp = Set();
 
-      expect();
+      for (Transaction i in t){
+        tmp.add(i.id);
+      }
+      expect(t.length, tmp.length);
     });
 
 
