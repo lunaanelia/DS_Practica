@@ -57,7 +57,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<String> operaciones = ['Depositar', 'Retirar', 'Transferencia'];
-  List<String>? usuarios;
+  List<String>? usuarios = [];
+  List<String> cuentas = [];
 
   String? oper;
   String? user;
@@ -87,9 +88,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _transaccion(){
-    double c = cantidad.text;
+    double c = double.parse(cantidad.text);
     setState(() {
-      if (c.isEmpty){
+      if (c==0){
         mensaje = " Debe ingresar una cantidad";
       }
       else if(user==null || cuenta == null){
@@ -99,8 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
         if (oper == 'Depositar'){
           banco.deposit(user!, c);
         }else if(oper == "Retirar"){
-         // quitar dinero
-          mensaje = "retirar";
+          banco.withdraw(cuenta!, c);
         }
         else if (oper == null){
           mensaje = "Debes seleccionar una operacion";
@@ -109,8 +109,11 @@ class _MyHomePageState extends State<MyHomePage> {
             mensaje = " Debes seleccionar un usuario y una cuenta";
           }
           else{
-            // transferencia;
-            mensaje = "tradsferencia";
+            try{
+              banco.transfer(cuenta!, cuenta2!, c);
+            }catch(e){
+              mensaje = e.toString();
+            }
           }
         }
       }
@@ -185,6 +188,27 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(height: 20),
             // Realizar operaciones
             const Text('Realizar operacion:', style: TextStyle(fontSize: 16),),
+
+            DropdownButton<String>(
+              value: user,
+              hint: Text("Seleccione un usuario"),
+              onChanged: (String? nuevo) {
+                setState(() {
+                  user = nuevo;
+                });
+              },
+              items: usuarios!.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
+
+            cuentas = banco.getUserAccounts(user);
+
+            SizedBox(height: 20),
+
             DropdownButton<String>(
               value: oper,
               hint: Text("Seleccione una opción"),
