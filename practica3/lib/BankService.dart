@@ -9,7 +9,7 @@ import 'package:practica3/transfer_transaction.dart';
 
 class BankService {
   final Set<User> _users = {};
-  final List<Transaction> _transactions = []; // TODO
+  final List<Transaction> _transactions = [];
 
   BankService();
 
