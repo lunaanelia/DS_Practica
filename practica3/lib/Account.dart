@@ -34,13 +34,3 @@ class Account {
   int get hashCode => this._id.hashCode;
 }
 
-void main () {
-  Account ac = Account(0);
-
-  print ("El id de la cuenta es:");
-  print(ac.id);
-
-  Account ac2 = Account(0);
-  print ("El id de la cuenta es:");
-  print(ac2.id);
-}
