@@ -100,9 +100,16 @@ class _MyHomePageState extends State<MyHomePage> {
       }
       else{
         if (oper == 'Depositar'){
-          banco.deposit(user!, c);
+          banco.deposit(cuenta!, c);
+          mensaje = "Deposito realizado";
         }else if(oper == "Retirar"){
-          banco.withdraw(cuenta!, c);
+          try{
+            banco.withdraw(cuenta!, c);
+            mensaje = "Se ha retiado correctamente";
+          }catch (e){
+            mensaje = "No se ha podido realizar la operacion";
+          }
+
         }
         else if (oper == null){
           mensaje = "Debes seleccionar una operacion";
@@ -113,6 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
           else{
             try{
               banco.transfer(cuenta!, cuenta2!, c);
+              mensaje = "transferencia realizada correctamente";
             }catch(e){
               mensaje = e.toString();
             }
@@ -252,7 +260,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         cuenta2 = null; // Resetea cuenta seleccionada al cambiar usuario
                       });
                     },
-                    items: usuarios2!.map<DropdownMenuItem<String>>((String value) {
+                    items: usuarios!.map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value),
