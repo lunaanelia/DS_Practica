@@ -14,8 +14,6 @@ void main () {
       BankService b = BankService();
       Account c = b.createAccount("id", "Sofia");
 
-
-
     });
   });
 }
