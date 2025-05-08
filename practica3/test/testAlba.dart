@@ -46,6 +46,7 @@ void main () {
       for (Transaction i in t){
         tmp.add(i.id);
       }
+
       expect(t.length, tmp.length);
     });
 
