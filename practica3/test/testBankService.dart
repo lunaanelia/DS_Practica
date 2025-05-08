@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:practica3/BankService.dart';
 import 'package:practica3/Account.dart';
@@ -25,8 +23,7 @@ void main () {
     test("Withdraw lanza StateError cuando el saldo insuficiente", () {
       BankService b = BankService();
       Account c = b.createAccount("id", "Sofia");
-      c.deposit(5);
-      expect(() => c.withdraw(50), throwsA(isA<StateError>()));
+      expect(() => b.withdraw(c.id, 50), throwsA(isA<StateError>()));
     });
   });
 }
