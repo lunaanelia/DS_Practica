@@ -27,7 +27,7 @@ class BankService {
   }
 
   // Métod para crear una cuenta para un usuario
-  void createAccount(String id, String name) {
+  Account createAccount(String id, String name) {
     // Buscar el usuario por su ID
     User? user = _users.firstWhere(
           (u) => u.id == id,
@@ -42,6 +42,7 @@ class BankService {
     // Crear la cuenta y añadirla al usuario
     Account newAccount = Account();
     user.addAccount(newAccount);
+    return newAccount;
 
     print("Cuenta creada para ${user.name} con ID: ${newAccount.id}");
   }
@@ -98,8 +99,6 @@ class BankService {
     }
     return null; // Retornar null si no se encuentra la cuenta.
   }
-
-
 
   List<String> getUsers() {
     List<String> list = [];
