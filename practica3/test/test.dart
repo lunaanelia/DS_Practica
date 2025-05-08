@@ -62,6 +62,12 @@ void main () {
       b.deposit(c.id, 100);
       expect(c.amount, 100);
     });
+
+    test("Withdraw lanza StateError cuando el saldo insuficiente", () {
+      BankService b = BankService();
+      Account c = b.createAccount("id", "Sofia");
+      expect(() => b.withdraw(c.id, 50), throwsA(isA<StateError>()));
+    });
   });
 
 
