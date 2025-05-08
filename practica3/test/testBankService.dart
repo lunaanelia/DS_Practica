@@ -1,5 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter_test/flutter_test.dart';
-import 'package:practica3/BanckService.dart';
+import 'package:practica3/BankService.dart';
 import 'package:practica3/Account.dart';
 
 
@@ -13,6 +15,10 @@ void main () {
     test("Deposit aumenta el saldo de la cuenta", () {
       BankService b = BankService();
       Account c = b.createAccount("id", "Sofia");
+
+      expect(c.amount, 0);
+      b.deposit(c.id, 100);
+      expect(c.amount, 100);
 
     });
   });
