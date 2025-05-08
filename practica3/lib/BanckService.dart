@@ -61,10 +61,14 @@ class BankService {
   void withdraw(String account, double amount) {
     Account? acc = this._getAccount(account);
     if (acc != null) {
-      if(amount>acc.amount) throw StateError("Saldo insuficiente");
-      Transaction withdraw = WithdrawalTransaction(amount);
-      withdraw.apply(acc);
-      print("Se han retirado $amount de la cuenta $account.");
+        if(amount>acc.amount) {
+          throw StateError("Saldo insuficiente");
+        }
+        else {
+          Transaction withdraw = WithdrawalTransaction(amount);
+          withdraw.apply(acc);
+          print("Se han retirado $amount de la cuenta $account.");
+        }
     } else {
       print("La cuenta $account no existe.");
     }
