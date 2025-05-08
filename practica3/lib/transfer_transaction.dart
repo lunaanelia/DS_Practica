@@ -10,7 +10,7 @@ class TransferTransaction extends Transaction{
 
   @override
   void apply(account) {
-    if (_to == account){
+    if (_to != account){
       try{
         WithdrawalTransaction resta = WithdrawalTransaction(amount);
         DepositTransaction suma = DepositTransaction( amount);
