@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:practica3/BanckService.dart';
+import 'package:practica3/User.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Practica 3',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -30,7 +32,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Transacciones'),
     );
   }
 }
@@ -54,18 +56,72 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  List<String> operaciones = ['Depositar', 'Retirar', 'Transferencia'];
+  List<String>? usuarios;
 
-  void _incrementCounter() {
+  String? oper;
+  String? user;
+  String? cuenta;
+  String? user2;
+  String? cuenta2;
+
+  TextEditingController nombre = TextEditingController();
+  TextEditingController dni = TextEditingController();
+  TextEditingController cantidad = TextEditingController();
+  BankService banco = BankService();
+
+  String mensaje = "";
+
+  void _crearCuenta(){
+    String n = nombre.text;
+    String d = dni.text;
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      if(n.isEmpty || d.isEmpty){
+        mensaje = "Hay campos vacios, no se ha podido crear la cuenta";
+      }else{
+        banco.createAccount(d, n);
+        usuarios = banco.getUsers();    // REVISAR PARA QUE SALGA BIEN
+        mensaje = "Cuenta creada";
+      }
     });
   }
+
+  void _transaccion(){
+    double c = cantidad.text;
+    setState(() {
+      if (c.isEmpty){
+        mensaje = " Debe ingresar una cantidad";
+      }
+      else if(user==null || cuenta == null){
+        mensaje = " Debes seleccionar un usuario y una cuenta";
+      }
+      else{
+        if (oper == 'Depositar'){
+          banco.deposit(user!, c);
+        }else if(oper == "Retirar"){
+         // quitar dinero
+          mensaje = "retirar";
+        }
+        else if (oper == null){
+          mensaje = "Debes seleccionar una operacion";
+        }else{
+          if(user==null || cuenta == null){
+            mensaje = " Debes seleccionar un usuario y una cuenta";
+          }
+          else{
+            // transferencia;
+            mensaje = "tradsferencia";
+          }
+        }
+      }
+    });
+  }
+
+  //@override
+  //void initState (){
+  //  super.initState();
+  //  usuarios = banco.getUsers();    // REVISARLOS PARA QUE SALGA BIEN
+ // }
 
   @override
   Widget build(BuildContext context) {
@@ -85,38 +141,79 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      body:Padding(
+        padding: const EdgeInsets.all(20.0), // Márgenes alrededor de todo el contenido
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start, // Alinea los elementos hacia la parte superior
+          crossAxisAlignment: CrossAxisAlignment.start, // Alinea el contenido hacia la izquierda (opcional)
           children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+
+            // Crae cuneta
+            Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: TextField(
+                    controller: nombre,
+                    decoration: InputDecoration(
+                      labelText: 'Nombre',
+                      border: OutlineInputBorder(),
+                    ),
+                    keyboardType: TextInputType.text,
+                  ),
+                ),
+                SizedBox(width: 20),
+                Expanded(
+                  flex: 2,
+                  child: TextField(
+                    controller: dni,
+                    decoration: InputDecoration(
+                      labelText: 'DNI',
+                      border: OutlineInputBorder(),
+                    ),
+                    keyboardType: TextInputType.text,
+                  ),
+                ),
+                SizedBox(width: 20),
+                ElevatedButton(
+                  onPressed: _crearCuenta,   // cambiar lo acrear cuenta.
+                  child: Text('Crear Cuenta'),
+                ),
+              ],
             ),
+
+            SizedBox(height: 20),
+            // Realizar operaciones
+            const Text('Realizar operacion:', style: TextStyle(fontSize: 16),),
+            DropdownButton<String>(
+              value: oper,
+              hint: Text("Seleccione una opción"),
+              onChanged: (String? nuevo) {
+                setState(() {
+                  oper = nuevo;
+                });
+              },
+              items: operaciones.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
+            SizedBox(height: 20),
+            TextField(
+              controller: cantidad,
+              decoration: InputDecoration(
+                labelText: 'cantidad',
+                border: OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.number,
+            ),
+            Text('$mensaje'),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+       // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
