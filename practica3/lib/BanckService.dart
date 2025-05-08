@@ -15,7 +15,16 @@ class BankService {
 
   get users => this._users;
 
-  //Set<Acount>
+  List<Account> getAllAcounts () {
+    List<Account> l = [];
+
+    for (var user in this._users) {
+      for (var acc in user.accounts) {
+        l.add(acc);
+      }
+    }
+    return l;
+  }
 
   // Métod para crear una cuenta para un usuario
   void createAccount(String id, String name) {
