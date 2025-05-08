@@ -6,7 +6,7 @@ import 'package:practica3/Account.dart';
 class TransferTransaction extends Transaction{
   Account _to;
 
-  TransferTransaction (double amount, this._to): super( amount);
+  TransferTransaction (super.amount, this._to);
 
   @override
   void apply(account) {

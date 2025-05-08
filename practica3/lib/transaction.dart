@@ -17,5 +17,5 @@ abstract class Transaction {
 
   String get id => _id;
   double get amount => _amount;
-  set amout (double a) {_amount = a;}
+
 }
