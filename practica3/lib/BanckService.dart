@@ -5,12 +5,11 @@ import 'package:practica3/deposit_transaction.dart';
 import 'package:practica3/withdrawal_transaction.dart';
 import 'package:practica3/transfer_transaction.dart';
 
-import 'dart:io'; //-> borrar
 
 
 class BankService {
   final Set<User> _users = {};
-  final Set<Transaction> _transactions ={};
+  final Set<Transaction> _transactions ={}; // TODO
 
   BankService();
 
@@ -88,88 +87,34 @@ class BankService {
   }
 
 
-  // Mostrar todos los usuarios y sus cuentas
-  void showAllUsers() {
-    for (var user in this._users) {
-      print ("-----------------------------------------");
-      print("Usuario: ${user.name} (ID: ${user.id})");
-      user.showAccounts();
-    }
-  }
 
   List<String> getUsers() {
     List<String> list = [];
 
     for (var user in _users) {
-      list.add('${user.id} ${user.name}');
+      list.add('${user.id} (${user.name})');
     }
 
     return list;
   }
 
-}
+  List<String> getUserAccounts(String idName) {
+    List<String> accountsList = [];
+    String id = idName.split('(')[0].trim();
 
-void main () {
-  BankService bs = BankService();
+    try {
+      var user = _users.firstWhere((u) => u.id == id);
+      for (var account in user.accounts) {
+        accountsList.add(account.id);
+      }
+    } catch (e) {
+      // Si no se encuentra el usuario, devolvemos lista vacía.
+    }
 
-  bs.showAllUsers();
 
-  bs.createAccount("1234", "Sofia");
-  bs.createAccount("1234", "Sofia");
-
-  bs.createAccount("22222", "Alba");
-
-  bs.showAllUsers();
-
-  print ("DEPOSIT");
-  print("Introduzca el ID de una cuenta:");
-  String? acc = stdin.readLineSync();
-
-  print("Introduzca la cantidad a depositar:");
-  String? amountStr = stdin.readLineSync();
-  double? amount = double.tryParse(amountStr ?? '');
-
-  if (acc != null && amount != null) {
-    bs.deposit(acc, amount);
-  } else {
-    print("Entrada inválida.");
+    return accountsList;
   }
 
-  bs.showAllUsers();
-
-  print ("WITHDRAW");
-  print("Introduzca el ID de una cuenta:");
-  acc = stdin.readLineSync();
-
-  print("Introduzca la cantidad a retirar:");
-  amountStr = stdin.readLineSync();
-  amount = double.tryParse(amountStr ?? '');
-
-  if (acc != null && amount != null) {
-    bs.withdraw(acc, amount);
-  } else {
-    print("Entrada inválida.");
-  }
-
-  bs.showAllUsers();
 
 
-  print ("TRANSFER");
-  print("Introduzca el ID de una cuenta FROM:");
-  acc = stdin.readLineSync();
-
-  print("Introduzca el ID de una cuenta TO:");
-  String? acc2 = stdin.readLineSync();
-
-  print("Introduzca la cantidad a transferir:");
-  amountStr = stdin.readLineSync();
-  amount = double.tryParse(amountStr ?? '');
-
-  if (acc != null && amount != null && acc2 != null) {
-    bs.transfer(acc, acc2, amount);
-  } else {
-    print("Entrada inválida.");
-  }
-
-  bs.showAllUsers();
 }
