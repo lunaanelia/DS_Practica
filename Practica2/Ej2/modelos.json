@@ -1,7 +1,5 @@
 {
-
   "Básico": "facebook/bart-large-cnn",
   "Traductor": "Helsinki-NLP/opus-mt-en-es",
   "Expandir": "facebook/blenderbot-400M-distill"
-
 }

@@ -14,7 +14,7 @@ abstract class Strategy{
       :_token = tok,
       _url = "https://api-inference.huggingface.co/models/$mod";
 
-  Future<String> AlgorithmInterface(String text) async {
+    Future<String> AlgorithmInterface(String text) async {
     try {
       // Carga el token desde el archivo
       _token = await rootBundle.loadString('$_token');
