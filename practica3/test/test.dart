@@ -77,7 +77,7 @@ void main () {
 
     test("Deposit aumenta el saldo de la cuenta", () {
       BankService b = BankService();
-      Account c = b.createAccount("id", "Sofia");
+      Account c = b.createAccount("Sofia");
 
       expect(c.amount, 0);
       b.deposit(c.id, 100);
@@ -86,14 +86,14 @@ void main () {
 
     test("Withdraw lanza StateError cuando el saldo insuficiente", () {
       BankService b = BankService();
-      Account c = b.createAccount("id", "Sofia");
+      Account c = b.createAccount("Sofia");
       expect(() => b.withdraw(c.id, 50), throwsA(isA<StateError>()));
     });
 
     test("Comprobar que transfer mueva los fondos correctamente", () {
       BankService b = BankService();
-      Account a1 = b.createAccount("1", "a1");
-      Account a2 = b.createAccount("2", "a2");
+      Account a1 = b.createAccount("a1");
+      Account a2 = b.createAccount("a2");
 
       b.deposit(a1.id, 20);
       b.transfer(a1.id, a2.id, 10);
@@ -104,8 +104,8 @@ void main () {
 
     test("Comprobar que transfer lanza error cuando los fondos son insuficientes", () {
       BankService b = BankService();
-      Account a1 = b.createAccount("1", "a1");
-      Account a2 = b.createAccount("2", "a2");
+      Account a1 = b.createAccount( "a1");
+      Account a2 = b.createAccount("a2");
 
       b.deposit(a1.id, 20);
 
@@ -114,8 +114,8 @@ void main () {
 
     test("Comprobar que textId sea unico", () {
       BankService b = BankService();
-      Account a1 = b.createAccount("1", "a1");
-      Account a2 = b.createAccount("2", "a2");
+      Account a1 = b.createAccount( "a1");
+      Account a2 = b.createAccount( "a2");
 
       b.deposit(a1.id, 20);
       b.transfer(a1.id, a2.id, 10);

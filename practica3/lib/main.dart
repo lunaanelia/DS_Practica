@@ -69,7 +69,6 @@ class _MyHomePageState extends State<MyHomePage> {
   String? cuenta2;
 
   TextEditingController nombre = TextEditingController();
-  TextEditingController dni = TextEditingController();
   TextEditingController cantidad = TextEditingController();
   BankService banco = BankService();
 
@@ -77,12 +76,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _crearCuenta(){
     String n = nombre.text;
-    String d = dni.text;
     setState(() {
-      if(n.isEmpty || d.isEmpty){
+      if(n.isEmpty){
         mensaje = "Hay campos vacios, no se ha podido crear la cuenta";
       }else{
-        banco.createAccount(d, n);
+        banco.createAccount(n);
         usuarios = banco.getUsers();    // REVISAR PARA QUE SALGA BIEN
         mensaje = "Cuenta creada";
       }
@@ -170,18 +168,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     controller: nombre,
                     decoration: InputDecoration(
                       labelText: 'Nombre',
-                      border: OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.text,
-                  ),
-                ),
-                SizedBox(width: 20),
-                Expanded(
-                  flex: 2,
-                  child: TextField(
-                    controller: dni,
-                    decoration: InputDecoration(
-                      labelText: 'DNI',
                       border: OutlineInputBorder(),
                     ),
                     keyboardType: TextInputType.text,
