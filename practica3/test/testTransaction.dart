@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:practica3/BanckService.dart';
+import 'package:practica3/BankService.dart';
 import 'package:practica3/Account.dart';
 import 'package:practica3/deposit_transaction.dart';
 import 'package:practica3/withdrawal_transaction.dart';
@@ -37,6 +37,8 @@ void main () {
       deposito.apply(account1);
 
       TransferTransaction transferencia=TransferTransaction (10,account2);
+
+      transferencia.apply(account1);
 
       expect( account1.amount , equals(15) );
       expect( account2.amount , equals(10) );

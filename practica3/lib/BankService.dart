@@ -9,11 +9,13 @@ import 'package:practica3/transfer_transaction.dart';
 
 class BankService {
   final Set<User> _users = {};
-  final Set<Transaction> _transactions ={}; // TODO
+  final List<Transaction> _transactions = []; // TODO
 
   BankService();
 
   get users => this._users;
+
+  get transactions => this._transactions;
 
   List<Account> getAllAcounts () {
     List<Account> l = [];
@@ -52,7 +54,9 @@ class BankService {
     if (acc != null) {
       Transaction deposit = DepositTransaction(amount);
       deposit.apply(acc);
-      print("Se han depositado $amount en la cuenta $account.");
+      //print("Se han depositado $amount en la cuenta $account.");
+      this._transactions.add(deposit);
+
     } else {
       print("La cuenta $account no existe.");
     }
@@ -61,9 +65,12 @@ class BankService {
   void withdraw(String account, double amount) {
     Account? acc = this._getAccount(account);
     if (acc != null) {
+      if(amount>acc.amount) throw StateError("Saldo insuficiente");
       Transaction withdraw = WithdrawalTransaction(amount);
       withdraw.apply(acc);
-      print("Se han retirado $amount de la cuenta $account.");
+      //print("Se han retirado $amount de la cuenta $account.");
+
+      this._transactions.add(withdraw);
     } else {
       print("La cuenta $account no existe.");
     }
@@ -77,6 +84,8 @@ class BankService {
       Transaction transfer = TransferTransaction(amount, toAcc);
       transfer.apply(fromAcc);
       print("Se han transferido $amount desde la cuenta $from a la cuenta $to.");
+
+      this._transactions.add(transfer);
     } else {
       if (fromAcc == null) {
         print("La cuenta de origen $from no existe.");
