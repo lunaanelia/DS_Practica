@@ -58,7 +58,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<String> operaciones = ['Depositar', 'Retirar', 'Transferencia'];
   List<String>? usuarios = [];
+  List<String>? usuarios2 = [];
   List<String> cuentas = [];
+  List<String> cuentas2 = [];
 
   String? oper;
   String? user;
@@ -189,50 +191,139 @@ class _MyHomePageState extends State<MyHomePage> {
             // Realizar operaciones
             const Text('Realizar operacion:', style: TextStyle(fontSize: 16),),
 
-            DropdownButton<String>(
-              value: user,
-              hint: Text("Seleccione un usuario"),
-              onChanged: (String? nuevo) {
-                setState(() {
-                  user = nuevo;
-                });
-              },
-              items: usuarios!.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
+            Row(
+              children: [
+                Expanded(
+                  child: DropdownButton<String>(
+                    value: user,
+                    hint: Text("Seleccione un usuario (from)"),
+                    isExpanded: true,
+                    onChanged: (String? nuevo) {
+                      setState(() {
+                        user = nuevo;
+                        cuentas = banco.getUserAccounts(user!);
+                        cuenta = null; // Resetea cuenta seleccionada al cambiar usuario
+                      });
+                    },
+                    items: usuarios!.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ),
+                SizedBox(width: 25), // Espaciado entre los dropdowns
+                Expanded(
+                  child: DropdownButton<String>(
+                    value: cuenta,
+                    hint: Text("Seleccione una cuenta (from)"),
+                    isExpanded: true,
+                    onChanged: (String? nuevo) {
+                      setState(() {
+                        cuenta = nuevo;
+                      });
+                    },
+                    items: cuentas?.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList() ?? [],
+                  ),
+                ),
+              ],
             ),
 
-            cuentas = banco.getUserAccounts(user);
 
             SizedBox(height: 20),
 
-            DropdownButton<String>(
-              value: oper,
-              hint: Text("Seleccione una opción"),
-              onChanged: (String? nuevo) {
-                setState(() {
-                  oper = nuevo;
-                });
-              },
-              items: operaciones.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
+            Row(
+              children: [
+                Expanded(
+                  child: DropdownButton<String>(
+                    value: user2,
+                    hint: Text("Seleccione un usuario (to)"),
+                    isExpanded: true,
+                    onChanged: (String? nuevo) {
+                      setState(() {
+                        user2 = nuevo;
+                        cuentas2 = banco.getUserAccounts(user2!);
+                        cuenta2 = null; // Resetea cuenta seleccionada al cambiar usuario
+                      });
+                    },
+                    items: usuarios2!.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ),
+                SizedBox(width: 25), // Espaciado entre los dropdowns
+                Expanded(
+                  child: DropdownButton<String>(
+                    value: cuenta2,
+                    hint: Text("Seleccione una cuenta (to)"),
+                    isExpanded: true,
+                    onChanged: (String? nuevo) {
+                      setState(() {
+                        cuenta2 = nuevo;
+                      });
+                    },
+                    items: cuentas2?.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList() ?? [],
+                  ),
+                ),
+              ],
             ),
             SizedBox(height: 20),
-            TextField(
-              controller: cantidad,
-              decoration: InputDecoration(
-                labelText: 'cantidad',
-                border: OutlineInputBorder(),
+            Center(
+              child: DropdownButton<String>(
+                value: oper,
+                hint: Text("Seleccione una opción"),
+                onChanged: (String? nuevo) {
+                  setState(() {
+                    oper = nuevo;
+                  });
+                },
+                items: operaciones.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
               ),
-              keyboardType: TextInputType.number,
             ),
+            SizedBox(height: 20),
+            Center(
+              child: SizedBox(
+                width: 200, // Puedes ajustar el ancho según lo que necesites
+                child: TextField(
+                  controller: cantidad,
+                  decoration: InputDecoration(
+                    labelText: 'Cantidad',
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            Center(
+              child: SizedBox(
+                width: 150, // ancho deseado
+                child: ElevatedButton(
+                  onPressed: _transaccion,
+                  child: Text('Finalizar'),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
             Text('$mensaje'),
           ],
         ),
