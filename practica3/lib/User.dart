@@ -11,6 +11,7 @@ class User {
 
   String get name => this._name;
   String get id => this._id;
+  Set<Account> get accounts => this._accounts;
 
   void addAccount (Account acc) {
     this._accounts.add(acc);
