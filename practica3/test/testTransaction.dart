@@ -38,6 +38,8 @@ void main () {
 
       TransferTransaction transferencia=TransferTransaction (10,account2);
 
+      transferencia.apply(account1);
+
       expect( account1.amount , equals(15) );
       expect( account2.amount , equals(10) );
     });

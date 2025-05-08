@@ -21,5 +21,12 @@ void main () {
       expect(c.amount, 100);
 
     });
+
+    test("Withdraw lanza StateError cuando el saldo insuficiente", () {
+      BankService b = BankService();
+      Account c = b.createAccount("id", "Sofia");
+      c.deposit(5);
+      expect(() => c.withdraw(50), throwsA(isA<StateError>()));
+    });
   });
 }

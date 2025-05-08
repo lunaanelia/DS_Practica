@@ -65,6 +65,7 @@ class BankService {
   void withdraw(String account, double amount) {
     Account? acc = this._getAccount(account);
     if (acc != null) {
+      if(amount>acc.amount) throw StateError("Saldo insuficiente");
       Transaction withdraw = WithdrawalTransaction(amount);
       withdraw.apply(acc);
       //print("Se han retirado $amount de la cuenta $account.");
