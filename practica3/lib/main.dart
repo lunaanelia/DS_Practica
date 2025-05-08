@@ -81,7 +81,8 @@ class _MyHomePageState extends State<MyHomePage> {
         mensaje = "Hay campos vacios, no se ha podido crear la cuenta";
       }else{
         banco.createAccount(n);
-        usuarios = banco.getUsers();    // REVISAR PARA QUE SALGA BIEN
+        usuarios = banco.getUsers();
+        cuentas = banco.getUserAccounts(user!);
         mensaje = "Cuenta creada";
       }
     });
@@ -128,12 +129,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  //@override
-  //void initState (){
-  //  super.initState();
-  //  usuarios = banco.getUsers();    // REVISARLOS PARA QUE SALGA BIEN
- // }
-
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -175,7 +170,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 SizedBox(width: 20),
                 ElevatedButton(
-                  onPressed: _crearCuenta,   // cambiar lo acrear cuenta.
+                  onPressed: _crearCuenta,
                   child: Text('Crear Cuenta'),
                 ),
               ],
