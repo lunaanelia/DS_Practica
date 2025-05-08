@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:practica3/BankService.dart';
-import 'package:practica3/User.dart';
 
 void main() {
   runApp(const MyApp());
@@ -82,7 +81,6 @@ class _MyHomePageState extends State<MyHomePage> {
       }else{
         banco.createAccount(n);
         usuarios = banco.getUsers();
-        cuentas = banco.getUserAccounts(user!);
         mensaje = "Cuenta creada";
       }
     });
