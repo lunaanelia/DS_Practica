@@ -1,17 +1,25 @@
 import 'package:practica3/transaction.dart';
+import 'package:practica3/withdrawal_transaction.dart';
+import 'package:practica3/deposit_transaction.dart';
+import 'package:practica3/Account.dart';
 
 class TransferTransaction extends Transaction{
+  Account _to;
 
- TransferTransaction (String id, double amount): super(id, amount);
+  TransferTransaction (double amount, this._to): super( amount);
 
   @override
   void apply(account) {
 
-    if (account.getAmount()< amount){ // no direno suficiente
-      throw StateError ('No hay dinero suficnete para realizar la transacción');
-    }else{
-      double resta = account.getAmount() - amount;
-      account.setAmount(resta);
+    try{
+      WithdrawalTransaction resta = WithdrawalTransaction(amount);
+      DepositTransaction suma = DepositTransaction( amount);
+
+      resta.apply(_to);
+      suma.apply(account);
+
+    }catch(e){
+      throw e;
     }
   }
 }

@@ -1,9 +1,17 @@
-// Añadir cuenta
+import 'package:practica3/Account.dart';
+import 'package:uuid/uuid.dart';
+
 abstract class Transaction {
-  String _id;
+  String _id = '';
   double _amount;
 
-  Transaction(this._id, this._amount);
+  Transaction(this._amount){
+    generateId();
+  }
+
+  void generateId(){
+    _id = const Uuid().v1();
+  }
 
   void apply (Account account);
 
