@@ -22,7 +22,7 @@ class TransferTransaction extends Transaction{
         throw e;
       }
     }else{
-      throw StateError('No se puede ralizar a la misma cuanta');
+      throw StateError('No se puede ralizar a la misma cuenta');
     }
     
   }
