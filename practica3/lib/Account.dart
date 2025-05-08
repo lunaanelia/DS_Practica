@@ -17,11 +17,11 @@ class Account {
   double get amount => _amount;
 
   void deposit (double amount) {
-    this._amount += amount;
+    if(amount>0) this._amount += amount;
   }
 
   void withdraw (double amount) {
-    this._amount -= amount;
+    if(amount>0) this._amount -= amount;
   }
 
   // Para poder tener un set implementamos el operador ==

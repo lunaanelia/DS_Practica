@@ -9,5 +9,11 @@ void main () {
       BankService b = BankService();
       expect(b.getAllAcounts().length, 0 );
     });
+
+    test("Deposit aumenta el saldo de la cuenta", () {
+      BankService b = BankService();
+      Account c = b.createAccount("id", "Sofia");
+
+    });
   });
 }
