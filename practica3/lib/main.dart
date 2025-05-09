@@ -56,7 +56,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<String> operaciones = ['Depositar', 'Retirar', 'Transferencia'];
+  List<String> operaciones = ['Depositar', 'Retirar', 'Transferencia', 'Consultar saldo'];
   List<String>? usuarios = [];
   List<String>? usuarios2 = [];
   List<String> cuentas = [];
@@ -99,51 +99,66 @@ class _MyHomePageState extends State<MyHomePage> {
     return c!.split(':')[1].trim();
   }
 
-  void _transaccion(){
-    double c = double.parse(cantidad.text);
+  void _transaccion() {
+    double? c = double.tryParse(cantidad.text);
+
     setState(() {
-      if (c==0){
-        mensaje = " Debe ingresar una cantidad";
-      }
-      else if(user==null || cuenta == null){
-        mensaje = " Debes seleccionar un usuario y una cuenta";
-      }
-      else{
-        if (oper == 'Depositar'){
-          banco.deposit(_obtenerIdCuenta(cuenta)!, c);
-          mensaje = "Depósito realizado";
-          cuenta2=null;
-          user2=null;
-        }else if(oper == "Retirar"){
-          cuenta2=null;
-          user2 =null;
-          try{
-            banco.withdraw(_obtenerIdCuenta(cuenta)!, c);
-            mensaje = "Se ha retiado correctamente";
+      if (c == null && oper != "Consultar saldo") {
+        mensaje = "Debes ingresar una cantidad válida";
+      } else if (user == null || cuenta == null) {
+        mensaje = "Debes seleccionar un usuario y una cuenta";
+      } else if (oper == null) {
+        mensaje = "Debes seleccionar una operación";
+      } else {
+        String cuentaId = _obtenerIdCuenta(cuenta)!;
 
-          }catch (e){
-            mensaje = "No se ha podido realizar la operación";
-          }
+        switch (oper) {
+          case 'Depositar':
+            banco.deposit(cuentaId, c!);
+            mensaje = "Depósito realizado";
+            cuenta2 = null;
+            user2 = null;
+            break;
 
-        }
-        else if (oper == null){
-          mensaje = "Debes seleccionar una operacion";
-        }else{
-          if(user==null || cuenta == null){
-            mensaje = " Debes seleccionar un usuario y una cuenta";
-          }
-          else{
-            try{
-              banco.transfer(_obtenerIdCuenta(cuenta)!, _obtenerIdCuenta(cuenta2)!, c);
-              mensaje = "transferencia realizada correctamente";
-            }catch(e){
-              mensaje = e.toString();
+          case 'Retirar':
+            cuenta2 = null;
+            user2 = null;
+            try {
+              banco.withdraw(cuentaId, c!);
+              mensaje = "Se ha retirado correctamente";
+            } catch (e) {
+              mensaje = "No se ha podido realizar la operación";
             }
-          }
+            break;
+
+          case 'Consultar saldo':
+            double saldo = banco.checkBalance(cuentaId);
+            cuenta2 = null;
+            user2 = null;
+            mensaje = "Su cuenta tiene $saldo €";
+            cantidad.text = "";
+            break;
+
+          case 'Transferencia':
+            if (user2 == null || cuenta2 == null) {
+              mensaje = "Debes seleccionar una cuenta de destino";
+            } else {
+              try {
+                banco.transfer(cuentaId, _obtenerIdCuenta(cuenta2)!, c!);
+                mensaje = "Transferencia realizada correctamente";
+              } catch (e) {
+                mensaje = e.toString();
+              }
+            }
+            break;
+
+          default:
+            mensaje = "Operación no válida";
         }
       }
     });
   }
+
 
   @override
   void initState() {

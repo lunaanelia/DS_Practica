@@ -102,6 +102,16 @@ class BankService {
     }
   }
 
+  double checkBalance(String account) {
+    var acc = this._getAccount(account);
+    if (acc != null) {
+      return acc.amount;
+    } else {
+      throw Exception('Cuenta no encontrada');
+    }
+  }
+
+
 
 
   Account? _getAccount(String account) {
