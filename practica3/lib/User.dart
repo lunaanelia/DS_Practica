@@ -13,6 +13,8 @@ class User {
   Set<Account> get accounts => this._accounts;
 
   void addAccount (Account acc) {
+
+    acc.name = "Cuenta" + (this._accounts.length+1).toString();
     this._accounts.add(acc);
   }
 

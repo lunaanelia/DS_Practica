@@ -81,10 +81,22 @@ class _MyHomePageState extends State<MyHomePage> {
         mensaje = "Hay campos vacios, no se ha podido crear la cuenta";
       }else{
         banco.createAccount(n);
-        usuarios = banco.getUsers();    // REVISAR PARA QUE SALGA BIEN
+        usuarios = banco.getUsers();
         mensaje = "Cuenta creada";
+
+        // Si el nuevo usuario es el actualmente seleccionado, actualizar sus cuentas
+        if (user == n) {
+          cuentas = banco.getUserAccounts(user!);
+        }
+        if (user2 == n) {
+          cuentas2 = banco.getUserAccounts(user2!);
+        }
       }
     });
+  }
+  
+  String? _obtenerIdCuenta(String ?c) {
+    return c!.split(':')[1].trim();
   }
 
   void _transaccion(){
@@ -98,14 +110,19 @@ class _MyHomePageState extends State<MyHomePage> {
       }
       else{
         if (oper == 'Depositar'){
-          banco.deposit(cuenta!, c);
-          mensaje = "Deposito realizado";
+          banco.deposit(_obtenerIdCuenta(cuenta)!, c);
+          mensaje = "Depósito realizado";
+          cuenta2=null;
+          user2=null;
         }else if(oper == "Retirar"){
+          cuenta2=null;
+          user2 =null;
           try{
-            banco.withdraw(cuenta!, c);
+            banco.withdraw(_obtenerIdCuenta(cuenta)!, c);
             mensaje = "Se ha retiado correctamente";
+
           }catch (e){
-            mensaje = "No se ha podido realizar la operacion";
+            mensaje = "No se ha podido realizar la operación";
           }
 
         }
@@ -117,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
           }
           else{
             try{
-              banco.transfer(cuenta!, cuenta2!, c);
+              banco.transfer(_obtenerIdCuenta(cuenta)!, _obtenerIdCuenta(cuenta2)!, c);
               mensaje = "transferencia realizada correctamente";
             }catch(e){
               mensaje = e.toString();
@@ -128,11 +145,12 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  //@override
-  //void initState (){
-  //  super.initState();
-  //  usuarios = banco.getUsers();    // REVISARLOS PARA QUE SALGA BIEN
- // }
+  @override
+  void initState() {
+    super.initState();
+    usuarios = banco.getUsers();
+    usuarios2 = banco.getUsers();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -159,7 +177,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.start, // Alinea el contenido hacia la izquierda (opcional)
           children: <Widget>[
 
-            // Crae cuneta
+            // Crea cuenta
             Row(
               children: [
                 Expanded(
@@ -175,7 +193,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 SizedBox(width: 20),
                 ElevatedButton(
-                  onPressed: _crearCuenta,   // cambiar lo acrear cuenta.
+                  onPressed: _crearCuenta,
                   child: Text('Crear Cuenta'),
                 ),
               ],
@@ -214,9 +232,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     hint: Text("Seleccione una cuenta (from)"),
                     isExpanded: true,
                     onChanged: (String? nuevo) {
-                      setState(() {
-                        cuenta = nuevo;
-                      });
+                        setState(() {
+                          cuenta = nuevo;
+                        });
+
                     },
                     items: cuentas?.map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
@@ -283,6 +302,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 onChanged: (String? nuevo) {
                   setState(() {
                     oper = nuevo;
+                    if (oper!=null) {
+                      if (oper == 'Depositar' ||  oper == 'Retirar') {
+                        cuenta2 = null;
+                        user2 = null;
+                      }
+                    }
                   });
                 },
                 items: operaciones.map<DropdownMenuItem<String>>((String value) {
@@ -296,7 +321,7 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(height: 20),
             Center(
               child: SizedBox(
-                width: 200, // Puedes ajustar el ancho según lo que necesites
+                width: 200,
                 child: TextField(
                   controller: cantidad,
                   decoration: InputDecoration(

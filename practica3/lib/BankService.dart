@@ -131,7 +131,7 @@ class BankService {
     try {
       var user = _users.firstWhere((u) => u.name == name);
       for (var account in user.accounts) {
-        accountsList.add(account.id);
+        accountsList.add("${account.name}: ${account.id}");
       }
     } catch (e) {
       // Si no se encuentra el usuario, devolvemos lista vacía.
