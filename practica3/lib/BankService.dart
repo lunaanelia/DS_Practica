@@ -111,9 +111,6 @@ class BankService {
     }
   }
 
-
-
-
   Account? _getAccount(String account) {
     for (var user in this._users) {
       for (var acc in user.accounts) {

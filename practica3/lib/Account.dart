@@ -9,7 +9,7 @@ class Account {
     generateId();
   }
 
-  set name(String valor) { this._name = valor; }
+  set name(String name) { this._name = name; }
 
 
   // Para generar un Id a partir del tiempo
