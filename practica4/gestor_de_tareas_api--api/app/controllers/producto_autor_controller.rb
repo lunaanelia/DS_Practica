@@ -1,4 +1,0 @@
-class ProductoAutorController < ApplicationController
-
-   
-end
