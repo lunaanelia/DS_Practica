@@ -1,0 +1,2 @@
+class PrestamosController < ApplicationController
+end
