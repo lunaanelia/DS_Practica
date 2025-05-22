@@ -17,26 +17,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_22_154853) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "ejemplars", force: :cascade do |t|
-    t.integer "producto_id", null: false
-    t.boolean "disponible"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["producto_id"], name: "index_ejemplars_on_producto_id"
-  end
-
-  create_table "prestamos", force: :cascade do |t|
-    t.date "fecha_ini"
-    t.date "fecha_fin"
-    t.boolean "devuelto"
-    t.integer "ejemplar_id", null: false
-    t.integer "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["ejemplar_id"], name: "index_prestamos_on_ejemplar_id"
-    t.index ["user_id"], name: "index_prestamos_on_user_id"
-  end
-
   create_table "producto_autors", force: :cascade do |t|
     t.integer "producto_id", null: false
     t.integer "autor_id", null: false
@@ -79,9 +59,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_22_154853) do
     t.index ["correo"], name: "index_usuarios_on_correo", unique: true
   end
 
-  add_foreign_key "ejemplars", "productos"
-  add_foreign_key "prestamos", "ejemplars"
-  add_foreign_key "prestamos", "users"
   add_foreign_key "producto_autors", "autors"
   add_foreign_key "producto_autors", "productos"
   add_foreign_key "producto_ejemplars", "ejemplars"
