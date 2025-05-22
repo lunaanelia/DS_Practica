@@ -3,10 +3,14 @@ import 'package:uuid/uuid.dart';
 class Account {
   String _id = '';
   double _amount = 0;
+  String _name ="";
 
   Account() {
     generateId();
   }
+
+  set name(String name) { this._name = name; }
+
 
   // Para generar un Id a partir del tiempo
   void generateId() {
@@ -14,6 +18,7 @@ class Account {
   }
 
   String get id => _id;
+  String get name => this._name;
   double get amount => _amount;
 
   void deposit (double amount) {

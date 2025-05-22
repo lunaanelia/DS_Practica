@@ -5,11 +5,12 @@ import 'package:practica3/deposit_transaction.dart';
 import 'package:practica3/withdrawal_transaction.dart';
 import 'package:practica3/transfer_transaction.dart';
 import 'package:practica3/transaction.dart';
+import 'package:practica3/User.dart';
 
 
 void main () {
 
-  group("Tests para usuarios", () {
+  group("Tests para usuarios (clase cuenta)", () {
     test("El balance inicial de una cuenta debe ser cero", () {
       Account cuenta = Account();
       expect(cuenta.amount, 0);
@@ -131,6 +132,25 @@ void main () {
         tmp.add(i.id);
       }
       expect(t.length, tmp.length);
+    });
+
+  });
+
+
+  group("Tests para usuarios (clase usuario)", () {
+    test("Un usuario se crea sin cuentas asociadas", () {
+
+      User usuario = User("maria");
+      expect(usuario.accounts.length, 0);
+    });
+
+    test("Comprobar que un usuario tiene las cuentas asociadas que se indican", () {
+
+      User usuario = User("maria");
+      Account acc = Account();
+
+      usuario.addAccount(acc);
+      expect(usuario.accounts.length, 1);
     });
 
   });

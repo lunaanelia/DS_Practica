@@ -102,7 +102,14 @@ class BankService {
     }
   }
 
-
+  double checkBalance(String account) {
+    var acc = this._getAccount(account);
+    if (acc != null) {
+      return acc.amount;
+    } else {
+      throw Exception('Cuenta no encontrada');
+    }
+  }
 
   Account? _getAccount(String account) {
     for (var user in this._users) {
@@ -131,7 +138,7 @@ class BankService {
     try {
       var user = _users.firstWhere((u) => u.name == name);
       for (var account in user.accounts) {
-        accountsList.add(account.id);
+        accountsList.add("${account.name}: ${account.id}");
       }
     } catch (e) {
       // Si no se encuentra el usuario, devolvemos lista vacía.
