@@ -1,52 +1,47 @@
 class ProductoEjemplarController < ApplicationController
 
-    def index
-<<<<<<< HEAD
-        @productos= Producto.all
-
-        @productos= @productos.where(titulo: params[:titulo])if params[:titulo].present?
-        @productos= @productos.where()
-
-        render json: @productos
-    end
-    
-    def create
-        @producto = Producto.new(producto_params)
-        if @producto.save
-            render json: @producto, status: :created
+   def index
+        if params[:producto_id].present?
+            @ejemplares = Ejemplar.where(producto_id: params[:producto_id])
         else
-            render json: @producto.errors, status: :unprocessable_entity
+            @ejemplares = Ejemplar.all
+        end
+
+        render json: @ejemplares
+    end
+
+    def create
+        @ejemplar = Ejemplar.new(ejemplar_params)
+
+        if @ejemplar.save
+            render json: @ejemplar, status: :created
+        else
+            render json: @ejemplar.errors, status: :unprocessable_entity
         end
     end
 
     def update
-        @producto = Producto.new(producto_params)
-        if @producto.update(producto_params)
-            render json: @producto
+        @ejemplar = Ejemplar.find(params[:id])
+        if @ejemplar.update(ejemplar_params)
+            render json: @ejemplar
         else
-            @producto = Producto.find(params[:id])
-            render json: @producto.errors, status: :unprocessable_entity
+            render json: @ejemplar.errors, status: :unprocessable_entity
         end
     end
 
     def destroy
-        @producto = Producto.find(params[:id])
-        if @producto.destroy
+        @ejemplar = Ejemplar.find(params[:id])
+        if @ejemplar.destroy
             head :ok
         else
-            render json: { error: "Error al eliminar"}, status: :unprocessable_entity
+            render json: { error: "No se pudo eliminar" }, status: :unprocessable_entity
         end
     end
 
+  private
 
-    private
-    def producto_params
-        params.require(:producto).permit(:titulo, :fecha, :es_peli)
+    def ejemplar_params
+        params.require(:ejemplar).permit(:producto_id, :disponible)
     end
 
 end
-=======
-        if params[:id].present?
-            @producto
-end
->>>>>>> fd23dc02173136f5295f5a74a7d44262ebe18640
