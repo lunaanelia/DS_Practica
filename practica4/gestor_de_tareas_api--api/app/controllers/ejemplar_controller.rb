@@ -1,6 +1,7 @@
 # EL INDEX SEGURAMENTA HAYA QUE CAMBIARLO CUANDO SEPAMOS LO QUE HACE
 
 class EjemplarController < ApplicationController
+   
     def index
         if params[:id].present?
             @ejemplar = Ejemplar.where(id: params[:id])
@@ -10,6 +11,7 @@ class EjemplarController < ApplicationController
         
         render json: @ejemplar
     end
+    
     def create
         @ejemplar = Ejemplar.new(ejemplar_params)
         if @ejemplar.save
