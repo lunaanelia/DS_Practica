@@ -1,5 +1,6 @@
 class UsuarioController < ApplicationController
     def index
+        # ni ieda de si esto esta bien, para recuperalo
         rails g model Usuario nombre:string correo:string:uniq
         if params[:correo].present?
             @usuarios = Usuario.where(correo: params[:correo])
