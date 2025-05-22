@@ -1,6 +1,7 @@
 class ProductoEjemplarController < ApplicationController
 
     def index
+<<<<<<< HEAD
         @productos= Producto.all
 
         @productos= @productos.where(titulo: params[:titulo])if params[:titulo].present?
@@ -44,3 +45,8 @@ class ProductoEjemplarController < ApplicationController
     end
 
 end
+=======
+        if params[:id].present?
+            @producto
+end
+>>>>>>> fd23dc02173136f5295f5a74a7d44262ebe18640
