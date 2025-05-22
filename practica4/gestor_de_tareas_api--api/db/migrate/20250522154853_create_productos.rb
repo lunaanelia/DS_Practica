@@ -3,6 +3,7 @@ class CreateProductos < ActiveRecord::Migration[8.0]
     create_table :productos do |t|
       t.string :titulo
       t.string :fecha
+      t.boolean :es_peli
 
       t.timestamps
     end

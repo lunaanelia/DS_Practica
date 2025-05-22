@@ -3,7 +3,9 @@
 one:
   titulo: MyString
   fecha: MyString
+  es_peli: false
 
 two:
   titulo: MyString
   fecha: MyString
+  es_peli: false
