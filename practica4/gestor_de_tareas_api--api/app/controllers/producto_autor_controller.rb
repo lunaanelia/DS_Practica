@@ -1,0 +1,2 @@
+class ProductoAutorController < ApplicationController
+end

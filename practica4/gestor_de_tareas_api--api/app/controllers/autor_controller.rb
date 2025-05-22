@@ -1,0 +1,2 @@
+class AutorController < ApplicationController
+end
