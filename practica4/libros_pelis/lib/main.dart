@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
-//import 'package:libros_pelis/gestor.dart';
+import 'package:libros_pelis/i_estrategia_busqueda.dart';
+import 'package:libros_pelis/gestor.dart';
+import 'package:libros_pelis/contexto.dart';
+import 'package:libros_pelis/estrategia_autor.dart';
+import 'package:libros_pelis/estrategia_fecha.dart';
+import 'package:libros_pelis/estrategia_titulo.dart';
 
 
 void main() {
@@ -48,9 +53,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  //final Gestor _gestor = Gestor([]);
+  final Gestor _gestor = Gestor();
   String _rolSeleccionado = "Usuario";
   static const List<String> usuarios = <String>['Administrador', 'Usuario'];
+
+  static List<IEstrategiaBusqueda> estrategiasBusqueda = <IEstrategiaBusqueda> [EstrategiaAutor(), EstrategiaFecha(), EstrategiaTitulo()];
+
+
+  // static Contexto contexto (_gestor, estrategiasBusqueda[0]);
 
 
   _cambiarRol (String? nuevoRol) {
@@ -59,12 +69,6 @@ class _MyHomePageState extends State<MyHomePage> {
       this._rolSeleccionado = nuevoRol!;
     });
 
-    if (_rolSeleccionado=="Usuario") {
-
-    }
-    else if (_rolSeleccionado=="Administrador") {
-
-    }
   }
 
   Widget _seccionAdministrador() {
