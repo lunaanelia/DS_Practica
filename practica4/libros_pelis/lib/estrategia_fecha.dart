@@ -1,4 +1,4 @@
-class estrategia_fecha{
+class EstrategiaFecha{
 
   @Override
   List<Producto> buscar(gestor, es_peli, titulo,autor, fecha){
