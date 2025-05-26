@@ -1,11 +1,12 @@
-
 class Contexto{
-    
-    _I_estrategiaBusqueda estrategia;
+
+    final Gestor gestor;
+
+    I_estrategiaBusqueda _estrategia;
 
     Contexto(estrategia){
         this.estrategia = estrategia;
     }
 
-    List<Producto> buscar(){};
+    List<Producto> buscar(this.gestor, es_peli, titulo, autor, fecha){};
 }
