@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  titulo: MyString
+  es_peli: false
+  autor: MyString
+  fecha: 2025-05-22
+  descripcion: MyString
+
+two:
+  titulo: MyString
+  es_peli: false
+  autor: MyString
+  fecha: 2025-05-22
+  descripcion: MyString
