@@ -1,9 +1,9 @@
-import 'package:libros_pelis/Producto.dart';
-import 'package:libros_pelis/Libro.dart';
-import 'package:libros_pelis/Pelicula.dart';
+import 'package:libros_pelis/producto.dart';
+import 'package:libros_pelis/libro.dart';
+import 'package:libros_pelis/pelicula.dart';
 
 
-abstract class factoria {
+abstract class Factoria {
   Producto crearProducto(String tipo, String titulo, String autor, DateTime fecha, String descripcion)
   {
     if (tipo=="libro"){
