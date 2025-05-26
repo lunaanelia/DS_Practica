@@ -2,8 +2,6 @@ import 'dart:convert';
 import "package:http/http.dart" as http;
 import 'producto.dart';
 
-//agregar(Producto)
-//eliminar (id_producto)
 //cargarTodasPelis
 //cargarTodasLibros
 
@@ -12,22 +10,78 @@ import 'producto.dart';
 
 
 class Gestor {
-  List<Producto> _misProductos= [];
+  final List<Producto> _misProductos= [];
   final String apiUrl = "http://localhost:3000/producto";
 
-  Gestor(this._misProductos);
+  Gestor(){
+    if(this._misProductos.isEmpty){
+      this.cargarTodosProductos();
+    }
+  }
 
-  /* Future<void> cargarTareas(String usuario) async {
-    final response = await http.get(Uri.parse('$apiUrl?usuario=$usuario'));
-    if (response.statusCode == 200) {
-      List<dynamic> tareasJson = json.decode(response.body);
+  Future<List<Producto>> buscar({ bool? es_peli, String? titulo, String? autor, DateTime? fecha}) async {
+    List<Producto> resultadoBusquedad= [];
+    Map<String, String> parametros= {};
+    if(es_peli != null){
+      parametros['es_peli'] = es_peli.toString();
+    }
 
-      mistareas.clear();
-      mistareas.addAll(tareasJson.map((json) => Tarea.fromJson(json)).toList());
+    if(autor != null){
+      parametros['autor'] = autor;
+    }
+
+    if(titulo != null){
+      parametros['titulo'] = titulo;
+    }
+
+    if(fecha != null){
+      parametros['fecha'] = fecha.toIso8601String().split('T').first;
+    }
+
+    final u = Uri.http(
+      Uri.parse(apiUrl).host,
+      Uri.parse(apiUrl).path,
+      parametros,
+    );
+
+    // Primero tareamos las peliculas
+    final responsePelis = await http.get(u);
+    if (responsePelis.statusCode == 200) {
+      List<dynamic> productosJson = json.decode(responsePelis.body);
+
+      resultadoBusquedad.addAll(productosJson.map((json) => Producto.fromJson(json)).toList());
+
+      return resultadoBusquedad;
+
     } else {
       throw Exception('Failed to load tasks');
     }
-  } */
+
+  }
+
+  Future<void> cargarTodosProductos() async {
+    // Primero tareamos las peliculas
+    final responsePelis = await http.get(Uri.parse('$apiUrl?es_peli=true'));
+    if (responsePelis.statusCode == 200) {
+      List<dynamic> productosJson = json.decode(responsePelis.body);
+
+      _misProductos.clear();
+      _misProductos.addAll(productosJson.map((json) => Producto.fromJson(json)).toList());
+
+    } else {
+      throw Exception('Failed to load tasks');
+    }
+
+    final responseLibro = await http.get(Uri.parse('$apiUrl?es_peli=false'));
+    if (responseLibro.statusCode == 200) {
+      List<dynamic> productosJson = json.decode(responseLibro.body);
+
+      _misProductos.addAll(productosJson.map((json) => Producto.fromJson(json)).toList());
+
+    } else {
+      throw Exception('Failed to load tasks');
+    }
+  }
 
   Future<void> agregar(Producto producto) async {
     final response = await http.post(
@@ -55,7 +109,7 @@ class Gestor {
     }
   }
 
-  Future<void> modificarProducto(Producto producto) async {
+  Future<void> modificarTitulo(Producto producto, String n_titulo) async {
 
     final response = await http.patch(
       Uri.parse('$apiUrl/${producto.id}'),
@@ -63,12 +117,70 @@ class Gestor {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode({
-        '': nuevoEstadoCompletado,
+        'titulo': n_titulo
       }),
     );
 
     if (response.statusCode == 200) {
-      tarea.completada = nuevoEstadoCompletado;
+      producto.titulo = n_titulo;
+    } else {
+      throw Exception('Failed to update task');
+    }
+  }
+
+  Future<void> modificarDescripcion(Producto producto, String n_desc) async {
+
+    final response = await http.patch(
+      Uri.parse('$apiUrl/${producto.id}'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode({
+        'titulo': n_desc
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      producto.descripcion = n_desc;
+    } else {
+      throw Exception('Failed to update task');
+    }
+  }
+
+  Future<void> modificarAutor(Producto producto, String n_autor) async {
+
+    final response = await http.patch(
+      Uri.parse('$apiUrl/${producto.id}'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode({
+        'autor': n_autor
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      producto.autor = n_autor;
+    } else {
+      throw Exception('Failed to update task');
+    }
+  }
+
+  //
+  Future<void> modificarFecha(Producto producto, DateTime n_fecha) async {
+
+    final response = await http.patch(
+      Uri.parse('$apiUrl/${producto.id}'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode({
+        'fecha': n_fecha
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      producto.fecha = n_fecha;
     } else {
       throw Exception('Failed to update task');
     }
