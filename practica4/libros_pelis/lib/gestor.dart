@@ -51,8 +51,9 @@ class Gestor {
   }
 
 
-  Future<void> cargarTodosProductos() async {
+  Future<bool> cargarTodosProductos() async {
     // Primero tareamos las peliculas
+    bool correcto;
     final responsePelis = await http.get(Uri.parse('$apiUrl?es_peli=true'));
     if (responsePelis.statusCode == 200) {
       List<dynamic> productosJson = json.decode(responsePelis.body);
@@ -61,7 +62,7 @@ class Gestor {
       _misProductos.addAll(productosJson.map((json) => Producto.fromJson(json)).toList());
 
     } else {
-      throw Exception('Failed to load tasks');
+      throw Exception('Failed to load product');
     }
 
     final responseLibro = await http.get(Uri.parse('$apiUrl?es_peli=false'));
@@ -69,10 +70,13 @@ class Gestor {
       List<dynamic> productosJson = json.decode(responseLibro.body);
 
       _misProductos.addAll(productosJson.map((json) => Producto.fromJson(json)).toList());
-
+      correcto = true;
     } else {
+      correcto = false;
       throw Exception('Failed to load tasks');
     }
+
+    return correcto;
   }
 
   Future<void> agregar(Producto producto) async {
@@ -97,7 +101,7 @@ class Gestor {
     if (response.statusCode == 200) {
       _misProductos.removeWhere((p) => p.id == producto.id);
     } else {
-      throw Exception('Failed to delete task');
+      throw Exception('Failed to delete product');
     }
   }
 
@@ -116,7 +120,7 @@ class Gestor {
     if (response.statusCode == 200) {
       producto.titulo = n_titulo;
     } else {
-      throw Exception('Failed to update task');
+      throw Exception('Failed to update product');
     }
   }
 
@@ -135,7 +139,7 @@ class Gestor {
     if (response.statusCode == 200) {
       producto.descripcion = n_desc;
     } else {
-      throw Exception('Failed to update task');
+      throw Exception('Failed to update product');
     }
   }
 
@@ -154,7 +158,7 @@ class Gestor {
     if (response.statusCode == 200) {
       producto.autor = n_autor;
     } else {
-      throw Exception('Failed to update task');
+      throw Exception('Failed to update product');
     }
   }
 
@@ -174,7 +178,7 @@ class Gestor {
     if (response.statusCode == 200) {
       producto.fecha = n_fecha;
     } else {
-      throw Exception('Failed to update task');
+      throw Exception('Failed to update product');
     }
   }
 }

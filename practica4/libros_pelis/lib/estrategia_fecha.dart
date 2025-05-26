@@ -7,5 +7,4 @@ class EstrategiaFecha{
   Future<List<Producto>> buscar(Gestor gestor, bool es_peli, String valor){
     return gestor.buscar(es_peli, "fecha", valor);
   }
-
 }
