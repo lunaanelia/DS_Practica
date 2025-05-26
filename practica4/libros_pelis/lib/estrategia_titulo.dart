@@ -1,6 +1,9 @@
+import 'package:libros_pelis/gestor.dart';
+import 'package:libros_pelis/producto.dart';
+
 class EstrategiaTitulo{
 
-   @Override
+   @override
     List<Producto> buscar(Gestor gestor, bool es_peli, String? titulo, String? autor, String? fecha){
         return gestor.buscar(es_peli, titulo, null, null);
     }

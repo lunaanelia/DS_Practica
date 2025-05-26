@@ -1,5 +1,8 @@
+import 'package:libros_pelis/producto.dart';
+import 'package:libros_pelis/gestor.dart';
+
 
 abstract class IEstrategiaBusqueda{
 
-    List<Producto> buscar(bool es_peli, String? titulo, String? autor, String? fecha);
+    List<Producto> buscar(Gestor gestor, bool es_peli, String? titulo, String? autor, String? fecha);
 }

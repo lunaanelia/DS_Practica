@@ -1,3 +1,6 @@
+import 'package:libros_pelis/gestor.dart';
+import 'package:libros_pelis/producto.dart';
+
 class EstrategiaFecha{
 
   @override
