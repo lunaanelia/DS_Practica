@@ -1,8 +1,8 @@
-import 'package:libros_pelis/Producto.dart';
+import 'package:libros_pelis/producto.dart';
 
 class libro extends producto {
 
-  Libro(int? id, String titulo, String autor, DateTime fecha, String descripcion)
+  libro(int? id, String titulo, String autor, DateTime fecha, String descripcion)
       :super(id, titulo, autor, fecha, descripcion);
 
 }

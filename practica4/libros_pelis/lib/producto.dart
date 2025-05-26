@@ -5,11 +5,11 @@ class producto {
   DateTime? _fecha;
   String? _descripcion;
 
-  Producto(this._id, this._titulo, this._autor, this._fecha, this._descripcion);
+  producto(this._id, this._titulo, this._autor, this._fecha, this._descripcion);
 
   // Constructor para crear un Producto a partir de un JSON
-  factory Producto.fromJson(Map<String, dynamic> json) {
-    return Producto(
+  factory producto.fromJson(Map<String, dynamic> json) {
+    return producto(
       json['id'] as int?,
       json['titulo'] as String?,
       json['autor'] as String?,
