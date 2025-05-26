@@ -3,12 +3,21 @@ class ProductoController < ApplicationController
     def index
         @productos= Producto.all
 
-        @productos= @productos.where(es_peli: true)if params[:es_peli]=="true" #Para filtrar por peli
-        @productos= @productos.where(es_peli: false)if params[:es_peli]=="false" #Para filtrar por libro
+        es_peli = params[:es_peli]
+        titulo = params[:titulo]
+        autor = params[:autor]
+        fecha = params[:fecha]
 
-        @productos= @productos.where(titulo: params[:titulo])if params[:titulo].present? #Filtro por titulo
-        @productos= @productos.where(autor: params[:autor])if params[:autor].present?   #Filtro por autor
-        @productos= @productos.where(fecha: params[:fecha])if params[:fecha].present?   #Filtro por fecha        
+        titulo = nil if titulo == "null"   #Para que no entre en el where si el valor es null
+        autor  = nil if autor == "null"
+        fecha  = nil if fecha == "null"
+
+        @productos= @productos.where(es_peli: true) if es_peli=="true" #Para filtrar por peli
+        @productos= @productos.where(es_peli: false) if es_peli=="false" #Para filtrar por libro
+
+        @productos= @productos.where(titulo: titulo) if titulo.present? #Filtro por titulo
+        @productos= @productos.where(autor: autor) if autor.present?   #Filtro por autor
+        @productos= @productos.where(fecha: fecha) if fecha.present?   #Filtro por fecha        
 
         render json: @productos
     end
