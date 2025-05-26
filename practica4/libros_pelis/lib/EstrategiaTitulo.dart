@@ -1,4 +1,3 @@
-
 class EstrategiaTitulo{
 
    @Override
