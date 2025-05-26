@@ -26,7 +26,7 @@ class Gestor {
 
     parametros['es_peli'] = es_peli.toString();
 
-    parametros['que'] = valor;
+    parametros[que] = valor;
 
 
     final u = Uri.http(
@@ -53,7 +53,7 @@ class Gestor {
 
   Future<bool> cargarTodosProductos() async {
     // Primero tareamos las peliculas
-    bool correcto;
+    bool correcto = true;
     final responsePelis = await http.get(Uri.parse('$apiUrl?es_peli=true'));
     if (responsePelis.statusCode == 200) {
       List<dynamic> productosJson = json.decode(responsePelis.body);
