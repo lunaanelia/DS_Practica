@@ -1,5 +1,5 @@
 
 abstract class IEstrategiaBusqueda{
 
-    List<Producto> buscar(es_peli, titulo, autor, fecha);
+    List<Producto> buscar(bool es_peli, String? titulo, String? autor, String? fecha);
 }

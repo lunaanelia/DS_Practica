@@ -2,11 +2,11 @@ import 'package:libros_pelis/i_estrategia_busqueda.dart';
 
 class Contexto{
 
-    final Gestor gestor;
-
+    final Gestor _gestor;
     IEstrategiaBusqueda _estrategia;
 
-    Contexto(estrategia){
+    Contexto(Gestor gestor, IEstrategiaBusqueda estrategia){
+        this.gestor = gestor;
         this._estrategia = estrategia;
     }
 
