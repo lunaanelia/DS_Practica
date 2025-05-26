@@ -1,4 +1,3 @@
-
 class EstrategiaTitulo{
 
     List<Producto> buscar(es_peli, titulo, autor, fecha){

@@ -1,10 +1,10 @@
 
 class Contexto{
     
-    _I_estrategiaBusqueda estrategia;
+    I_estrategiaBusqueda _estrategia;
 
     Contexto(estrategia){
-        this.estrategia = estrategia;
+        this._estrategia = estrategia;
     }
 
     List<Producto> buscar(){};
