@@ -163,7 +163,7 @@ class Gestor {
   }
 
   //
-  Future<void> modificarFecha(Producto producto, DateTime n_fecha) async {
+  Future<void> modificarFecha(Producto producto, String n_fecha) async {
 
     final response = await http.patch(
       Uri.parse('$apiUrl/${producto.id}'),
@@ -171,7 +171,7 @@ class Gestor {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode({
-        'fecha': n_fecha
+        'fecha': DateTime.parse(n_fecha)
       }),
     );
 
