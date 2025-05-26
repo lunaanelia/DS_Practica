@@ -40,4 +40,14 @@ class Producto {
   String? get autor => _autor;
   DateTime? get fecha => _fecha;
   String? get descripcion => _descripcion;
+
+
+  // Setters
+  set id(int? value) => _id = value;
+  set titulo(String? value) => _titulo = value;
+  set autor(String? value) => _autor = value;
+  set fecha(DateTime? value) => _fecha = value;
+  set descripcion(String? value) => _descripcion = value;
+
+
 }
