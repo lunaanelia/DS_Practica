@@ -1,8 +1,10 @@
+import 'package:libros_pelis/i_estrategia_busqueda.dart';
+
 class Contexto{
 
-    final gestorDeProducto gestor;
+    final Gestor gestor;
 
-    I_estrategiaBusqueda _estrategia;
+    IEstrategiaBusqueda _estrategia;
 
     Contexto(estrategia){
         this._estrategia = estrategia;
