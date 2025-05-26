@@ -10,7 +10,7 @@ class Contexto{
 
     Contexto(this._gestor, this._estrategia);
 
-    List<Producto> buscar(bool esPeli, String? dato) {
+    List<Producto> buscar(Gestor gestor, bool esPeli, String? dato) {
         return _estrategia.buscar(_gestor, esPeli, dato);
     }
 
