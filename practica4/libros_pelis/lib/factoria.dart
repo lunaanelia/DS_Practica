@@ -7,7 +7,7 @@ abstract class Factoria {
 
   Factoria(this._gestor);
 
-  crearProducto(String tipo, String titulo, String autor, DateTime fecha, String descripcion)
+  crearProducto(String tipo, String titulo, String autor, String fecha, String descripcion)
   {
     if (tipo=="libro"){
       this._gestor.agregar(Libro(null, titulo, autor, fecha, descripcion));
