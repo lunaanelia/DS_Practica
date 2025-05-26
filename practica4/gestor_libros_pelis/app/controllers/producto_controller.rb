@@ -44,7 +44,7 @@ class ProductoController < ApplicationController
 
     private
     def producto_params
-        params.require(:producto).permit(:titulo, :fecha, :es_peli)
+        params.require(:producto).permit(:titulo, :autor, :fecha, :es_peli)
     end
 
 end
