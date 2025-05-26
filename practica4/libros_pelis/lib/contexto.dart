@@ -10,8 +10,8 @@ class Contexto{
 
     Contexto(this._gestor, this._estrategia);
 
-    List<Producto> buscar(bool esPeli, String? titulo, String? autor, String? fecha) {
-        return _estrategia.buscar(_gestor, esPeli, titulo, autor, fecha);
+    List<Producto> buscar(bool esPeli, String? dato) {
+        return _estrategia.buscar(_gestor, esPeli, dato);
     }
 
     void setEstrategia(IEstrategiaBusqueda nuevaEstrategia) {

@@ -19,24 +19,15 @@ class Gestor {
     }
   }
 
-  Future<List<Producto>> buscar({ bool? es_peli, String? titulo, String? autor, DateTime? fecha}) async {
+  Future<List<Producto>> buscar( bool es_peli, String que, String valor) async {
+
     List<Producto> resultadoBusquedad= [];
     Map<String, String> parametros= {};
-    if(es_peli != null){
-      parametros['es_peli'] = es_peli.toString();
-    }
 
-    if(autor != null){
-      parametros['autor'] = autor;
-    }
+    parametros['es_peli'] = es_peli.toString();
 
-    if(titulo != null){
-      parametros['titulo'] = titulo;
-    }
+    parametros['que'] = valor;
 
-    if(fecha != null){
-      parametros['fecha'] = fecha.toIso8601String().split('T').first;
-    }
 
     final u = Uri.http(
       Uri.parse(apiUrl).host,
@@ -58,6 +49,7 @@ class Gestor {
     }
 
   }
+
 
   Future<void> cargarTodosProductos() async {
     // Primero tareamos las peliculas

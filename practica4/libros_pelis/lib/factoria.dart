@@ -1,4 +1,3 @@
-import 'package:libros_pelis/producto.dart';
 import 'package:libros_pelis/libro.dart';
 import 'package:libros_pelis/pelicula.dart';
 import 'package:libros_pelis/gestor.dart';
