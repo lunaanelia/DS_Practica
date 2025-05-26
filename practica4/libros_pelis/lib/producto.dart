@@ -2,7 +2,7 @@ class Producto {
   int? _id;
   String? _titulo;
   String? _autor;
-  DateTime? _fecha;
+  String? _fecha;
   String? _descripcion;
 
   Producto(this._id, this._titulo, this._autor, this._fecha, this._descripcion);
@@ -13,7 +13,7 @@ class Producto {
       json['id'] as int?,
       json['titulo'] as String?,
       json['autor'] as String?,
-      json['fecha'] != null ? DateTime.parse(json['fecha']) : null,
+      json['fecha'] !as String?,
       json['descripcion'] as String?,
     );
   }
@@ -24,21 +24,21 @@ class Producto {
       if (_id != null) 'id': _id,
       'titulo': _titulo,
       'autor': _autor,
-      'fecha': _fecha?.toIso8601String(),
+      'fecha': _fecha,
       'descripcion': _descripcion,
     };
   }
 
   @override
   String toString() {
-    return '$_titulo por $_autor (${_fecha?.year ?? "sin fecha"})\nDescripción: $_descripcion';
+    return '$_titulo por $_autor ($_fecha)\nDescripción: $_descripcion';
   }
 
   // Getters
   int? get id => _id;
   String? get titulo => _titulo;
   String? get autor => _autor;
-  DateTime? get fecha => _fecha;
+  String? get fecha => _fecha;
   String? get descripcion => _descripcion;
 
 
@@ -46,7 +46,7 @@ class Producto {
   set id(int? value) => _id = value;
   set titulo(String? value) => _titulo = value;
   set autor(String? value) => _autor = value;
-  set fecha(DateTime? value) => _fecha = value;
+  set fecha(String? value) => _fecha = value;
   set descripcion(String? value) => _descripcion = value;
 
 

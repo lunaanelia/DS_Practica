@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
-//import 'package:libros_pelis/gestor.dart';
+import 'package:libros_pelis/i_estrategia_busqueda.dart';
+import 'package:libros_pelis/gestor.dart';
+import 'package:libros_pelis/contexto.dart';
+import 'package:libros_pelis/estrategia_autor.dart';
+import 'package:libros_pelis/estrategia_fecha.dart';
+import 'package:libros_pelis/estrategia_titulo.dart';
+import 'package:libros_pelis/producto.dart';
 
 
 void main() {
@@ -48,9 +54,20 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  //final Gestor _gestor = Gestor([]);
+  final Gestor _gestor = Gestor();
   String _rolSeleccionado = "Usuario";
   static const List<String> usuarios = <String>['Administrador', 'Usuario'];
+  static const List<String> busquedas = <String>['Autor', 'Fecha', 'Titulo'];
+  static const List<String> tipo_producto = <String> ['Pelicula', 'Libro'];
+
+  static List<IEstrategiaBusqueda> _estrategiasBusqueda = <IEstrategiaBusqueda> [EstrategiaAutor(), EstrategiaFecha(), EstrategiaTitulo()];
+
+
+
+  int _estrategiaSeleccionada = 0;
+  bool _buscarPelicula = false;
+
+  late final Contexto _contexto = Contexto(_gestor, _estrategiasBusqueda[_estrategiaSeleccionada]);
 
 
   _cambiarRol (String? nuevoRol) {
@@ -59,13 +76,15 @@ class _MyHomePageState extends State<MyHomePage> {
       this._rolSeleccionado = nuevoRol!;
     });
 
-    if (_rolSeleccionado=="Usuario") {
-
-    }
-    else if (_rolSeleccionado=="Administrador") {
-
-    }
   }
+
+  void _cambiarEstrategia(int index) {
+    setState(() {
+      _estrategiaSeleccionada = index;
+      _contexto.setEstrategia(_estrategiasBusqueda[index]);
+    });
+  }
+
 
   Widget _seccionAdministrador() {
     return Center(
@@ -83,19 +102,100 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _seccionUsuario() {
-    return Center(
+    final TextEditingController _busquedaController = TextEditingController();
+    List<Producto> _resultados = [];
+
+    void _realizarBusqueda() async {
+      final resultados = await _contexto.buscar(_gestor, _buscarPelicula, _busquedaController.text);
+      setState(() {
+        _resultados = resultados;
+      });
+    }
+
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-          Text(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
             'Contenido del Usuario',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          // Otros widgets aquí
+          const SizedBox(height: 20),
+          const Text('Selecciona tipo de producto:'),
+          DropdownButton<bool>(
+            value: _buscarPelicula,
+            items: const [
+              DropdownMenuItem<bool>(
+                value: true,
+                child: Text('Película'),
+              ),
+              DropdownMenuItem<bool>(
+                value: false,
+                child: Text('Libro'),
+              ),
+            ],
+            onChanged: (bool? nuevoValor) {
+              if (nuevoValor != null) {
+                setState(() {
+                  _buscarPelicula = nuevoValor;
+                });
+              }
+            },
+          ),
+          const SizedBox(height: 16),
+          const Text('Selecciona estrategia de búsqueda:'),
+          DropdownButton<int>(
+            value: _estrategiaSeleccionada,
+            items: List.generate(busquedas.length, (index) {
+              return DropdownMenuItem<int>(
+                value: index,
+                child: Text(busquedas[index]),
+              );
+            }),
+            onChanged: (int? newIndex) {
+              if (newIndex != null) {
+                _cambiarEstrategia(newIndex);
+              }
+            },
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            controller: _busquedaController,
+            decoration: const InputDecoration(
+              labelText: 'Dato a buscar',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const SizedBox(height: 12),
+          ElevatedButton(
+            onPressed: _realizarBusqueda,
+            child: const Text('Buscar'),
+          ),
+          const SizedBox(height: 20),
+          const Text('Resultados:', style: TextStyle(fontWeight: FontWeight.bold)),
+          Expanded(
+            child: _resultados.isEmpty
+                ? const Center(child: Text('No hay resultados'))
+                : ListView.builder(
+              itemCount: _resultados.length,
+              itemBuilder: (context, index) {
+                final producto = _resultados[index];
+                return Card(
+                  child: ListTile(
+                    title: Text(producto.titulo ?? 'Sin título'),
+                    subtitle: Text('${producto.autor ?? 'Autor desconocido'} - ${producto.fecha?.year ?? ''}'),
+                  ),
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
   }
+
+
 
   @override
   Widget build(BuildContext context) {
