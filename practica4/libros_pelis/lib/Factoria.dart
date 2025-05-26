@@ -12,6 +12,8 @@ abstract class Factoria {
     else if (tipo=="pelicula"){
       return Pelicula(null, titulo, autor, fecha, descripcion);
     }
-    throw ArgumentError("Tipo de producto no válido: $tipo");
+    else{
+      throw ArgumentError("Tipo de producto no válido: $tipo");
+    }
   }
 }
