@@ -4,7 +4,7 @@ import 'package:libros_pelis/producto.dart';
 class EstrategiaFecha{
 
   @override
-  List<Producto> buscar(Gestor gestor, bool es_peli, String? fecha){
+  Future<List<Producto>> buscar(Gestor gestor, bool es_peli, String fecha){
     return gestor.buscar(es_peli, "fecha", fecha);
   }
 
