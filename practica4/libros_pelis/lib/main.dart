@@ -106,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
     List<Producto> _resultados = [];
 
     void _realizarBusqueda() async {
-      final resultados = await _contexto.buscar(_gestor, _buscarPelicula, _busquedaController.text);
+      final resultados = await _contexto.buscar( _buscarPelicula, _busquedaController.text);
       setState(() {
         _resultados = resultados;
       });
