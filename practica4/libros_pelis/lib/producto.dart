@@ -1,4 +1,4 @@
-class Producto {
+class producto {
   int? _id;
   String? _titulo;
   String? _autor;

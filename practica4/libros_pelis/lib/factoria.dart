@@ -3,7 +3,7 @@ import 'package:libros_pelis/Libro.dart';
 import 'package:libros_pelis/Pelicula.dart';
 
 
-abstract class Factoria {
+abstract class factoria {
   Producto crearProducto(String tipo, String titulo, String autor, DateTime fecha, String descripcion)
   {
     if (tipo=="libro"){
