@@ -45,13 +45,14 @@ class ProductoController < ApplicationController
     end
 
     def update
-        @producto = Producto.new(producto_params)
-        if @producto.update(producto_params)
-            render json: @producto
-        else
-            @producto = Producto.find(params[:id])
-            render json: @producto.errors, status: :unprocessable_entity
-        end
+    
+      @producto = Producto.find(params[:id])
+
+      if @producto.update(producto_params)
+        render json: @producto, status: :ok 
+      else
+        render json: @producto.errors, status: :unprocessable_entity
+      end
     end
 
     def destroy

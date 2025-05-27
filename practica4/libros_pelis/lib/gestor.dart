@@ -87,9 +87,12 @@ print(u);
   }
 
   Future<void> agregar(Producto producto) async {
-print(jsonEncode({
-  'producto': producto.toJson(),
-}));
+
+    /*
+    print(jsonEncode({
+      'producto': producto.toJson(),
+    }));
+    */
 
     final response = await http.post(
       Uri.parse(apiUrl),
@@ -129,7 +132,11 @@ print(jsonEncode({
     );
 
     if (response.statusCode == 200) {
+    //  Producto nuevo = Producto.fromJson(json.decode(response.body));
+    //  producto.id = nuevo.id;
+    //  _misProductos.add(nuevo);
       producto.titulo = n_titulo;
+
     } else {
       throw Exception('Failed to update product');
     }
