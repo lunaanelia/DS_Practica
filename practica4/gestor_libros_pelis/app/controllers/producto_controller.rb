@@ -23,6 +23,19 @@ class ProductoController < ApplicationController
     end
     
     def create
+    
+        #Comprueba si ya existe un producto con el mismo titulo, autor y es_peli 
+        existente = Producto.where(
+          titulo: producto_params[:titulo],
+          autor: producto_params[:autor],
+          es_peli: producto_params[:es_peli]
+        ).first
+
+        if existente
+          render json: { error: "Producto ya existe" }, status: :unprocessable_entity
+          return
+        end
+    
         @producto = Producto.new(producto_params)
         if @producto.save
             render json: @producto, status: :created
