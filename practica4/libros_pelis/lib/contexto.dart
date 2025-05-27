@@ -8,7 +8,7 @@ class Contexto{
     final Gestor _gestor;
     IEstrategiaBusqueda _estrategia;
 
-    Contexto(this._gestor, this._estrategia);
+    Contexto(this._gestor, this._estrategia);f
 
     Future<List<Producto>> buscar(bool esPeli, String dato) {
         return _estrategia.buscar(_gestor, esPeli, dato);
