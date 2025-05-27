@@ -59,9 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String _rolSeleccionado = "Usuario";
   static const List<String> usuarios = <String>['Administrador', 'Usuario'];
   static const List<String> busquedas = <String>['Autor', 'Fecha', 'Titulo'];
-  static const List<String> tipo_producto = <String> ['Pelicula', 'Libro'];
-
-
+  //static const List<String> tipo_producto = <String> ['Pelicula', 'Libro'];
 
 
 
