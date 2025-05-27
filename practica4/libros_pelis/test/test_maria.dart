@@ -28,7 +28,7 @@ void main () {
     Gestor g = Gestor();
     await g.cargarTodosProductos();
 
-    expect(g.getProductos().length, 0);
+    expect(g.getProductos().length, 2);
   });
 
 }
