@@ -4,6 +4,8 @@ import 'package:libros_pelis/estrategia_autor.dart';
 import 'package:libros_pelis/producto.dart';
 import 'package:libros_pelis/gestor.dart';
 import 'package:libros_pelis/contexto.dart';
+import 'package:libros_pelis/factoria.dart';
+
 
 void main () {
 
@@ -63,6 +65,33 @@ void main () {
       expect(resultado.length, equals(1));
       expect(resultado[0].titulo, equals("Test añadir producto"));
     });
+
+
+    test("Crear un libro con factoria", ()  async {
+
+      Gestor g = Gestor();
+      Contexto contexto = Contexto(g, EstrategiaTitulo());
+      Factoria fact = Factoria(g);
+
+      //Primero  busca si existe el libro que voy a buscar y si lo encuentra lo borra
+      //Esto se hace para que pase el test y no de error al agregar un libro que ya esta
+      //Busca si ya existe el libro
+      List<Producto> tmp= await contexto.buscar(false,"Test crear libro factoria");
+
+      if(tmp.isNotEmpty){
+        await g.eliminar(tmp[0]);
+      }
+
+
+      fact.crearProducto("libro", "Test crear libro factoria", "test", "27-05-2025", "Esto es una prueba");
+
+      List<Producto> resultado = await contexto.buscar(false, "Test crear libro factoria");
+
+      expect(resultado.length, equals(1));
+      expect(resultado[0].titulo, equals("Test crear libro factoria"));
+    });
+
+
 
   });
 
