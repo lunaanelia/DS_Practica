@@ -53,12 +53,13 @@ void main () {
       expect(resultado[0].titulo, equals("Test añadir producto"));
     });
 
+  });
 
     test("Modificar un producto de la base de datos", ()  async {
 
       Gestor g = Gestor();
       Contexto contexto = Contexto(g, EstrategiaTitulo());
-
+/*
       //Primero  busca si existe el libro que voy a buscar y si lo encuentra lo borra
       //Esto se hace para que pase el test y no de error al agregar un libro que ya esta
       //Busca si ya existe el libro
@@ -72,15 +73,23 @@ void main () {
       Producto libro = Producto(null, false, "Test modificar producto", "Test", "27-5-2025", "Esto es una prueba.");
       await g.agregar(libro);
 
+      print(await contexto.buscar(false, "Test modificar producto")); */
+
+      List<Producto> tmp= await contexto.buscar(false, "Test modificar producto");
+
+      Producto libro= tmp[0];
+
       await g.modificarTitulo(libro, "Ya se ha modificado");
 
       List<Producto> resultado = await contexto.buscar(false, "Ya se ha modificado");
 
       expect(resultado.length, equals(1));
       expect(resultado[0].titulo, equals("Ya se ha modificado"));
+
+      List<Producto> tmp2= await contexto.buscar(false, "Ya se ha modificado");
+
     });
 
-  });
 
 
 

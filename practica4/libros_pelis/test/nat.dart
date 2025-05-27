@@ -30,4 +30,35 @@ void main(){
     });
   });
 
+  group("BD", (){
+    test("Eliminar", ()async{
+      Gestor gestor= Gestor();
+      Contexto contexto= Contexto(gestor,EstrategiaAutor());
+
+      Producto peli=Producto(null,true,"test","test","12-4-2000","test");
+      await gestor.agregar(peli);
+      List<Producto> tmp= await contexto.buscar(true,"test");
+
+      await gestor.eliminar(tmp[0]);
+
+      gestor.cargarTodosProductos();
+
+      expect(gestor.getProductos().length, equals(0));
+    });
+    test("Que no se puedan crear productos duplicados", ()async{
+      Gestor gestor= Gestor();
+      Contexto contexto= Contexto(gestor,EstrategiaAutor());
+
+      Producto peli=Producto(null,true,"test","test","12-4-2000","test");
+      await gestor.agregar(peli);
+
+      expect(() async => await gestor.agregar(peli), throwsA(isA<Exception>()));
+
+      List<Producto> tmp= await contexto.buscar(true,"test"); //Lo borra al acabar el test
+
+      await gestor.eliminar(tmp[0]);
+
+    });
+  });
+
 }
