@@ -59,21 +59,10 @@ void main () {
 
       Gestor g = Gestor();
       Contexto contexto = Contexto(g, EstrategiaTitulo());
-/*
-      //Primero  busca si existe el libro que voy a buscar y si lo encuentra lo borra
-      //Esto se hace para que pase el test y no de error al agregar un libro que ya esta
-      //Busca si ya existe el libro
-      List<Producto> tmp= await contexto.buscar(false,"Test modificar producto");
-
-      if(tmp.isNotEmpty){
-        await g.eliminar(tmp[0]);
-      }
 
       //Añade el producto
-      Producto libro = Producto(null, false, "Test modificar producto", "Test", "27-5-2025", "Esto es una prueba.");
-      await g.agregar(libro);
-
-      print(await contexto.buscar(false, "Test modificar producto")); */
+      Producto l = Producto(null, false, "Test modificar producto", "Test", "27-5-2025", "Esto es una prueba.");
+      await g.agregar(l);
 
       List<Producto> tmp= await contexto.buscar(false, "Test modificar producto");
 
@@ -87,7 +76,7 @@ void main () {
       expect(resultado[0].titulo, equals("Ya se ha modificado"));
 
       List<Producto> tmp2= await contexto.buscar(false, "Ya se ha modificado");
-
+      await g.eliminar(tmp2[0]);
     });
 
 
