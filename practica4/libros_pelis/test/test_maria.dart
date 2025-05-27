@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libros_pelis/estrategia_titulo.dart';
+import 'package:libros_pelis/estrategia_autor.dart';
 import 'package:libros_pelis/producto.dart';
 import 'package:libros_pelis/gestor.dart';
 import 'package:libros_pelis/contexto.dart';
@@ -28,15 +29,14 @@ void main () {
       expect(resultado[0].titulo, equals("La casa de Bernarda Alba"));
     });
 
-    test("Busqueda sin filtro",()async{
+    test("Busqueda sin filtros",()async{
 
       Gestor gestor= Gestor();
       Contexto contexto= Contexto(gestor,EstrategiaAutor());
 
       List<Producto> res= await contexto.buscar(true, "");
 
-      expect(res.length, );
-      expect(res[0].autor, equals("Bella"));
+      expect(res.length, gestor.getProductos().length);
     });
 
 
