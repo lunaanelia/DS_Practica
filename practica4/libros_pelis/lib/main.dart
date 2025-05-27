@@ -6,6 +6,7 @@ import 'package:libros_pelis/estrategia_autor.dart';
 import 'package:libros_pelis/estrategia_fecha.dart';
 import 'package:libros_pelis/estrategia_titulo.dart';
 import 'package:libros_pelis/producto.dart';
+import 'package:libros_pelis/factoria.dart';
 
 
 void main() {
@@ -60,14 +61,29 @@ class _MyHomePageState extends State<MyHomePage> {
   static const List<String> busquedas = <String>['Autor', 'Fecha', 'Titulo'];
   static const List<String> tipo_producto = <String> ['Pelicula', 'Libro'];
 
+
+
+
+
+  // Para la búsqueda del usuario
   static List<IEstrategiaBusqueda> _estrategiasBusqueda = <IEstrategiaBusqueda> [EstrategiaAutor(), EstrategiaFecha(), EstrategiaTitulo()];
-
-
-
-  int _estrategiaSeleccionada = 0;
-  bool _buscarPelicula = false;
-
+  int _estrategiaSeleccionada = 0; // índice de la estrategia seleccionada
+  bool _buscarPelicula = false; // True si se va a buscar una película y false si es libro
   late final Contexto _contexto = Contexto(_gestor, _estrategiasBusqueda[_estrategiaSeleccionada]);
+  final TextEditingController _busquedaController = TextEditingController();
+  List<Producto> _resultados = [];
+
+
+  // Para que el administrador pueda crear Productos
+  late Factoria _factoriaProductos = Factoria(_gestor);
+  final TextEditingController _nuevoTitulo = TextEditingController();
+  final TextEditingController _nuevoAutor = TextEditingController();
+  final TextEditingController _nuevaFecha = TextEditingController();
+  final TextEditingController _nuevaDescripcion = TextEditingController();
+
+  bool _nuevaPelicula = false; // True si se va a crear una palícula y false si es libro
+
+
 
 
   _cambiarRol (String? nuevoRol) {
@@ -86,31 +102,120 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 
+  void _crearProducto() {
+
+    _factoriaProductos.crearProducto(
+       _nuevaPelicula ? "pelicula" : "libro",
+       _nuevoTitulo.text,
+       _nuevoAutor.text,
+       _nuevaFecha.text,
+       _nuevaDescripcion.text,
+    );
+
+
+    setState(() {
+      // Limpiar los campos tras la creación
+      _nuevoTitulo.clear();
+      _nuevoAutor.clear();
+      _nuevaFecha.clear();
+      _nuevaDescripcion.clear();
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Producto creado con éxito')),
+    );
+  }
+
+
   Widget _seccionAdministrador() {
-    return Center(
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-          Text(
-            'Contenido del Administrador',
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Hola, Adminstrados¡r',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          // Otros widgets aquí
+          const SizedBox(height: 20),
+          const Text('Selecciona tipo de producto:'),
+          DropdownButton<bool>(
+            value: _nuevaPelicula,
+            items: const [
+              DropdownMenuItem<bool>(
+                value: true,
+                child: Text('Película'),
+              ),
+              DropdownMenuItem<bool>(
+                value: false,
+                child: Text('Libro'),
+              ),
+            ],
+            onChanged: (bool? nuevoValor) {
+              if (nuevoValor != null) {
+                setState(() {
+                  _nuevaPelicula = nuevoValor;
+                });
+              }
+            },
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            controller: _nuevoTitulo,
+            decoration: const InputDecoration(
+              labelText: 'Introduzca el título',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const SizedBox(height: 12),
+          TextField(
+            controller: _nuevoAutor,
+            decoration: const InputDecoration(
+              labelText: 'Introduzca el autor/director',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const SizedBox(height: 12),
+          TextField(
+            controller: _nuevaFecha,
+            decoration: const InputDecoration(
+              labelText: 'Introduzca la fecha',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const SizedBox(height: 12),
+
+          TextField(
+            controller: _nuevaDescripcion,
+            decoration: const InputDecoration(
+              labelText: 'Introduzca la descripción',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const SizedBox(height: 12),
+
+          ElevatedButton(
+            onPressed: _crearProducto,
+            child: const Text('Crear'),
+          ),
+          const SizedBox(height: 20),
+          const Text('Resultados:', style: TextStyle(fontWeight: FontWeight.bold)),
+
         ],
       ),
     );
   }
 
-  Widget _seccionUsuario() {
-    final TextEditingController _busquedaController = TextEditingController();
-    List<Producto> _resultados = [];
 
-    void _realizarBusqueda() async {
-      final resultados = await _contexto.buscar( _buscarPelicula, _busquedaController.text);
-      setState(() {
-        _resultados = resultados;
-      });
-    }
+
+  void _realizarBusqueda() async {
+    final resultados = await _contexto.buscar( _buscarPelicula, _busquedaController.text);
+    setState(() {
+      _resultados = resultados;
+    });
+  }
+
+  Widget _seccionUsuario() {
 
     return Padding(
       padding: const EdgeInsets.all(16.0),

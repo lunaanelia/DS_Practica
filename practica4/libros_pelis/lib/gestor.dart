@@ -19,6 +19,10 @@ class Gestor {
     }
   }
 
+  List<Producto> getProductos(){
+    return  _misProductos;
+  }
+
   Future<List<Producto>> buscar( bool es_peli, String que, String valor) async {
 
     List<Producto> resultadoBusquedad= [];

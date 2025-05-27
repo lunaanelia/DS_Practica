@@ -2,7 +2,7 @@ import 'package:libros_pelis/libro.dart';
 import 'package:libros_pelis/pelicula.dart';
 import 'package:libros_pelis/gestor.dart';
 
-abstract class Factoria {
+class Factoria {
   Gestor _gestor;
 
   Factoria(this._gestor);
