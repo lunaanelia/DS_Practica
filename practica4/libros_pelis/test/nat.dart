@@ -11,7 +11,7 @@ void main(){
     test("Busqueda por autor",()async{
       Gestor gestor= Gestor();
       Producto peli=Producto(null,"Crepusculo","Bella","12-4-2000","Bella, where the hell have you been loca?");
-      gestor.agregar(peli);
+      await gestor.agregar(peli);
       Contexto contexto= Contexto(gestor,EstrategiaAutor());
       List<Producto> res= await contexto.buscar(true,"Bella");
 
