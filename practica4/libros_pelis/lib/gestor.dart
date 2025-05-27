@@ -41,7 +41,7 @@ class Gestor {
       path: parsedUri.path,
       queryParameters: parametros,
     );
-print(u);
+
     // Primero tareamos las peliculas
     final responsePelis = await http.get(u);
     if (responsePelis.statusCode == 200) {

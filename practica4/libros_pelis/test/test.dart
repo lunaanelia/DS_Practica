@@ -1,0 +1,234 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:libros_pelis/gestor.dart';
+import 'package:libros_pelis/producto.dart';
+import 'package:libros_pelis/contexto.dart';
+import 'package:libros_pelis/estrategia_titulo.dart';
+import 'package:libros_pelis/estrategia_autor.dart';
+import 'package:libros_pelis/estrategia_fecha.dart';
+import 'package:libros_pelis/factoria.dart';
+
+void main(){
+
+  group("BD", (){
+
+    test("Eliminar", ()async{
+      Gestor gestor= Gestor();
+      Contexto contexto= Contexto(gestor,EstrategiaAutor());
+
+      gestor.cargarTodosProductos();
+
+      var num=gestor.getProductos().length;
+
+      Producto peli=Producto(null,true,"test","test","12-4-2000","test");
+      await gestor.agregar(peli);
+      List<Producto> tmp= await contexto.buscar(true,"test");
+
+      await gestor.eliminar(tmp[0]);
+
+      gestor.cargarTodosProductos();
+
+      expect(gestor.getProductos().length, equals(num));  //Tiene el mismo numero de productos que tenia antes
+    });
+
+    test("Que no se puedan crear productos duplicados", ()async{
+      Gestor gestor= Gestor();
+      Contexto contexto= Contexto(gestor,EstrategiaAutor());
+
+      Producto peli=Producto(null,true,"test","test","12-4-2000","test");
+      await gestor.agregar(peli);
+
+      expect(() async => await gestor.agregar(peli), throwsA(isA<Exception>()));
+
+      List<Producto> tmp= await contexto.buscar(true,"test"); //Lo borra al acabar el test
+
+      await gestor.eliminar(tmp[0]);
+
+    });
+
+    test("conexion",() async{
+      Gestor g = Gestor();
+      bool s = await g.cargarTodosProductos();
+      expect(s, true);
+    });
+
+    test("Aniadir producto a la base de datos", ()  async {
+
+      Gestor g = Gestor();
+      Contexto contexto = Contexto(g, EstrategiaTitulo());
+
+      //Primero  busca si existe el libro que voy a buscar y si lo encuentra lo borra
+      //Esto se hace para que pase el test y no de error al agregar un libro que ya esta
+      //Busca si ya existe el libro
+      /* List<Producto> tmp= await contexto.buscar(false,"Test añadir producto");
+
+      if(tmp.isNotEmpty){
+        await g.eliminar(tmp[0]);
+      } */
+
+      Producto libro = Producto(null, false, "Test añadir producto", "Test", "27-5-2025", "Esto es una prueba.");
+      await g.agregar(libro);
+
+
+      List<Producto> resultado = await contexto.buscar(false, "Test añadir producto");
+
+      expect(resultado.length, equals(1));
+      expect(resultado[0].titulo, equals("Test añadir producto"));
+
+      List<Producto> tmp= await contexto.buscar(false,"Test añadir producto");
+      await g.eliminar(tmp[0]);
+
+    });
+
+    test("Modificar un producto de la base de datos", ()  async {
+
+      Gestor g = Gestor();
+      Contexto contexto = Contexto(g, EstrategiaTitulo());
+
+      //Añade el producto
+      Producto l = Producto(null, false, "Test modificar producto", "Test", "27-5-2025", "Esto es una prueba.");
+      await g.agregar(l);
+
+      List<Producto> tmp= await contexto.buscar(false, "Test modificar producto");
+
+      Producto libro= tmp[0];
+
+      await g.modificarTitulo(libro, "Ya se ha modificado");
+
+      List<Producto> resultado = await contexto.buscar(false, "Ya se ha modificado");
+
+      expect(resultado.length, equals(1));
+      expect(resultado[0].titulo, equals("Ya se ha modificado"));
+
+      List<Producto> tmp2= await contexto.buscar(false, "Ya se ha modificado");
+      await g.eliminar(tmp2[0]);
+    });
+
+  });
+
+
+  group("Busqueda",(){
+
+    test("Busqueda por autor",()async{
+
+      Gestor gestor= Gestor();
+      Contexto contexto= Contexto(gestor,EstrategiaAutor());
+
+      //Busca si ya existe la peli
+      List<Producto> tmp= await contexto.buscar(true,"Bella");
+
+      if(tmp.isNotEmpty){
+        await gestor.eliminar(tmp[0]);
+      }
+
+
+      Producto peli=Producto(null,true,"Crepusculo","Bella","12-4-2000","Bella, where the hell have you been loca?");
+      await gestor.agregar(peli);
+      List<Producto> res= await contexto.buscar(true,"Bella");
+
+      expect(res.length, equals(1));
+      expect(res[0].autor, equals("Bella"));
+    });
+
+    test("Busqueda por fecha",()async{
+
+      Gestor gestor= Gestor();
+      Contexto contexto= Contexto(gestor,EstrategiaFecha());
+
+      //Busca si ya existe la peli
+      List<Producto> tmp= await contexto.buscar(true,"12-4-2000");
+
+      if(tmp.isNotEmpty){
+        await gestor.eliminar(tmp[0]);
+      }
+
+
+      Producto peli=Producto(null,true,"Crepusculo","Bella","12-4-2000","Bella, where the hell have you been loca?");
+      await gestor.agregar(peli);
+      List<Producto> res= await contexto.buscar(true,"12-4-2000");
+
+      expect(res.length, equals(1));
+      expect(res[0].autor, equals("Bella"));
+    });
+
+    test("Busqueda sin coincidencias devuelve vacio",()async{
+
+      Gestor gestor= Gestor();
+      Contexto contexto= Contexto(gestor,EstrategiaAutor());
+
+      List<Producto> res= await contexto.buscar(true,"Test_busqueda");
+
+      expect(res.length, equals(0));
+    });
+
+    test("Busqueda por titulo", () async {
+
+      Gestor g = Gestor();
+      Contexto contexto = Contexto(g, EstrategiaTitulo());
+
+      //Busca si ya existe el libro
+      List<Producto> tmp= await contexto.buscar(false,"La casa de Bernarda Alba");
+
+      if(tmp.isNotEmpty){
+        await g.eliminar(tmp[0]);
+      }
+
+      Producto libro = Producto(null, false, "La casa de Bernarda Alba", "Federico Garcia Lorca", "12-4-2000", "La obra refleja la situación social y política en España antes de la Guerra Civil.");
+      await g.agregar(libro);
+      List<Producto> resultado = await contexto.buscar(false, "La casa de Bernarda Alba");
+
+      expect(resultado.length, equals(1));
+      expect(resultado[0].titulo, equals("La casa de Bernarda Alba"));
+    });
+
+    test("Busqueda sin filtros",()async{
+
+      Gestor gestor= Gestor();
+      Contexto contexto= Contexto(gestor,EstrategiaAutor());
+
+      List<Producto> res= await contexto.buscar(true, "");
+
+      expect(res.length, gestor.getProductos().length);
+    });
+
+  });
+
+  group("Factoria", (){
+
+    test("Crear un libro con factoria", ()  async {
+
+      Gestor g = Gestor();
+      Contexto contexto = Contexto(g, EstrategiaTitulo());
+      Factoria fact = Factoria(g);
+
+      //Primero  busca si existe el libro que voy a buscar y si lo encuentra lo borra
+      //Esto se hace para que pase el test y no de error al agregar un libro que ya esta
+      //Busca si ya existe el libro
+      List<Producto> tmp= await contexto.buscar(false,"Test crear libro factoria");
+
+      if(tmp.isNotEmpty){
+        await g.eliminar(tmp[0]);
+      }
+
+
+      fact.crearProducto("libro", "Test crear libro factoria", "test", "27-05-2025", "Esto es una prueba");
+
+      List<Producto> resultado = await contexto.buscar(false, "Test crear libro factoria");
+
+      expect(resultado.length, equals(1));
+      expect(resultado[0].titulo, equals("Test crear libro factoria"));
+
+      //await g.eliminar(resultado[0]);
+
+    });
+
+    test("Factoria incorrecta da error",(){
+      Gestor gestor= Gestor();
+
+      Factoria factoria= Factoria(gestor);
+
+      expect( () => factoria.crearProducto("coche", "brum brum", "paco", "12-4-2020", "kachau"),throwsA(isA<ArgumentError>()));
+    });
+
+  });
+
+}
