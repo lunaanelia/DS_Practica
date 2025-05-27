@@ -87,6 +87,10 @@ print(u);
   }
 
   Future<void> agregar(Producto producto) async {
+print(jsonEncode({
+  'producto': producto.toJson(),
+}));
+
     final response = await http.post(
       Uri.parse(apiUrl),
       headers: <String, String>{
