@@ -7,6 +7,6 @@ class EstrategiaTitulo implements IEstrategiaBusqueda{
 
    @override
    Future<List<Producto>> buscar(Gestor gestor, bool es_peli, String valor){
-        return gestor.buscar(es_peli, "autor", valor);
+        return gestor.buscar(es_peli, "titulo", valor);
    }
 }
