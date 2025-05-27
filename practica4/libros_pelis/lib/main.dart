@@ -184,7 +184,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 return Card(
                   child: ListTile(
                     title: Text(producto.titulo ?? 'Sin título'),
-                    subtitle: Text('${producto.autor ?? 'Autor desconocido'} - ${producto.fecha?.year ?? ''}'),
+                    subtitle: Text('${producto.autor ?? 'Autor desconocido'} - ${producto.fecha} ''}'),
                   ),
                 );
               },
