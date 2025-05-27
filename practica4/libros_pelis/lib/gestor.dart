@@ -28,13 +28,16 @@ class Gestor {
 
     parametros[que] = valor;
 
+    final parsedUri= Uri.parse(apiUrl); //Para obtener el objeto Uri
 
-    final u = Uri.http(
-      Uri.parse(apiUrl).host,
-      Uri.parse(apiUrl).path,
-      parametros,
+    final u = Uri(
+      scheme: parsedUri.scheme,
+      host: parsedUri.host,
+      port: parsedUri.port,
+      path: parsedUri.path,
+      queryParameters: parametros,
     );
-
+print(u);
     // Primero tareamos las peliculas
     final responsePelis = await http.get(u);
     if (responsePelis.statusCode == 200) {
