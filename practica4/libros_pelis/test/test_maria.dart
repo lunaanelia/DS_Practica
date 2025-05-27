@@ -28,6 +28,17 @@ void main () {
       expect(resultado[0].titulo, equals("La casa de Bernarda Alba"));
     });
 
+    test("Busqueda sin filtro",()async{
+
+      Gestor gestor= Gestor();
+      Contexto contexto= Contexto(gestor,EstrategiaAutor());
+
+      List<Producto> res= await contexto.buscar(true, "");
+
+      expect(res.length, );
+      expect(res[0].autor, equals("Bella"));
+    });
+
 
     test("Aniadir producto a la base de datos", ()  async {
 
