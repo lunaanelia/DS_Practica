@@ -11,12 +11,20 @@ void main () {
     test("Busqueda por titulo", () async {
 
       Gestor g = Gestor();
-      Producto libro = Producto(null, false, "La casa de Bernarda Alba", "Federico Garcia Lorca", "12-4-2000", "La obra refleja la situación social y política en España antes de la Guerra Civil.");
-      await g.agregar(libro);
-
       Contexto contexto = Contexto(g, EstrategiaTitulo());
 
+      //Busca si ya existe el libro
+      List<Producto> tmp= await contexto.buscar(false,"La casa de Bernarda Alba");
+
+      if(tmp.isNotEmpty){
+        await g.eliminar(tmp[0]);
+      }
+
+      Producto libro = Producto(null, false, "La casa de Bernarda Alba", "Federico Garcia Lorca", "12-4-2000", "La obra refleja la situación social y política en España antes de la Guerra Civil.");
+      await g.agregar(libro);
       List<Producto> resultado = await contexto.buscar(false, "La casa de Bernarda Alba");
+
+      expect(resultado.length, equals(1));
       expect(resultado[0].titulo, equals("La casa de Bernarda Alba"));
     });
 
