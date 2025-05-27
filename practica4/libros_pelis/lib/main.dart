@@ -210,8 +210,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _realizarBusqueda() async {
     final resultados = await _contexto.buscar( _buscarPelicula, _busquedaController.text);
+
     setState(() {
-      _resultados = resultados;
+    // Si no hay resultados que coincidan con la búsqueda, se muestran
+    // todas los productos de la base de datos
+      if(resultados.isEmpty) {
+        _resultados = _gestor.getProductos();
+      }
+      else {
+        _resultados = resultados;
+      }
+
     });
   }
 
@@ -279,7 +288,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           const SizedBox(height: 20),
           const Text('Resultados:', style: TextStyle(fontWeight: FontWeight.bold)),
-          Expanded(
+          Expanded( //-> REVISAR!!
             child: _resultados.isEmpty
                 ? const Center(child: Text('No hay resultados'))
                 : ListView.builder(
@@ -288,8 +297,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 final producto = _resultados[index];
                 return Card(
                   child: ListTile(
-                    title: Text(producto.titulo ?? 'Sin título'),
-                    subtitle: Text('${producto.autor ?? 'Autor desconocido'} - ${producto.fecha} ''}'),
+                    title: Text(producto.titulo!),
+                    subtitle: Text('${producto.autor} - ${producto.fecha} ''}'),
                   ),
                 );
               },
