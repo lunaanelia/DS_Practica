@@ -81,6 +81,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   bool _nuevaPelicula = false; // True si se va a crear una palícula y false si es libro
 
+  bool _hayResultados = false;
+
 
 
 
@@ -103,11 +105,11 @@ class _MyHomePageState extends State<MyHomePage> {
   void _crearProducto() {
 
     _factoriaProductos.crearProducto(
-       _nuevaPelicula ? "pelicula" : "libro",
-       _nuevoTitulo.text,
-       _nuevoAutor.text,
-       _nuevaFecha.text,
-       _nuevaDescripcion.text,
+      _nuevaPelicula ? "pelicula" : "libro",
+      _nuevoTitulo.text,
+      _nuevoAutor.text,
+      _nuevaFecha.text,
+      _nuevaDescripcion.text,
     );
 
 
@@ -210,12 +212,14 @@ class _MyHomePageState extends State<MyHomePage> {
     final resultados = await _contexto.buscar( _buscarPelicula, _busquedaController.text);
 
     setState(() {
-    // Si no hay resultados que coincidan con la búsqueda, se muestran
-    // todas los productos de la base de datos
+      // Si no hay resultados que coincidan con la búsqueda, se muestran
+      // todas los productos de la base de datos
       if(resultados.isEmpty) {
+        _hayResultados = false;
         _resultados = _gestor.getProductos();
       }
       else {
+        _hayResultados = true;
         _resultados = resultados;
       }
 
@@ -286,27 +290,35 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           const SizedBox(height: 20),
           const Text('Resultados:', style: TextStyle(fontWeight: FontWeight.bold)),
-          Expanded( //-> REVISAR!!
-            child: _resultados.isEmpty
-                ? const Center(child: Text('No hay resultados'))
-                : ListView.builder(
+
+          if (!_hayResultados)
+            const Center(
+              child: Text(
+                'No se han encontrado resultados. Se muestran todos los productos de la Base de Datos a continuación',
+                textAlign: TextAlign.center,
+              ),
+            ),
+
+          Expanded(
+            child: ListView.builder(
               itemCount: _resultados.length,
               itemBuilder: (context, index) {
                 final producto = _resultados[index];
                 return Card(
                   child: ListTile(
                     title: Text(producto.titulo!),
-                    subtitle: Text('${producto.autor} - ${producto.fecha} ''}'),
+                    subtitle: Text('${producto.autor} - ${producto.fecha}'),
                   ),
                 );
               },
             ),
           ),
+
+
         ],
       ),
     );
   }
-
 
 
   @override
