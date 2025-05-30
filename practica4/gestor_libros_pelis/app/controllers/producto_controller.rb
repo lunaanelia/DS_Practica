@@ -12,6 +12,7 @@ class ProductoController < ApplicationController
         autor  = nil if autor == "null"
         fecha  = nil if fecha == "null"
 
+      
         @productos= @productos.where(es_peli: true) if es_peli=="true" #Para filtrar por peli
         @productos= @productos.where(es_peli: false) if es_peli=="false" #Para filtrar por libro
 

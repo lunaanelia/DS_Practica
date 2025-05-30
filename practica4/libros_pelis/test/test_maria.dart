@@ -82,10 +82,14 @@ void main () {
         await g.eliminar(tmp[0]);
       }
 
+      print(g.getProductos().length);
 
       fact.crearProducto("libro", "Test crear libro factoria", "test", "27-05-2025", "Esto es una prueba");
 
       List<Producto> resultado = await contexto.buscar(false, "Test crear libro factoria");
+
+      print(resultado.length);
+      print(g.getProductos().length);
 
       expect(resultado.length, equals(1));
       expect(resultado[0].titulo, equals("Test crear libro factoria"));

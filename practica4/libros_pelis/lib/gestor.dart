@@ -13,11 +13,7 @@ class Gestor {
   final List<Producto> _misProductos= [];
   final String apiUrl = "http://localhost:3000/producto";
 
-  Gestor(){
-    if(this._misProductos.isEmpty){
-      this.cargarTodosProductos();
-    }
-  }
+  Gestor(){}
 
   List<Producto> getProductos(){
     return  _misProductos;

@@ -7,14 +7,14 @@ class Factoria {
 
   Factoria(this._gestor);
 
-  crearProducto(String tipo, String titulo, String autor, String fecha, String descripcion)
+  Future<void> crearProducto(String tipo, String titulo, String autor, String fecha, String descripcion) async
   {
     if (tipo=="libro"){
-      this._gestor.agregar(Libro(null, titulo, autor, fecha, descripcion));
+      await this._gestor.agregar(Libro(null, titulo, autor, fecha, descripcion));
 
     }
     else if (tipo=="pelicula"){
-      this._gestor.agregar(Pelicula(null, titulo, autor, fecha, descripcion));
+      await this._gestor.agregar(Pelicula(null, titulo, autor, fecha, descripcion));
     }
     else{
       throw ArgumentError("Tipo de producto no válido: $tipo");

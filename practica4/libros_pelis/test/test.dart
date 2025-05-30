@@ -15,7 +15,7 @@ void main(){
       Gestor gestor= Gestor();
       Contexto contexto= Contexto(gestor,EstrategiaAutor());
 
-      gestor.cargarTodosProductos();
+      await gestor.cargarTodosProductos();
 
       var num=gestor.getProductos().length;
 
@@ -25,7 +25,7 @@ void main(){
 
       await gestor.eliminar(tmp[0]);
 
-      gestor.cargarTodosProductos();
+      await gestor.cargarTodosProductos();
 
       expect(gestor.getProductos().length, equals(num));  //Tiene el mismo numero de productos que tenia antes
     });
@@ -185,9 +185,11 @@ void main(){
       Gestor gestor= Gestor();
       Contexto contexto= Contexto(gestor,EstrategiaAutor());
 
-      List<Producto> res= await contexto.buscar(true, "");
+      await gestor.cargarTodosProductos();
 
-      expect(res.length, gestor.getProductos().length);
+      List<Producto> res= await contexto.buscar(false, "");
+
+      expect(res.length, gestor.getProductos().where((p)=> p.esPeli==false).length);  //Comprueba solo el numero con los libros
     });
 
   });
@@ -200,24 +202,28 @@ void main(){
       Contexto contexto = Contexto(g, EstrategiaTitulo());
       Factoria fact = Factoria(g);
 
+      await g.cargarTodosProductos();
+
+
+
       //Primero  busca si existe el libro que voy a buscar y si lo encuentra lo borra
       //Esto se hace para que pase el test y no de error al agregar un libro que ya esta
       //Busca si ya existe el libro
-      List<Producto> tmp= await contexto.buscar(false,"Test crear libro factoria");
+     List<Producto> tmp= await contexto.buscar(false,"Test crear libro factoria");
 
       if(tmp.isNotEmpty){
         await g.eliminar(tmp[0]);
       }
 
+      await g.cargarTodosProductos();
 
-      fact.crearProducto("libro", "Test crear libro factoria", "test", "27-05-2025", "Esto es una prueba");
+
+      await fact.crearProducto("libro", "Test crear libro factoria", "test", "27-05-2025", "Esto es una prueba");
 
       List<Producto> resultado = await contexto.buscar(false, "Test crear libro factoria");
 
       expect(resultado.length, equals(1));
       expect(resultado[0].titulo, equals("Test crear libro factoria"));
-
-      //await g.eliminar(resultado[0]);
 
     });
 
