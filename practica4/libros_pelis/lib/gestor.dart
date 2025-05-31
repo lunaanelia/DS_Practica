@@ -146,7 +146,7 @@ class Gestor {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode({
-        'titulo': n_desc
+        'descripcion': n_desc
       }),
     );
 
