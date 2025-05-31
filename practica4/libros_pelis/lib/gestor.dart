@@ -196,3 +196,6 @@ class Gestor {
     }
   }
 }
+
+
+

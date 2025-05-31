@@ -58,8 +58,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final Gestor _gestor = Gestor();
-  String _rolSeleccionado = "Usuario";
-  static const List<String> usuarios = <String>['Administrador', 'Usuario'];
+  String _vistaSeleccionada = "Modificar";
+  static const List<String> vistas = <String>['Crear', 'Modificar'];
   static const List<String> busquedas = <String>['Autor', 'Fecha', 'Titulo'];
   //static const List<String> tipo_producto = <String> ['Pelicula', 'Libro'];
 
@@ -74,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
     await _gestor.cargarTodosProductos();
   }
 
-  // Para la búsqueda del usuario
+  // Para la búsqueda del Modificar
   static List<IEstrategiaBusqueda> _estrategiasBusqueda = <IEstrategiaBusqueda> [EstrategiaAutor(), EstrategiaFecha(), EstrategiaTitulo()];
   int _estrategiaSeleccionada = 0; // índice de la estrategia seleccionada
   bool _buscarPelicula = false; // True si se va a buscar una película y false si es libro
@@ -83,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Producto> _resultados = [];
 
 
-  // Para que el administrador pueda crear Productos
+  // Para que el Crear pueda crear Productos
   late Factoria _factoriaProductos = Factoria(_gestor);
   final TextEditingController _nuevoTitulo = TextEditingController();
   final TextEditingController _nuevoAutor = TextEditingController();
@@ -97,10 +97,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
 
-  _cambiarRol (String? nuevoRol) {
+  _cambiarVista (String? nuevoVista) {
 
     setState(() {
-      this._rolSeleccionado = nuevoRol!;
+      this._vistaSeleccionada = nuevoVista!;
     });
 
   }
@@ -123,7 +123,6 @@ class _MyHomePageState extends State<MyHomePage> {
       _nuevaDescripcion.text,
     );
 
-
     setState(() {
       // Limpiar los campos tras la creación
       _nuevoTitulo.clear();
@@ -137,15 +136,100 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void _editarProducto(Producto producto) {
+    final tituloController = TextEditingController(text: producto.titulo);
+    final autorController = TextEditingController(text: producto.autor);
+    final fechaController = TextEditingController(text: producto.fecha);
+    final descripcionController = TextEditingController(text: producto.descripcion);
 
-  Widget _seccionAdministrador() {
+
+    // Muestra una ventana para realizar la edición del producto
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Editar producto'),
+        content: SingleChildScrollView(
+          child: Column(
+            children: [
+              TextField(controller: tituloController, decoration: InputDecoration(labelText: 'Título')),
+              TextField(controller: autorController, decoration: InputDecoration(labelText: 'Autor')),
+              TextField(controller: fechaController, decoration: InputDecoration(labelText: 'Fecha')),
+              TextField(controller: descripcionController, decoration: InputDecoration(labelText: 'Descripción')),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Cancelar'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              try {
+                await _gestor.modificarTitulo(producto, tituloController.text);
+                await _gestor.modificarAutor(producto, autorController.text);
+                await _gestor.modificarFecha(producto, fechaController.text);
+                await _gestor.modificarDescripcion(producto, descripcionController.text);
+                setState(() {}); // Para actualizar la vista
+                Navigator.pop(context);
+              } catch (e) {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Error al editar: $e')),
+                );
+              }
+            },
+            child: Text('Guardar'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _eliminarProducto(Producto producto) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Eliminar producto'),
+        content: Text('¿Estás seguro de eliminar "${producto.titulo}"?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Cancelar'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              try {
+                await _gestor.eliminar(producto);
+                setState(() {
+                  _resultados.remove(producto);
+                });
+                Navigator.pop(context);
+              } catch (e) {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Error al eliminar: $e')),
+                );
+              }
+            },
+            child: Text('Eliminar'),
+          ),
+        ],
+      ),
+    );
+  }
+
+
+
+
+  Widget _seccionCrear() {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            '¡Hola, Administrador!',
+            'Crear nuevos productos',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 20),
@@ -166,6 +250,7 @@ class _MyHomePageState extends State<MyHomePage> {
               if (nuevoValor != null) {
                 setState(() {
                   _nuevaPelicula = nuevoValor;
+                  _resultados = _gestor.getProductos();
                 });
               }
             },
@@ -237,7 +322,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  Widget _seccionUsuario() {
+  Widget _seccionModificar() {
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -245,7 +330,7 @@ class _MyHomePageState extends State<MyHomePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Contenido del Usuario',
+            'Buscar y Modificar contenido',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 20),
@@ -317,13 +402,27 @@ class _MyHomePageState extends State<MyHomePage> {
                 final producto = _resultados[index];
                 return Card(
                   child: ListTile(
-                    title: Text(producto.titulo!),
+                    title: Text(producto.titulo ?? ''),
                     subtitle: Text('${producto.autor} - ${producto.fecha}'),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.edit, color: Colors.blue),
+                          onPressed: () => _editarProducto(producto),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.delete, color: Colors.red),
+                          onPressed: () => _eliminarProducto(producto),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
             ),
-          ),
+          )
+
         ],
       ),
     );
@@ -339,14 +438,14 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           DropdownButtonHideUnderline(
             child: DropdownButton<String>(
-              value: _rolSeleccionado,
+              value: _vistaSeleccionada,
               icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
               dropdownColor: Colors.white,
               style: const TextStyle(color: Colors.black),
               onChanged: (String? newValue) {
-                _cambiarRol(newValue);
+                _cambiarVista(newValue);
               },
-              items: usuarios.map<DropdownMenuItem<String>>((String value) {
+              items: vistas.map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value),
@@ -357,9 +456,9 @@ class _MyHomePageState extends State<MyHomePage> {
           const SizedBox(width: 16), // Espacio a la derecha
         ],
       ),
-      body: _rolSeleccionado == "Administrador"
-          ? _seccionAdministrador()
-          : _seccionUsuario(),
+      body: _vistaSeleccionada == "Crear"
+          ? _seccionCrear()
+          : _seccionModificar(),
     );
   }
 
