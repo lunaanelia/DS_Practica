@@ -52,6 +52,8 @@ class MyHomePage extends StatefulWidget {
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
+
+
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -61,7 +63,16 @@ class _MyHomePageState extends State<MyHomePage> {
   static const List<String> busquedas = <String>['Autor', 'Fecha', 'Titulo'];
   //static const List<String> tipo_producto = <String> ['Pelicula', 'Libro'];
 
+  @override
+  void initState(){
+    super.initState();
+   // await _gestor.cargarTodosProductos();
+    _inicializarProductos();
+  }
 
+ void _inicializarProductos() async {
+    await _gestor.cargarTodosProductos();
+  }
 
   // Para la búsqueda del usuario
   static List<IEstrategiaBusqueda> _estrategiasBusqueda = <IEstrategiaBusqueda> [EstrategiaAutor(), EstrategiaFecha(), EstrategiaTitulo()];
@@ -134,7 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Hola, Adminstrados¡r',
+            '¡Hola, Administrador!',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 20),
@@ -294,7 +305,7 @@ class _MyHomePageState extends State<MyHomePage> {
           if (!_hayResultados)
             const Center(
               child: Text(
-                'No se han encontrado resultados. Se muestran todos los productos de la Base de Datos a continuación',
+                'No se han encontrado resultados para la búsqueda. Se muestran todos los productos de la Base de Datos a continuación:',
                 textAlign: TextAlign.center,
               ),
             ),

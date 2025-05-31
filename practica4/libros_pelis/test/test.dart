@@ -56,26 +56,23 @@ void main(){
       Gestor g = Gestor();
       Contexto contexto = Contexto(g, EstrategiaTitulo());
 
-      //Primero  busca si existe el libro que voy a buscar y si lo encuentra lo borra
+      //Primero  busca si existe el libro que voy a añadir y si lo encuentra lo borra
       //Esto se hace para que pase el test y no de error al agregar un libro que ya esta
       //Busca si ya existe el libro
-      /* List<Producto> tmp= await contexto.buscar(false,"Test añadir producto");
+      List<Producto> tmp= await contexto.buscar(false,"Peter Pan");
 
       if(tmp.isNotEmpty){
         await g.eliminar(tmp[0]);
-      } */
+      }
 
-      Producto libro = Producto(null, false, "Test añadir producto", "Test", "27-5-2025", "Esto es una prueba.");
+
+      Producto libro = Producto(null, false, "Peter Pan", " J. M. Barrie", "27-12-1904", "Peter Pan y Wendy, Peter Pan, o el niño que no quería crecer, es una obra teatral y una novela para niños escrita por el escritor escocés James M. Barrie.");
       await g.agregar(libro);
 
-
-      List<Producto> resultado = await contexto.buscar(false, "Test añadir producto");
+      List<Producto> resultado = await contexto.buscar(false, "Peter Pan");
 
       expect(resultado.length, equals(1));
-      expect(resultado[0].titulo, equals("Test añadir producto"));
-
-      List<Producto> tmp= await contexto.buscar(false,"Test añadir producto");
-      await g.eliminar(tmp[0]);
+      expect(resultado[0].titulo, equals("Peter Pan"));
 
     });
 
@@ -84,23 +81,26 @@ void main(){
       Gestor g = Gestor();
       Contexto contexto = Contexto(g, EstrategiaTitulo());
 
+      List<Producto> tmp2= await contexto.buscar(true, "Las crónicas de Narnia: la travesía del Viajero del Alba");
+      if(tmp2.isNotEmpty){
+        await g.eliminar(tmp2[0]);
+      }
+
       //Añade el producto
-      Producto l = Producto(null, false, "Test modificar producto", "Test", "27-5-2025", "Esto es una prueba.");
+      Producto l = Producto(null, true, "Las crónicas de Narnia", "Test", "03-12-2010", "Los hermanos Edmund y Lucy Pevensie, junto a su primo Eustace, se embarcan en la nave El Viajero del Alba en busca de los siete caballeros expulsados del reino por Miraz, tío de Caspian y usurpador del trono de Narnia.");
       await g.agregar(l);
 
-      List<Producto> tmp= await contexto.buscar(false, "Test modificar producto");
+      List<Producto> tmp= await contexto.buscar(true, "Las crónicas de Narnia");
 
       Producto libro= tmp[0];
 
-      await g.modificarTitulo(libro, "Ya se ha modificado");
+      await g.modificarTitulo(libro, "Las crónicas de Narnia: la travesía del Viajero del Alba");
 
-      List<Producto> resultado = await contexto.buscar(false, "Ya se ha modificado");
+      List<Producto> resultado = await contexto.buscar(true, "Las crónicas de Narnia: la travesía del Viajero del Alba");
 
       expect(resultado.length, equals(1));
-      expect(resultado[0].titulo, equals("Ya se ha modificado"));
+      expect(resultado[0].titulo, equals("Las crónicas de Narnia: la travesía del Viajero del Alba"));
 
-      List<Producto> tmp2= await contexto.buscar(false, "Ya se ha modificado");
-      await g.eliminar(tmp2[0]);
     });
 
   });
@@ -196,7 +196,7 @@ void main(){
 
   group("Factoria", (){
 
-    test("Crear un libro con factoria", ()  async {
+    test("Crear una pelicula con factoria", ()  async {
 
       Gestor g = Gestor();
       Contexto contexto = Contexto(g, EstrategiaTitulo());
@@ -209,7 +209,7 @@ void main(){
       //Primero  busca si existe el libro que voy a buscar y si lo encuentra lo borra
       //Esto se hace para que pase el test y no de error al agregar un libro que ya esta
       //Busca si ya existe el libro
-     List<Producto> tmp= await contexto.buscar(false,"Test crear libro factoria");
+     List<Producto> tmp= await contexto.buscar(true,"Jurassic World");
 
       if(tmp.isNotEmpty){
         await g.eliminar(tmp[0]);
@@ -218,12 +218,12 @@ void main(){
       await g.cargarTodosProductos();
 
 
-      await fact.crearProducto("libro", "Test crear libro factoria", "test", "27-05-2025", "Esto es una prueba");
+      await fact.crearProducto("pelicula", "Jurassic World", "Colin Trevorrow", "10-06-2015", "Han pasado 22 años desde que el millonario John Hammond clonara el primer dinosaurio. Con tecnologías mejoradas y nuevas medidas de seguridad, el parque temático Jurassic World abre sus puertas.");
 
-      List<Producto> resultado = await contexto.buscar(false, "Test crear libro factoria");
+      List<Producto> resultado = await contexto.buscar(true, "Jurassic World");
 
       expect(resultado.length, equals(1));
-      expect(resultado[0].titulo, equals("Test crear libro factoria"));
+      expect(resultado[0].titulo, equals("Jurassic World"));
 
     });
 
