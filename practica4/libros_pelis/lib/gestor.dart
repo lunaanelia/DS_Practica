@@ -185,7 +185,7 @@ class Gestor {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode({
-        'fecha': DateTime.parse(n_fecha)
+        'fecha': n_fecha
       }),
     );
 
